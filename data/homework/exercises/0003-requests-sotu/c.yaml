@@ -1,0 +1,14 @@
+title: Crash your program with a MissingSchema error
+description: |
+  Write a program that prints out the name of a URL that you want to get (technically, this URL should be _invalid_....)
+
+  Then, that program should crash due to a runtime error of type MissingSchema.
+points: 0.5
+expectations:
+  output: |
+    #[the URL you attempt to GET should be printed here]
+  error:
+    type: MissingSchema
+takeaways:
+  - |
+    Browsers do a lot for us, even when it comes to resolving the URLs that we manually type in. Because a web browser is used to visit, well, webpages, a browser usually just fills in `http://` if we omit it -- and this is perfectly fine 99.9% of our casual browser usage. However, the Requests library doesn't provide that convenience, so it's good to get acquainted with the corresponding error message.

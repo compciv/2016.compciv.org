@@ -1,0 +1,105 @@
+---
+title: Function fundamentals in Python
+---
+
+
+# The basic Python function
+
+~~~py
+def hello_world():
+    print("Hello world")
+~~~
+
+~~~py
+def the_function_name():
+    what_the_function_does   
+~~~
+
+## the `def` keyword
+
+## The function name
+
+Can basically have the same conventions as a __variable__ name. In fact, it's not off-base to think of functions as being labels for code to execute.
+
+In general, stick to lowercase letters and underscore characters.
+
+
+
+# A function with a return value
+
+~~~py
+def big_hello():
+    return "HELLO WORLD"
+~~~
+
+## The return keyword
+
+### Returning a collection
+
+
+
+
+# A function with an argument (or two)
+
+~~~py
+def embiggen(some_string):
+    return some_string.upper() + "!!!"
+~~~
+
+
+
+## The function arguments
+
+
+### Named arguments
+
+### Optional arguments
+
+----
+
+# An example
+
+
+
+~~~py
+def easy_datetime(v):    
+    from datetime import datetime
+    from dateutil.parser import parse
+
+    if type(v) is datetime:
+        dataobj = v
+    elif type(v) is int or type(v) is float:
+        dataobj = datetime.utcfromtimestamp(v)
+    else:
+        dateobj = parse(v)
+    return dateobj
+
+def delta_seconds(from_date, to_date = None):
+    from datetime import datetime
+    x = easy_datetime(from_date)
+    if to_date:
+       y = easy_datetime(to_date)
+    else:
+       y = datetime.now()
+    
+    delta = y - x
+    return delta.total_seconds()
+~~~
+
+
+
+# Design tips
+
+## Do one thing and do it well
+
+https://en.wikipedia.org/wiki/Robustness_principle
+## Be liberal in what you accept
+
+## Be conservative in what you do
+
+## Silence is golden
+
+## Keep it short
+
+## Document them
+

@@ -1,0 +1,37 @@
+title: Print the final 5 lines for all of Shakespeare's tragedies
+description: |
+  For each file in `tempdata/tragedies/`:
+
+  - Count and print the number of lines in the file.
+  - Print the text of the final 5 lines, along with the corresponding line number.
+
+hints: |
+    [This tutorial walks through the process.](/practicum/shakefiles/g-glob-glob-tragedies)
+
+
+points: 1.5
+expectations:
+  output:
+    excerpted: true
+    head:
+      text: |
+        tempdata/tragedies/antonyandcleopatra has 5998 lines
+        5994: In solemn show attend this funeral;
+        5995: And then to Rome. Come, Dolabella, see
+        5996: High order in this great solemnity.
+        5997:
+        5998: [Exeunt]
+
+    tail:
+      text: |
+        tempdata/tragedies/titusandronicus has 3767 lines
+        3763: By whom our heavy haps had their beginning:
+        3764: Then, afterwards, to order well the state,
+        3765: That like events may ne'er it ruinate.
+        3766:
+        3767: [Exeunt]
+takeaways:
+  - |
+    The syntax for `glob.glob()` seems awkward, doesn't it? Consider using the `from glob import glob` style of import statement.
+  - |
+    Repeating this exercise for all of the Shakespeare files would be very easy.

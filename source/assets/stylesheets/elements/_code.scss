@@ -1,0 +1,74 @@
+@import "elements/syntaxhighlights/dark_theme.scss";
+
+.code-padding{
+  padding: 0.7rem 0.4rem;
+}
+
+pre.highlight, pre.shell, pre.output{
+  @extend .dark-syntax;
+  @extend .code-padding;
+  background: #333;
+}
+
+
+.codestyle{
+  padding: 3px 2px;
+  font-size: 100%;
+  background: $code-bg-color;
+  color: $code-color;
+  border-radius: 0px;
+}
+
+
+p .codestyle{
+    border: thin solid #e7e7e7;
+  margin-left: 3px;
+  margin-right: 3px;
+
+}
+
+code {
+  @extend .codestyle;
+}
+
+
+.error-code{
+  font-weight: bold;
+  color: red;
+  font-family: $font-family-monospace;
+}
+
+
+pre{
+  margin-top: 1.5em;
+  margin-bottom: 2.0em;
+  padding: 0.0em;
+}
+
+pre:first-child{
+  margin-top: 0;
+}
+
+
+// Keyboard stuff
+
+/* stole this from Google's docs
+https://developer.chrome.com/devtools
+*/
+
+.kbd {
+  background-color: #f2f2f4;
+  border: 1px solid #ccc;
+  color: #000;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1.4;
+  text-shadow: 0 1px 0 #fff;
+  font-family: Helvetica,sans-serif;
+  display: inline-block;
+  padding: 0.1em 0.6em;
+  margin: 0 0.1em;
+  white-space: nowrap;
+  box-shadow: 0 1px 0px rgba(0,0,0,0.3),0 0 0 2px #fff inset;
+  border-radius: 3px;
+}

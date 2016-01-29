@@ -1,0 +1,470 @@
+---
+title: Counting the non-blank-lines in Shakespeare's tragedies
+description: |
+  A simple text-processing and analysis exercise, using everything we've learned so far about file paths, for-loops, and conditional branching. 
+sequence: 
+  landing: /practicum/shakefiles/shakefiles-landing-page
+  previous: /practicum/shakefiles/g-glob-glob-tragedies
+mymeta:
+  exercise_slug: '0004-shakefiles/h'
+references:
+  - title: PEP 0008 Style Guide for Python Code
+    slug: pep-0008
+    description: |
+      One of Guido van Rossum's key insights is that code is read much more often than it is written. The guidelines provided here are intended to improve the readability of code and make it consistent across the wide spectrum of Python code. As PEP 20 says, "Readability counts".
+    url: https://www.python.org/dev/peps/pep-0008/
+---
+
+<!--associated_exercise-->
+
+# The problem
+<% exercise = load_exercise(page_mymeta.exercise_slug) %>
+
+Here's the problem we're trying to solve &ndash; if you're doing this as homework, see the <%=link_to "full info for this exercise", exercise.exercise_set_path %>:
+
+<% content_card do %>
+  <%= partial '/layouts/coursework/partials/exercise', 
+      :locals => {:exercise => exercise, :show_abstract => true } %>
+<% end %>
+<!--//associated_exercise-->
+
+
+# From the inside out in
+
+Rather than write the program in a linear, top-to-bottom fashion, I'm going to do something different for this exercise. I'm going to approach it from its smallest, most standalone problem -- how to test if a text string is "blank" (or non-blank) -- and _then_ work my way up to the bigger problems, such as "how do I open a file". In fact, each step that we do in this program we've already done before in all of the past exercises. This is just a different way of assembling those pieces. 
+
+The final program will be pretty ugly (you can [see it here](#mark-all-together-end)). But if you can step through it, piece by piece, and make sure each piece works before moving forward, you won't even notice the complex ugliness you've created until the very end. And by then, it doesn't matter as long as the program works!
+
+
+## Test whether a text string is "blank"
+
+A "non-blank line", for the purposes of this exercise, is defined as a line that has at least one non-whitespace character. Conversely, a "blank line" can be thought of a line that consists _solely_ of _0 or more whitespace characters_.
+
+However, this is _not_ the same thing as an empty string. Try this out at the interactive Python shell:
+
+~~~py
+>>> a = ""    # empty string
+>>> b = "   " # string with some spaces
+>>> c = "\n"  # string consisting of just a newline character
+>>> a == b
+False
+>>> a == c
+False
+~~~
+
+### The string's strip() method
+
+String objects have a __strip()__ method which trims a string of whitespace characters from both the left and right side:
+
+~~~py
+>>> "   hello world !  ".strip()
+'hello world !'
+~~~
+
+So, if we use __strip()__ on a string that consists solely of whitespace characters, the result should be an _empty_ string (i.e. a string with 0 characters):
+
+~~~py
+>>> "" == "    ".strip()
+True
+>>> "" == "\n".strip()
+True
+~~~
+
+So, now we have the conditional expression that can test if a string -- stored in a variable named `line` -- is __blank__:
+
+~~~py
+line.strip() == ""
+~~~
+
+Of course, if we want to test for __non-blank__ lines, we just invert the test to test for _non-equality_:
+
+~~~py
+line.strip() != ""
+~~~
+
+Or, if you prefer this notation:
+
+~~~py
+line.strip() is not ""
+~~~
+
+
+## Read the lines of a file
+
+OK, now let's step up one level: given a text file object, `txtfile`, we need to read every line of the file:
+
+~~~py
+for line in txtfile:
+    # etc. etc.
+~~~
+
+
+### Count all the lines
+
+What we need to do to fulfill the requirements of the exercise is keep count of each line. So _before_ the for-loop, let's set up a variable, `total_line_count`, and assign its initial value to `0`:
+
+~~~py
+total_line_count = 0
+for line in txtfile:
+    # do something
+~~~
+
+For every iteration of the loop, we want to add `1` to `total_line_count`:
+
+~~~py
+total_line_count = 0
+for line in txtfile:
+    total_line_count += 1
+~~~
+
+### Count just the non-blank lines
+
+Now we _also_ want to count the non-blank lines. So let's initialize another variable, `nonblank_line_count`:
+
+~~~py
+total_line_count = 0
+nonblank_line_count = 0
+for line in txtfile:
+    total_line_count += 1
+~~~
+
+However, we increment `blank_line_count` only when a given `line` fails our test for _non-blank_ lines. This is where a conditional statement is necessary:
+
+~~~py
+total_line_count = 0
+nonblank_line_count = 0
+for line in txtfile:
+    total_line_count += 1
+    if line.strip() is not "":
+        nonblank_line_count += 1
+~~~
+
+## Actually open a file for reading
+
+OK, that `txtfile` variable is just a placeholder. Let's write the code so that `txtfile` points to an opened file:
+
+~~~py
+txtfile = open(fname, 'r')
+~~~
+
+Obviously, `fname` is yet undefined and will now be a placeholder. But we'll deal with that later. Pretend it points to something like `"tempdata/comedies/asyoulikeit"`.
+
+~~~py
+total_line_count = 0
+nonblank_line_count = 0
+txtfile = open(fname, 'r')
+for line in txtfile:
+    total_line_count += 1
+    if line.strip() is not "":
+        nonblank_line_count += 1
+~~~
+
+### Print out the file's stats
+
+The requirements of the exercise include printing out a line count for the given file, e.g.
+
+~~~
+tempdata/comedies/asyoulikeit has 2904 non-blank lines out of 4122 total lines
+~~~
+
+If `fname` points to a file name, then that `print()` call looks like this:
+
+~~~py
+print(fname, 'has', nonblank_line_count, 'non-blank lines out of', total_line_count, 'total lines')
+~~~
+
+The <%=link_to "Python style guide", ref_url('pep-0008') %> recommends keeping lines of code shorter than 80 characters. For lists of arguments/parameters __inside parentheses__, we don't have to worry about the whitespace (e.g. newline characters) being interpreted as indents. Here's one way to write the code snippet above:
+
+~~~py
+print(fname, 'has', nonblank_line_count,
+      'non-blank lines out of', total_line_count, 'total lines')
+~~~
+
+
+And here's what it looks like as part of our larger code snippet; note that I'm also closing the `txtfile` object since we're done reading its lines at this point:
+
+~~~py
+total_line_count = 0
+nonblank_line_count = 0
+txtfile = open(fname, 'r')
+for line in txtfile:
+    total_line_count += 1
+    if line.strip() is not "":
+        nonblank_line_count += 1
+txtfile.close()
+print(fname, 'has', nonblank_line_count,
+      'non-blank lines out of', total_line_count, 'total lines')
+~~~
+
+It's important to note that this code works _as is_. That is, if you supply `fname` with a valid filename -- e.g. `"tempdata/tragedies/hamlet"` -- it will work. No matter what we do in the next steps, we can at least feel sure that this chunk _works_.
+
+In subsequent code snippets, I'll refer to this chunk of code as: `single_file_reading_routine` as a placeholder for brevity's sake.
+
+
+## Globbing a list of filenames
+
+Moving up another level: we need to get a list of file names, then iterate through them. This is what the `glob()` function is for (we'll write the `import` statement later).
+
+In the <%=link_to "previous lesson", url_for_sequence_previous %>, we saw how to use `glob()` to get all of the files within a single subdirectory:
+
+~~~py
+filepattern = join("tempdata", "tragedies", "*")
+filenames = glob(filepattern)
+~~~
+
+To get it for each subdirectory, we could just copy-paste-repeat the code (nevermind how I'm using a __list__ here, it's not important):
+
+~~~py
+filenames = []
+filepattern = join("tempdata", "comedies", "*")
+filenames.extend(glob(filepattern))
+filepattern = join("tempdata", "histories", "*")
+filenames.extend(glob(filepattern))
+filepattern = join("tempdata", "poetry", "*")
+filenames.extend(glob(filepattern))
+filepattern = join("tempdata", "tragedies", "*")
+filenames.extend(glob(filepattern))
+~~~
+
+But...that's pretty ugly. Turns out there's a way to specify an equivalent wildcard with `glob()`:
+
+~~~py
+filepattern = join('tempdata', '**', '*')
+filenames = glob(filepattern)
+~~~
+
+The __double-asterisks__ is used to match _directories_, so this pattern -- `tempdata/**/*` -- goes through every subdirectory in `tempdata`, and then grabs the filenames within each of those subdirectories. It does not, however, match the `tempdata/glossary` or `tempdata/README` -- which is just peachy as far as we're concerned.
+
+Throwing that list of filenames into a loop, and referring to our previous chunk of file reading code, this is what our script looks like so far:
+
+~~~py
+filepattern = join('tempdata', '**', '*')
+filenames = glob(filepattern)
+for fname in filenames:
+    single_file_reading_routine # etc. etc.
+~~~
+
+### Keeping track of the total total line counts
+
+The exercise requires us to print the total line count and total non-blank line count of all of the files. So this means we need to initiate 2 new variables, which I'll just call `all_line_count` and `all_nonblank_line_count`:
+
+~~~py
+all_line_count = 0
+all_nonblank_line_count = 0
+filepattern = join('tempdata', '**', '*')
+filenames = glob(filepattern)
+for fname in filenames:
+    single_file_reading_routine # etc. etc.
+~~~
+
+But how do we add to these? Well, revisiting our `single_file_reading_routine`, we _could_ just increment them in the same places that we increment the other two line-counting variables:
+
+~~~py
+# this is the single_file_reading_routine
+total_line_count = 0
+nonblank_line_count = 0
+txtfile = open(fname, 'r')
+for line in txtfile:
+    total_line_count += 1
+    all_line_count += 1                 # <== new line
+    if line.strip() is not "":
+        nonblank_line_count += 1
+        ### Count all the lines
+        all_nonblank_line_count += 1    # <== new line
+txtfile.close()
+print(fname, 'has', nonblank_line_count,
+      'non-blank lines out of', total_line_count, 'total lines')
+~~~
+
+But...why don't we wait until the _end_ of this routine, at which point, `total_line_count` and `nonblank_line_count` contain the values for the given file? And then just add those values to `all_line_count` and `all_nonblank_line_count`, respectively -- as these two variables can be thought of _aggregations_ of the line counts for each file?
+
+~~~py
+all_line_count = 0
+all_nonblank_line_count = 0
+filepattern = join('tempdata', '**', '*')
+filenames = glob(filepattern)
+for fname in filenames:
+    single_file_reading_routine # etc. etc.
+    # note that the routine above has initialized and set the variables
+    # of nonblank_line_count and total_line_count, which we
+    # can access at this point
+    all_nonblank_line_count += nonblank_line_count 
+    all_line_count += total_line_count 
+~~~
+
+## Setup and finish
+
+Now we just have to write the very beginning and end of our program. 
+
+First, import `glob()` and `join()`, which we call in our code:
+
+~~~py
+from os.path import join
+from glob import glob
+~~~
+
+The exercise requirements expect this to be the final line of output:
+
+~~~
+All together, Shakespeare's 42 text files have:
+125097 non-blank lines out of 172948 total lines
+~~~
+
+So, using our previously instantiated variables (note that calling `len()` on the `filenames` list gets us a count of items in that list):
+
+~~~py
+print("All together, Shakespeare's",
+      len(filenames), "text files have:")
+print(all_nonblank_line_count,
+      "non-blank lines out of",
+      all_line_count, "total lines")
+~~~
+
+<a id="mark-all-together-end"></a>
+
+## All together, from the inside out
+
+Here's what everything looks like, assembled and written out. I've tried to indicate using comments how and where each individual part is in the final code. The result is more intimidating than the individual parts!
+
+
+~~~py
+      ## The setup
+from os.path import join
+from glob import glob
+      ## keeping track of the total total line counts
+all_line_count = 0
+all_nonblank_line_count = 0
+
+      ## globbing a list of filenames
+filepattern = join('tempdata', '**', '*')
+filenames = glob(filepattern)
+for fname in filenames:
+          ## the start of single_file_reading_routine
+              ## Actually open a file for reading
+    txtfile = open(fname, 'r')
+    total_line_count = 0
+    nonblank_line_count = 0
+    for line in txtfile:
+              ## Count all the lines
+        total_line_count += 1
+              ## Test whether a text string is "blank"
+        if line.strip() is not "":
+                  ## Count just the non-blank lines
+            nonblank_line_count += 1
+    txtfile.close()
+              ## Print out the file's stats
+    print(fname, 'has', nonblank_line_count,
+          'non-blank lines out of', total_line_count, 'total lines')
+          ## end of single_file_reading_routine
+
+        ## keeping track of the total total line counts
+    all_nonblank_line_count += nonblank_line_count 
+    all_line_count += total_line_count 
+
+    ## the finish
+print("All together, Shakespeare's",
+      len(filenames), "text files have:")
+print(all_nonblank_line_count,
+      "non-blank lines out of",
+      all_line_count, "total lines")
+~~~
+
+
+
+It looks a little less intimidating without all of those comments:
+
+~~~py
+from os.path import join
+from glob import glob
+all_line_count = 0
+all_nonblank_line_count = 0
+
+filepattern = join('tempdata', '**', '*')
+filenames = glob(filepattern)
+for fname in filenames:
+    txtfile = open(fname, 'r')
+    total_line_count = 0
+    nonblank_line_count = 0
+    for line in txtfile:
+        total_line_count += 1
+        if line.strip() is not "":
+            nonblank_line_count += 1
+    txtfile.close()
+    print(fname, 'has', nonblank_line_count,
+          'non-blank lines out of', total_line_count, 'total lines')
+
+    all_nonblank_line_count += nonblank_line_count 
+    all_line_count += total_line_count 
+
+print("All together, Shakespeare's",
+      len(filenames), "text files have:")
+print(all_nonblank_line_count,
+      "non-blank lines out of",
+      all_line_count, "total lines")
+~~~
+
+
+
+# Thinking about design
+
+If you aren't already too bored with this problem, see if you can approach it from a typical top-down approach, i.e. start with the imports:
+
+~~~py
+from os.path import join
+from glob import glob
+~~~
+
+Then glob together the file list, and start the first for-loop:
+
+~~~py
+filenames = glob(join('tempdata', '**', '*'))
+for fname in filenames:
+    txtfile = open(fname, 'r')
+~~~
+
+See if that approach makes more sense than what I've just demonstrated. It kind of depends on how you think about the problem, though as you get better and better, you'll solve problems using a mix of approaches. This exercise is less about trying to solve this dull Shakespeare problem, and more about how many different ways you can tackle a problem, including deconstructing it into smaller tasks.
+
+## Thinking about functions
+
+We didn't cover the tactic of _creating our own_ __functions__, mostly because I think this problem is simple enough to do as one ugly block of code. But in case you were wondering, yes, writing 40-50+ linear, top-to-bottom scripts results in pretty ugly looking code.
+
+In later exercises, we'll work on breaking up our program into pieces. I hinted at this when I used `single_file_reading_routine` as a pseudocode abbreviation for a chunk of code that worked in isolation.
+
+In practice, we'll learn to turn those self-sufficient chunks of code -- i.e. routines -- into __functions__. If you think of defining __variables__ as creating human-readable labels for data, think of defining __functions__ as creating human-readable abbreviations for blocks of code that we intend to run, over and over. Or, at least, separate it from the main body of code.
+
+Here's a solution to the exercise in which `single_file_reading_routine` has been turned into a function that accepts a single argument -- a filename -- and returns a list of two numbers (`nonblank_line_count` and `total_line_count`). Notice how the _main_ routine of the program is not much more than 10 lines, with `single_file_reading_routine` abstracted out into its own function:
+
+
+~~~py
+from os.path import join
+from glob import glob
+
+def single_file_reading_routine(fname):
+    txtfile = open(fname, 'r')
+    total_line_count = 0
+    nonblank_line_count = 0
+    for line in txtfile:
+        total_line_count += 1
+        if line.strip() is not "":
+            nonblank_line_count += 1
+    txtfile.close()
+    print(fname, 'has', nonblank_line_count,
+          'non-blank lines out of', total_line_count, 'total lines')
+    return [nonblank_line_count, total_line_count]
+
+## Main routine
+all_line_count = 0
+all_nonblank_line_count = 0
+filepattern = join('tempdata', '**', '*')
+filenames = glob(filepattern)
+for fname in filenames:
+    line_counts = single_file_reading_routine(fname)
+    all_nonblank_line_count += line_counts[0] 
+    all_line_count += line_counts[1] 
+
+print("All together, Shakespeare's",
+      len(filenames), "text files have:")
+print(all_nonblank_line_count,
+      "non-blank lines out of",
+      all_line_count, "total lines")
+~~~

@@ -1,0 +1,23 @@
+
+
+
+~~~py
+from argparse import ArgumentParser
+
+if __name__ == "__main__":
+    parser = ArgumentParser()
+    parser.add_argument("thing")
+    arguments = parser.parse_args()
+
+    print("Hello", arguments.thing)
+~~~
+
+
+~~~
+def foo():
+    print('zzzz')
+
+from z import foo
+foo()
+
+~~~

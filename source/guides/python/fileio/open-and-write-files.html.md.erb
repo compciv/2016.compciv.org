@@ -1,0 +1,199 @@
+---
+title: Opening files and writing to files
+description: |
+  How to open files and write to files and avoid catastrophic mistakes when writing to files.
+summary: |
+  Writing files is a lot like reading from them. In day-to-day consumer-friendly computing, we're usually given a few warnings to prevent accidents in which we overwrite existing files, e.g. _"Are you sure you want to permanently erase the items in the Trash?"_. Python does not do that, which means we have to be extra careful when writing files.
+references:
+  - slug: /guides/python/fileio/open-and-read-text-files
+    internal: true
+  - slug: dive-python3-files
+    author: Mark Pilgrim
+    publisher: Dive into Python 3
+    title: Chapter 11. Files
+    url: http://www.diveintopython3.net/files.html
+
+  - title: Python Input and Output Tutorial
+    slug: python-docs-io
+    url: https://docs.python.org/3/tutorial/inputoutput.html
+    description: |
+      There are several ways to present the output of a program; data can be printed in a human-readable form, or written to a file for future use. This chapter will discuss some of the possibilities.
+    publisher: Python Documentation
+---
+
+# How to write to files
+
+The process of _writing_ to a file is very similar to the process of _reading_ from a file (which is <%=link_to "covered in a separate lesson", ref_url('/guides/python/fileio/open-and-read-text-files') %>), in that both require _opening_ a file object for access. The difference is in the __second argument__ to `open()`, in which the string `"w"` -- short for __write__ -- is passed.
+
+~~~py
+newfile = open("hello.txt", "w")
+~~~
+
+When a file object is instantiated in __write__ mode, it has access to the `write()` method. Closing a file object works the same way as it does when reading from the file:
+
+~~~py
+newfile.write("hello world")
+newfile.write("goodbye world")
+newfile.write("wokka wokka")
+newfile.close()
+~~~
+
+
+
+
+## Writing a binary file
+
+The above example works when writing __text__ to a file. However, when writing __binary__ data, i.e. __bytes__, the string `"wb"` must be passed into the `open()` function:
+
+~~~py
+newfile = open("somebinaryfile.zip","wb")
+~~~
+
+Most of the kinds of files we write will be in __text__ mode, but occasionally, we'll download a binary file -- such as a zip or image file -- and save it to disk.
+
+# How to accidentally wreck your data
+
+When trying to open a file for _reading_, but passing in a non-existent filename, Python will throw a `FileNotFound` error. Try this at the interactive Python shell:
+
+~~~py
+>>> myfile = open("blaskdfjsadklfjdfsadflkj", "r")
+FileNotFoundError: [Errno 2] No such file or directory: 'blaskdfjsadklfjdfsadflkj'
+~~~
+
+What happens if you try to open a file in __write__-mode with an equally nonsensical name?
+
+~~~py
+>>> myfile = open("blaskdfjsadklfjdfsadflkj", "w")
+~~~
+
+Nothing, at least error-wise. Instead, a file of the name `blaskdfjsadklfjdfsadflkj` will be created wherever your code is running. If you ran it from your `~/Desktop directory`, for instance:
+
+![image write-wherever-desktop.png](/files/images/guides/python/fileio/write-wherever-desktop.png)
+
+OK, but what happens when you try to open a file for writing using a filename that _already exists_? Nothing, _error-wise_. But whatever file that existing filename pointed to is basically _wiped out_. You may get an error message if you attempt to write to a path that points to a _directory_ or some kind of protected file. But for every other kind of file, it's just _gone_ and there is no confirmation message.
+
+This is why in each of the assignments, I have you create a new `tempdata` subdirectory and stash things into it, to reduce the likelihood that you end up overwriting existing files in your other file directories. But you should still be careful -- i.e. take a few seconds and think about what you're doing before hitting Enter -- whenever you pass in `"w"` or `"wb"` into the `open()` function.
+
+
+# Why write to files?
+
+A good portion of this chapter is spent warning you about how writing files might lead to catastrophic accidents of accidentally _deleting_ data, so it's worth asking: _why do we even want to write files in the first place?_
+
+The answer is pretty easy: so that the data we've collected/created can live on after our program finishes its work -- or, as is frequently the case, dies unexpectedly.
+
+Consider the following code which downloads the HTML contents of the current New York Times homepage into a variable named `nyttext`:
+
+~~~py
+import requests
+resp = requests.get("https://www.nytimes.com")
+nyttext = resp.text
+~~~
+
+If my program ends there, whatever was stored in the variables `resp` and `nyttext` is _gone_. For many situations, that's probably what we want. But if we want to examine how the NYT homepage changes over time, then we would need to save copies of it that persisted from one Python session to the next. This means saving files to our hard drive:
+
+~~~py
+from os.path import join
+import requests
+resp = requests.get("https://www.nytimes.com")
+nyttext = resp.text
+outfname = join("tempdata", "nytimes.com.html") 
+outfile = open(outfname, "w")
+outfile.write(nyttext)
+outfile.close()
+~~~
+
+## Strategies for not overwriting your files
+
+Of course, if we re-run this script in the next hour, day, or even the next second, whatever was at `"tempdata/nytimes.com.html"` will get overwritten.
+
+### Use the current time in the filename
+
+One strategy is to incorporate the __current timestamp__ into the filename to be saved. Here, I create a subdirectory named `nytimes.com`, and every file in it is given a name like `1453688120.431147.html` -- with the numbers being the result of the `time.time()` function, which returns the "current time in seconds since the Epoch":
+
+~~~py
+from os.path import join
+from os import makedirs
+import requests
+import time
+# Set up the storage area
+STORAGE_DIR = join("tempdata", "nytimes.com")
+makedirs(STORAGE_DIR, exist_ok=True)
+# Download the page
+resp = requests.get("https://www.nytimes.com")
+# Set up the new file
+current_time = str(time.time())
+print("The time in seconds since epoch is now:", current_time)
+outfname = join(STORAGE_DIR, current_time + '.html') 
+outfile = open(outfname, "w")
+outfile.write(resp.text)
+outfile.close()
+~~~
+
+If you were to save that code into a script named `nytdownload.py` and then repeatedly run it via the command-line interpreter:
+
+~~~
+$ python nytdownload.py
+The time in seconds since epoch is now: 1453689209.676369
+$ python nytdownload.py
+The time in seconds since epoch is now: 1453689210.85706
+$ python nytdownload.py
+The time in seconds since epoch is now: 1453689212.452021
+$ python nytdownload.py
+The time in seconds since epoch is now: 1453689213.67095
+~~~
+
+You would have a `tempdata/nytimes.com` subdirectory full of files:
+
+    .
+    ├── nytdownload.py
+    └── tempdata
+        └── nytimes.com
+            ├── 1453689209.676369.html
+            ├── 1453689210.85706.html
+            ├── 1453689212.452021.html
+            └── 1453689213.67095.html
+
+
+### Check for the existence of a file
+
+Sometimes, you only want to download a file _once_. For example, the works of Shakespeare are unlikely to change in the near future, so we'd only want to download the file only if we've never downloaded it before.
+
+We can use the `exists()` method from the `os.path` module, which returns `True` or `False` if the path passed into it currently exists:
+
+~~~py
+from os.path import join
+from os.path import exists
+import requests
+SHAKE_URL = "http://stash.compciv.org/scrapespeare/matty.shakespeare.tar.gz"
+SHAKE_LOCAL_PATH = join("tempdata", "shakespeare.tar.gz")
+if exists(SHAKE_LOCAL_PATH):
+    print("Skipping download;", SHAKE_LOCAL_PATH, 'already exists')
+else:
+    print("Downloading", SHAKE_URL)
+    resp = requests.get(SHAKE_URL)
+    outfile = open(SHAKE_LOCAL_PATH, 'wb')
+    # remember that Requests Response objects have the `content`
+    # attribute when dealing with the contents of binary files
+    outfile.write(resp.content)
+    print("Saved file to:", SHAKE_LOCAL_PATH)
+    outfile.close()
+~~~
+
+Save that code into a file, e.g. `shakeydownload.py`, and run it from the command-line. Assuming you don't have anything at the path `tempdata/shakespeare.tar.gz`, and the download successfully completes, you should see this output after a few seconds, or however long it takes your Internet collection to download all of Shakespeare's work:
+
+~~~
+$ python shakeydownload.py
+Downloading http://stash.compciv.org/scrapespeare/matty.shakespeare.tar.gz
+Saved file to: tempdata/shakespeare.tar.gz
+~~~
+
+Try re-running the script. The script should finish near-instantaneously since it doesn't have to download the file:
+
+~~~
+$ python shakeydownload.py 
+Skipping download; tempdata/shakespeare.tar.gz already exists
+$ python shakeydownload.py 
+Skipping download; tempdata/shakespeare.tar.gz already exists
+~~~
+
+If you delete (or rename) `tempdata/shakespeare.tar.gz`, re-running `shakeydownload.py` will operate as if you had never downloaded the file before.

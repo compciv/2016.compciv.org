@@ -1,0 +1,211 @@
+---
+title: 'Say "Hello World" and Learn How to Print'
+description: |
+  Simple text printing.
+due_date: 2016-01-14
+exercises_slug: 0001-hello-world
+---
+
+This is a series of exercises that involve Python's humble `print()` function, including writing and executing the [classic "hello world" statement](https://www.artsy.net/article/ruse-laboratories-brian-kernighan).
+
+To reiterate Dennis Ritchie and Brian Kernighan wisdom:
+
+> "The only way to learn a new programming language is by writing programs in it. The first program to write is the same for all languages: 
+>
+> Print the words
+> 
+>              hello, world
+>
+> This is the basic hurdle; to leap over it you have to be able to create the program text somewhere, compile it successfully, load it, run it, and find out where your output went. With these mechanical details mastered, everything else is comparatively easy."
+
+
+There's some surprising nuance that the `"hello world"` program provides even when approaching a modern language like Python. 
+
+So I'll use this first set of simple exercises to demonstrate the general process of interacting with Python, writing a script, then pushing it to Github.
+
+
+## Set up your Github repo
+
+This will easily be one of the most annoying parts of the class. It's not about smarts or skills -- it's mostly: _let me get you set up_, followed by _just go through the motions for now_.
+
+Read the guide here:
+
+<%=link_to_content_resource "/guides/devwork/setting-up-github-and-cli-operations" %>
+
+### Create the `0001-hello-world` subfolder
+
+Let's assume your Git repo is set up on your computer at: `~/Desktop/compciv-2016`.
+
+Using __Sublime Text__, you can open that folder (because it is, after all, just a file folder) as a project. Then right-click on the project-panel to create folders as you please.
+
+Or (and this is recommended...eventually) you can do it from the command-line. Pop open the Terminal:
+
+Then use `cd` to change into the target directory. Use the Tab key as much as possible to autocomplete the file name:
+
+~~~sh
+$ cd ~/Desktop/compciv-2016
+~~~
+
+(Do not copy the `$` -- I use that to indicate that we are in the system shell, not in ipython)
+
+The `compciv-2016` folder should contain a `exercises` subfolder. If not, you can create one like this:
+
+~~~sh
+$ mkdir exercises
+~~~
+
+
+Then to make the directory for the homework:
+
+~~~sh
+$ mkdir exercises/0001-hello-world
+~~~
+
+
+Now, __change__ into that directory: we want to be able to run scripts like this:
+
+(Note: Unless you've _created_ __a.py__, this command will fail...)
+
+~~~sh
+$ python a.py
+~~~
+
+__Not__ like this (i.e from above/outside the subdirectory):
+
+~~~sh
+$ python exercises/0001-hello-world/a.py
+~~~
+
+
+## Test things out in interactive Python
+
+The details and instructions for the rest of these exercises are in bottom remainder of this page. Let's just do the very first one: __a.py__.
+
+It asks us to create a script that simply prints out:
+
+~~~
+hello world
+~~~
+
+Pretend we don't know how to do even that, nevermind how to actually write a script, and then "execute" it.
+
+So let's jump into the interactive Python shell -- which you can invoke with:
+
+~~~sh
+$ ipython
+~~~
+
+
+### Don't mix up the Python shell with your normal system shell
+
+Jumping into ipython should bring up a deluge of text:
+
+~~~
+Python 3.5.1 (default, Dec 17 2015, 20:05:34) 
+Type "copyright", "credits" or "license" for more information.
+
+IPython 4.0.1 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+
+In [1]: 
+~~~
+
+And so maybe it seems obvious that you're in Python land instead of your system shell. But it's easy to forget, especially since some of the commands (such as `ls`) are shared between them.
+
+When writing out instructions, I will indicate that I'm on the Python shell with a prompt that uses triple-angled brackets:
+
+~~~
+>>> print("hi")
+hi
+~~~
+
+That second `hi` indicates that the `print("hi")` command was successful.
+
+So let's fulfill the requirements of [a.py](#exercise-a):
+
+~~~
+>>> print("hello world")
+hello world
+~~~
+
+That seems to fit the requirement of: _the output to screen should look like:_
+
+~~~
+hello world
+~~~
+
+
+## Creating our first Python script: a.py
+
+We know our simple program works. Now we need to _save the code as an actual file_, i.e.
+
+    compciv-2016/exercises/0001-hello-world/a.py
+
+Or, if you were to open it in a file tree:
+
+~~~
+compciv-2016
+  |__exercises
+       |____0001-hello-world
+              |______ a.py
+~~~
+
+
+If you're uncomfortable with creating directories and files via command-line, go ahead and do it via the Sublime Text panel (right click in the `0001-hello-world` folder to bring up the pop-up menu).
+
+Then enter the Python code and save the file:
+
+~~~
+print("hello world")
+~~~
+
+### Did it work?
+
+OK, jump back into your Terminal and command-prompt.
+
+Change into the `0001-hello-world/` subdirectory -- again, if you're on OSX and you put your `compciv-2016/` folder on your Desktop, this should do it -- again, use __Tab__ key as much as possible to autocomplete. If nothing happens when you __double-tap__, it probably means you aren't where you think you are...:
+
+~~~sh
+$ cd ~/Desktop/compciv-2016/exercises/0001-hello-world
+~~~
+
+Now run the __a.py__ script via the Python interpreter:
+
+~~~sh
+$ python a.py
+~~~
+
+The output should be as expected:
+
+~~~sh
+hello world
+~~~
+
+
+### Push your changes to your Github repo
+
+Finally, invoke the usual cycle of __git__ commands to add, commit, and push that new file to your Github repo:
+
+(throw in a `git status` at any point to have a better grasp of what's going on)
+
+~~~
+$ git add --all
+$ git commit -m 'a.py'
+$ git push 
+~~~
+
+If the command goes through, visit your `compciv-2016` repo and confirm the addition. After awhile, you'll accept that Git pretty much works like clockwork.
+
+
+Note: in newer versions of Git, it shouldn't matter if you're in `compciv-2016/` or `compciv-2016/exercises/0001-hello-py/` when running the Git commands. If you're having problems, it shouldn't hurt to jump back into the `compciv-2016` directory. Using the `cd` command with double dots, `..`, will move you up/"back" a directory. Run the `pwd` command to see where you currently are.
+
+
+
+
+
+
+
+

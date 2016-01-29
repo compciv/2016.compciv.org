@@ -1,0 +1,125 @@
+
+  <div class="exercise" id="<%=exercise.slug_hashmark%>">
+    <div class="meta">
+      <code class="slug pathname">
+        <% if show_abstract %>
+          <%=link_to exercise.slug_filename, exercise.exercise_set_path %>
+        <% else %>
+          <%= exercise.slug_filename %>
+        <% end %>
+      </code>
+      <div class="title">
+        <%=exercise.title%>
+      </div>
+      <% unless show_abstract %>
+        <div class="points"><span class="value"><%=exercise.points%></span> points</div>
+      <% end %>
+    </div>
+
+    <section class="information">
+      <div class="description">
+        <%= markdownify exercise.description %>
+      </div>
+
+      <% if exercise.hints && !show_abstract %>
+        <div class="hints">
+          <%= markdownify exercise.hints %>
+        </div>
+      <% end %>
+
+    </section>
+
+
+
+    <section class="expectations">
+      <div class="section-title">Expectations</div>
+      <div class="preamble">
+        <p>When you run <code class="pathname"><%=exercise.slug_basename%></code> from the command-line:</p>
+
+        <pre class="highlight shell"><span class="o"><%=exercise.slug_dirname%> $</span> python <%=exercise.slug_basename%></pre>
+      </div>
+
+
+
+      <ul class="outcomes">
+          <% if exercise.expected_output? %>
+            <% if exercise.expected_output_full? %>
+              <li class="stdout">
+                The program's <strong>output to screen</strong> should be:
+                <pre class="output"><%=exercise.expected_output%></pre>
+              </li>
+            <% else %>
+              <% if exercise.expected_output_head %>
+                <li class="stdout">
+                  The program's
+                  <strong>first <%=exercise.expected_output_head_count%></strong>
+                  lines of <strong>output to screen</strong> should be:
+                  <pre class="output"><%=exercise.expected_output_head%></pre>
+                </li>
+              <% end %>
+              <% if exercise.expected_output_tail %>
+                <li class="stdout">
+                  The program's
+                  <strong>last <%=exercise.expected_output_tail_count%></strong>
+                  lines of <strong>output to screen</strong> should be:
+                  <pre class="output"><%=exercise.expected_output_tail%></pre>
+                </li>
+              <% end %>
+            <% end %>
+          <% else %>
+            <li class="stdout">The program <strong>should not</strong> output anything to screen.</li>
+          <% end %>
+
+
+        <% if (ex_error = exercise.expected_error) %>
+          <li class="error">
+            The program should <strong>crash</strong>
+            because of a <span class="error-code"><%=ex_error.type%></span>
+            <% if ex_error.sample_message %>
+            with an error message, similar to:
+              <pre class="errmsg"><%=ex_error.sample_message%></pre>
+            <% end %>
+          </li>
+        <% end %>
+        <% if creations = exercise.expected_created_paths %>
+          <% creations.each do |c| %>
+            <li class="created-path">
+            The program <strong>creates this file path</strong>:
+              <% if c[-1] == '/' %>
+                <code class="pathname"><%= c.chomp('/') %></code>
+                <span class="pathtype">(directory)</span>
+              <% else %>
+                <code class="pathname"><%= c %></code>
+              <% end %>
+            </li>
+          <% end %>
+        <% end %>
+
+        <% if remotes = exercise.expected_remote_access %>
+           <% remotes.each do |c| %>
+              <li class="remote">The program
+              <strong>accesses this remote file:</strong>
+              <%=link_to c, c%></li>
+            <% end %>
+        <% end %>
+
+        <% if reqs = exercise.expected_requirements %>
+          <% reqs.each do |req| %>
+            <li class="req"><%=markdownify req %></li>
+          <% end %>
+        <% end %>
+
+      </ul>
+    </section> <!--expectations-->
+
+  <% if exercise.takeaways? && !show_abstract %>
+    <section class="takeaways">
+      <div class="section-title">Some takeaways from this exercise:</div>
+      <ul>
+        <%- exercise.takeaways.each do |t| %>
+          <li><%=markdownify t %></li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+  </div>

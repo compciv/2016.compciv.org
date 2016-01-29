@@ -1,0 +1,21 @@
+title: Unzip the contents of the Shakespearean zip file into tempdata
+description: |
+  Like downloading files, unzipping files is more complicated when you do it programmatically. The zip file might not unpack its contents where you thought it would...
+hints: |
+    [This tutorial walks through the process.](/practicum/shakefiles/c-unzipping-the-shakespeare-zip)
+
+points: 0.5
+takeaways:
+  - |
+    You might have assumed that unzipping `tempdata/matty.shakespeare.tar.gz` would unpack the contents of the zip file into `tempdata`. But when you execute this particular program (i.e. `c.py`), you are _outside_ the `tempdata` directory. Unless you tell it otherwise, Python assumes you want things done relative to where you executed the script.
+  - |
+    We've been keeping things simple but it is very easy to not know where "you" are when you executed a script.
+expectations:
+  output: |
+    Unpacked tempdata/matty.shakespeare.tar.gz into: tempdata
+  effects:
+    created_paths:
+      - tempdata/comedies/
+      - tempdata/histories/
+      - tempdata/poetry/
+      - tempdata/tragedies/

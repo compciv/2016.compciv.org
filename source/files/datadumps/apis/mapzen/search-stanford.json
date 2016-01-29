@@ -1,0 +1,273 @@
+{
+  "geocoding": {
+    "version": "0.1",
+    "attribution": "https://search.mapzen.com/v1/attribution",
+    "query": {
+      "text": "Stanford",
+      "size": 10,
+      "private": false,
+      "boundary.country": "USA",
+      "querySize": 20
+    },
+    "engine": {
+      "name": "Pelias",
+      "author": "Mapzen",
+      "version": "1.0"
+    },
+    "timestamp": 1453937624695
+  },
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "5398563",
+        "gid": "gn:locality:5398563",
+        "layer": "locality",
+        "source": "gn",
+        "name": "Stanford",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "California",
+        "region_a": "CA",
+        "county": "Santa Clara County",
+        "locality": "Stanford",
+        "confidence": 0.949,
+        "label": "Stanford, Santa Clara County, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.16608,
+          37.42411
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "4309487",
+        "gid": "gn:locality:4309487",
+        "layer": "locality",
+        "source": "gn",
+        "name": "Stanford",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "Kentucky",
+        "region_a": "KY",
+        "county": "Lincoln County",
+        "locality": "Stanford",
+        "confidence": 0.945,
+        "label": "Stanford, Lincoln County, KY"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -84.66189,
+          37.53119
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "4912372",
+        "gid": "gn:locality:4912372",
+        "layer": "locality",
+        "source": "gn",
+        "name": "Stanford",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "Illinois",
+        "region_a": "IL",
+        "county": "McLean County",
+        "localadmin": "Allin",
+        "locality": "Stanford",
+        "confidence": 0.941,
+        "label": "Stanford, Allin, IL"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -89.21786,
+          40.43476
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "5680222",
+        "gid": "gn:locality:5680222",
+        "layer": "locality",
+        "source": "gn",
+        "name": "Stanford",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "Montana",
+        "region_a": "MT",
+        "county": "Judith Basin County",
+        "locality": "Stanford",
+        "confidence": 0.94,
+        "label": "Stanford, Judith Basin County, MT"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.21826,
+          47.15358
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "2717:locality:us:usa:stanford",
+        "gid": "qs:locality:2717:locality:us:usa:stanford",
+        "layer": "locality",
+        "source": "qs",
+        "name": "Stanford",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "California",
+        "region_a": "CA",
+        "county": "Santa Clara County",
+        "confidence": 0.737,
+        "label": "Stanford, Santa Clara County, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.167340615422,
+          37.4251401412163
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "37623:_:_:usa:stanford",
+        "gid": "qs:neighbourhood:37623:_:_:usa:stanford",
+        "layer": "neighbourhood",
+        "source": "qs",
+        "name": "Stanford",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "Michigan",
+        "region_a": "MI",
+        "county": "Oakland County",
+        "confidence": 0.731,
+        "label": "Stanford, Oakland County, MI"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -83.1792681531045,
+          42.6751206714193
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "96786:localadmin:us:usa:stanford",
+        "gid": "qs:localadmin:96786:localadmin:us:usa:stanford",
+        "layer": "localadmin",
+        "source": "qs",
+        "name": "Stanford",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "Illinois",
+        "region_a": "IL",
+        "county": "Clay County",
+        "confidence": 0.725,
+        "label": "Stanford, Clay County, IL"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -88.4167904448051,
+          38.6696905856532
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "103700:localadmin:us:usa:stanford",
+        "gid": "qs:localadmin:103700:localadmin:us:usa:stanford",
+        "layer": "localadmin",
+        "source": "qs",
+        "name": "Stanford",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "Minnesota",
+        "region_a": "MN",
+        "county": "Isanti County",
+        "confidence": 0.725,
+        "label": "Stanford, Isanti County, MN"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.407649642371,
+          45.4442114012486
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "107341:localadmin:us:usa:stanford",
+        "gid": "qs:localadmin:107341:localadmin:us:usa:stanford",
+        "layer": "localadmin",
+        "source": "qs",
+        "name": "Stanford",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "New York",
+        "region_a": "NY",
+        "county": "Dutchess County",
+        "confidence": 0.725,
+        "label": "Stanford, Dutchess County, NY"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6917318290657,
+          41.8885062048017
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "9908:locality:us:usa:stanford",
+        "gid": "qs:locality:9908:locality:us:usa:stanford",
+        "layer": "locality",
+        "source": "qs",
+        "name": "Stanford",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "Kentucky",
+        "region_a": "KY",
+        "county": "Lincoln County",
+        "confidence": 0.725,
+        "label": "Stanford, Lincoln County, KY"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -84.6605602220764,
+          37.5349694856098
+        ]
+      }
+    }
+  ],
+  "bbox": [
+    -122.167340615422,
+    37.42411,
+    -73.6917318290657,
+    47.15358
+  ]
+}

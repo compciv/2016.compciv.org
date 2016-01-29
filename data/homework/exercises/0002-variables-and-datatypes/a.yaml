@@ -1,0 +1,31 @@
+title: Use variables to refer to data values
+description: |
+  Variables are human-readable names for labeling data. The Python interpreter doesn't care what actual variable names we use. Just to emphasize that point, pretend you have to finish a program in which a sadistic _human_ has deliberately labeled variables in the most confusing way possible.
+
+  You must use the variable assignments as stated. Use the plus-sign operator to add the text strings together to produce the specified output.
+expectations:
+  code_preface: |
+    hello = "world"
+    goodbye = "hello"
+    bye = "goodbye"
+    world = "and"
+  output: "hello world and goodbye"
+points: 0.5
+takeaways:
+  - |
+    Choosing variable names that make sense to you -- not just at the time when you write them -- but when you read them later -- is one of the most overlooked essential skills of the sane programmer.
+  - The computer isn't going to protect you from your stupidity when it comes to naming variables.
+  - |
+    Get used to seeing the variable assignment pattern and reflexively knowing what it means:
+
+    - variable name is on the __left__
+    - equals sign in the __middle__
+    - data value on the __right__
+
+    In other words, you will never see this:
+
+    ```
+    "hello" = some_variable
+    ```
+
+

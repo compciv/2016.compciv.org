@@ -1,0 +1,7 @@
+blockquote{
+  @extend .blockquote;
+  p{
+    font-size: $font-size-base;
+    font-family: $font-family-sans-serif;
+  }
+}

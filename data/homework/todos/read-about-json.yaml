@@ -1,0 +1,7 @@
+kind: Reading
+due_date: 2016-01-26
+description: |
+  Read: [json — JSON encoder and decoder](https://docs.python.org/3/library/json.html)
+
+
+  http://stackoverflow.com/questions/383692/what-is-json-and-why-would-i-use-it

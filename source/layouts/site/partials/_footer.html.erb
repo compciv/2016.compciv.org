@@ -1,0 +1,42 @@
+
+<section class="google-search-box">
+  <div class="container TK">
+  <%= partial "/layouts/services/partials/google_custom_search", :locals => {service_id: site_google_custom_search_id} %>
+  </div>
+</section>
+
+<!-- footer -->
+<footer class="site-footer">
+    <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <p>
+          <strong class="title">Computational Methods in the Civic Sphere</strong>
+          is produced by <a href="http://danwin.com">Dan Nguyen</a>
+          as an online reference for the
+          <a href="http://cjlab.stanford.edu">Stanford Computational Journalism Lab</a>
+          and <a href="//journalism.stanford.edu">Masters in Journalism</a>
+          curriculum.
+        </p>
+
+<ul class="list list-unstyled">
+  <li><%=link_to 'Assignments', '/assignments'%></li>
+  <li><%=link_to 'Articles', '/articles'%></li>
+
+</ul>
+
+
+      </div>
+      <div class="col-sm-6">
+        <h4>Links</h4>
+        <ul class="list-unstyled">
+          <li><%=link_to "Stanford Computational Journalism Lab", "//cjlab.stanford.edu"%></li>
+          <li><%=link_to "Stanford Journalism Masters Program", "//journalism.stanford.edu"%></li>
+        </ul>
+
+
+      </div>
+    </div>
+
+    </div>
+</footer>

@@ -1,0 +1,16 @@
+title: "An example webpage request with requests and example.com"
+description: |
+  Use the Requests library to get the URL, `http://example.com`.
+
+  __Print__ out the response's status code, length of the text response (i.e. you'll have to use the `len()` function), and the URL.
+
+points: 0.5
+expectations:
+  output: |
+    200
+    1270
+    http://example.com/
+
+takeaways:
+  - |
+    Note that the `url` attribute of the response object is not exactly the same as the URL that you attempted to retrieve. This is a common phenomenon, especially when the destination URL redirects you to another page (such as a bit.ly URL shortener, e.g. `https://bit.ly/a`)

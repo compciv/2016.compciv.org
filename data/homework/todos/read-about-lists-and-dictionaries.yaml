@@ -1,0 +1,12 @@
+title: "Read about Python strings, lists, and dictionaries"
+kind: Reading
+due_date: 2016-01-27
+description: |
+
+  Read about these Python objects before attempting the homework assignments:
+
+  - [Strings](/guides/python/fundamentals/text-as-strings)
+  - [Lists](/guides/python/fundamentals/lists-mutability)
+  - [Dictionaries](/guides/python/fundamentals/dictionaries-overview)
+
+

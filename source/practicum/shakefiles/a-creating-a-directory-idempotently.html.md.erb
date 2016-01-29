@@ -1,0 +1,242 @@
+---
+title: How to create a directory idempotently with makedirs()
+description: |
+  A quick tutorial on using the os.makedirs() function to create directories
+summary: |
+  Because Python is run across a variety of operating systems, its standard library includes the [__os__ module](https://docs.python.org/3/library/os.html), a collection of helper utilities for doing file system operations, so that Python programmers can work with files (e.g. creating, moving, deleting files) using the same Python code, no matter what system they're on. Among the __os__ module's most useful functions is `makedirs()`, which we can use to programmatically create new directories.
+references:
+    - slug: pythondocs-os
+      url: https://docs.python.org/3/library/os.html
+      title: Miscellaneous operating system interfaces
+      publisher: Python documentation
+      description: This module provides a portable way of using operating system dependent functionality.
+
+    - slug: pythondocs-os-makedirs
+      url: "https://docs.python.org/3/library/os.html#os.makedirs"
+      title: The makedirs function
+      publisher: Python documentation
+      description: "Recursive directory creation function. Like mkdir(), but makes all intermediate-level directories needed to contain the leaf directory."
+
+    - slug: pythondocs-os-path
+      title: os.path - Common pathname manipulations
+      url: https://docs.python.org/3/library/os.path.html
+      publisher: Python documentation
+      description: This module implements some useful functions on pathnames.
+
+    - slug: howtogeek-pathnames
+      url: http://www.howtogeek.com/181774/why-windows-uses-backslashes-and-everything-else-uses-forward-slashes/
+      title: Why Windows Uses Backslashes and Everything Else Uses Forward Slashes
+      publisher: How-To Geek
+      author: Chris Hoffman
+
+sequence:
+  landing: /practicum/shakefiles/shakefiles-landing-page
+  next: /practicum/shakefiles/b-downloading-the-shakespeare-zip
+mymeta:
+  exercise_slug: '0004-shakefiles/a'
+---
+
+<!--associated_exercise-->
+
+# The problem
+<% exercise = load_exercise(page_mymeta.exercise_slug) %>
+
+Here's the problem we're trying to solve &ndash; if you're doing this as homework, see the <%=link_to "full info for this exercise", exercise.exercise_set_path %>:
+
+<% content_card do %>
+  <%= partial '/layouts/coursework/partials/exercise', 
+      :locals => {:exercise => exercise, :show_abstract => true } %>
+<% end %>
+<!--//associated_exercise-->
+
+
+
+
+
+
+# Creating directories with os.makedirs()
+
+The action of creating a directory is different across different operating systems, e.g. Linux vs. Windows vs. Mac OS X. So the Python standard library `os` provides a `makedirs()` function. 
+
+This requires importing the <%=link_to( 'os module', ref_url('pythondocs-os')) %>:
+
+
+~~~py
+>>> import os
+>>> os.makedirs("mynewdirectory")
+~~~
+
+
+## Making a directory where you are
+
+So where does the directory get created? Wherever your script (or ipython) is currently running.
+
+If you run your script from, say, `~/Desktop`, then the following command:
+
+~~~py
+>>> os.makedirs("exampledirectory")
+~~~
+
+
+&ndash; will create a new directory at `~/Desktop/exampledirectory`:
+
+    Desktop               ##  <== YOU ARE HERE
+    ├── exampledirectory   
+
+
+### Use os.getcwd() to find out where you are
+
+If you need to know where you are, the `os` module has the `getcwd()` function (`cwd` stands for, "current working directory"):
+
+~~~py
+>>> os.getcwd()
+/Users/dtown/Desktop 
+~~~
+
+
+## Making directories idempotently
+
+[__Idempotence__](https://en.wikipedia.org/wiki/Idempotence) refers to a _quality_ of an operation in which an operation can be applied multiple times without different effects each time.
+
+Here's an example of a _non_-idempotent operation:
+
+~~~py
+>>> os.makedirs("oopsie")
+>>> os.makedirs("oopsie")
+FileExistsError: [Errno 17] File exists: 'oopsie'
+~~~
+
+The `makedirs()` function throws an error by default if you try to create a directory that already exists (or, if you try to create a directory with the same path as a __file__...which is most definitely something you want to avoid)
+
+### Conditionally checking for the existence of a path
+
+One way to get around this is to _check for the existence_ of a directory/file before trying to create it, as a conditional branch:
+
+~~~py
+>>> if not os.path.exists('oopsie'):
+...    os.makedirs('oopsie')
+~~~
+
+### The exists_ok named argument of the makedirs() function
+
+An even easier way is to use the _named argument_, `exists_ok`, of the `makedirs()` function. This argument is _optional_ because it has a _default value_; by default, `exists_ok` is set to `False` -- i.e. it will _not be OK_ if you try to use `makedirs` to create an already existing path.
+
+However, setting `exists_ok` to `True` when calling `makedirs()` will prevent an error message from being thrown:
+
+~~~py
+>>> os.makedirs("oopsie", exist_ok = True)
+>>> os.makedirs("oopsie", exist_ok = True)
+# no error message is thrown...
+~~~
+
+So that's how you easily create directories and subdirectories in Python with `makedirs()`. 
+
+
+# The many functions and submodules of the os module
+
+The `os` module has a lot of useful utilities that we'll use to organize the files that we read and write from. In a later lesson, we'll be using the __<%=link_to "os.path submodule", ref_url('pythondocs-os-path') %>__
+
+But I'll take some time here to acquaint you with the `os.path.join()` function and the problem it solves.
+
+## File path inconsistency between Windows and OS X
+
+We're going to be dealing a lot with files stored on our computers and, by necessity, we will be dealing with their __paths__, i.e. the text strings that describe the next of subdirectories to actually get to a specific file. But this is complicated when dealing with different operating systems.
+
+On __OS X__ -- and, all other Unix-based systems such as __Linux__, file paths are represented as text strings in this format, with __forward-slashes__ delimiting the subdirectories and the actual filename -- in this case, `file.txt`:
+
+    my/path/to/file.txt
+
+
+In Windows, the __backslash__ is used:
+
+    \my\path\to\file.txt
+
+If you've been paying attention to what the __backslash__ character means for Python strings, you might remember that it acts as an __escape sequence__ -- i.e. the backslash modifies the meaning of the token (i.e. character) that follows it. This means to print a _literal_ backslash in a Python string, you have to use __double__ backslashes:
+
+~~~
+>>> print("\\my\\path\\to\\file.txt")
+\my\path\to\file.txt
+~~~
+
+As you can imagine, that could complicate the ability to write code that works on Windows and everywhere else.
+
+## The os.path.join() function
+
+We get access to the [os.path module](<%=url_for_reference 'pythondocs-os-path'%>) if we have `import os` in our code.
+
+The __os.path.join()__ function takes as many arguments needed to generate a specified file path, with each argument representing one component (i.e. subdirectory) of the path. So instead of doing this:
+
+~~~py
+mypath = "my/path/to/file.txt"
+~~~
+
+We do this:
+
+~~~py
+mypath = os.path.join('my', 'path', 'to', 'file.txt')
+~~~
+
+And whether you're running code on Windows or Unix-based systems, the actual path to the file will be consistent.
+
+### Making subdirectories with `makedirs()`
+
+We don't have to make _nested_ subdirectories yet -- i.e. subdirectories within subdirectories, e.g. `somedir/subdir/subsubdir` but I'm just using it as an example of a real-world scenario that we will later encounter.
+
+The `makedirs()` function _recursively_ creates directories. That is, if you want to create a nested directory:
+
+~~~py
+>>> os.makedirs("my/fun/new/directory")
+~~~
+
+&ndash; it will handle the creation of the necessary _parent_ directories:
+
+First: 
+
+    my
+
+Then:
+
+    my
+    └── fun
+
+Then:
+
+    my
+    └── fun
+        └── new
+
+
+&ndash; before creating the actual directory that you specified, i.e. `my/fun/new/directory`: 
+
+    my
+    └── fun
+        └── new
+            └── directory
+
+This is pretty convenient. And a nice use case for `os.path.join()`:
+
+
+~~~py
+import os
+mypath = os.path.join("my", "fun", "new", "directory")
+makedirs(mypath)
+~~~
+
+We'll get some actual usage of `os.path.join` in the <%=link_to "next_lesson", url_for_sequence_next %>
+
+If you're interested in _why_ things are different between operating systems...well, like everything in life, it comes down to different people and companies creating different things at different times in different contexts.
+
+
+<% via_reference 'howtogeek-pathnames' do %>
+
+So why is Windows the odd operating system out? It’s all down to a few accidents of history that happened decades ago.
+
+Unix introduced the forward slash character — that’s the / character — as its directory separator around 1970. We don’t really know why they chose this one, but that’s the one they picked.
+
+It’s hard to imagine today, but the original version of Microsoft DOS — that’s MS-DOS 1.0 — didn’t support directories at all when it was released in 1981...MS-DOS 2.0 introduced support for directories, but IBM wanted to keep compatibility with the original DOS utilities and other programs that expected the / character to be used for switches. Microsoft had already used the / character for something, so they couldn’t just re-use it. 
+
+They ultimately chose the \ character instead, as it was the most similar-looking character visually.
+
+<% end %>
+
+

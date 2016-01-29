@@ -1,0 +1,21 @@
+title: Print a string literal that itself contains quotation marks
+description: |
+  Inevitably, sometimes what we want to print contains quotation marks. Write a program that prints this on a single line:
+
+  ~~~
+  Bob says, "Hello!"
+  ~~~
+
+  Remember that single-quotes can be used to delimit a string literal. Try it out in ipython:
+
+  ~~~
+  >>> print('he says to "go already"')
+  he says to "go already"
+  ~~~
+
+
+points: 0.5
+expectations:
+  output: 'Bob says, "Hello!"'
+takeaways:
+  - Either single- or double-quotes can be used to delimit a string. Just be consistent.

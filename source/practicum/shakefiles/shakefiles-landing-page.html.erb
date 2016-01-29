@@ -1,0 +1,26 @@
+---
+title: Extracting and Reading Shakespeare
+description: |
+  A walkthrough of modules, file system operations, and Shakespeare.
+
+hide_toc: true
+mymeta:
+  articles:
+    - /practicum/shakefiles/a-creating-a-directory-idempotently
+    - /practicum/shakefiles/b-downloading-the-shakespeare-zip
+    - /practicum/shakefiles/c-unzipping-the-shakespeare-zip
+    - /practicum/shakefiles/d-print-first-5-lines-of-hamlet
+    - /practicum/shakefiles/e-count-each-line-of-hamlet
+    - /practicum/shakefiles/f-print-final-5-romeo-juliet-lines
+    - /practicum/shakefiles/g-glob-glob-tragedies
+    - /practicum/shakefiles/h-count-non-blank-lines-in-shakespeare-tragedies
+---
+
+
+<p>The following guides are meant to be read while doing the exercises in: <a href="/assignments/exercise-sets/0004-shakefiles-set">0004-shakefiles</a>
+</p>
+<section class="uniform-content-resource-listing">
+  <% page_mymeta.articles.each do |slug| %>
+    <%= content_resource_tag slug %>
+  <% end %>
+</section>

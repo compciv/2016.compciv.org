@@ -1,0 +1,285 @@
+---
+title: Computational Methods in the Civic Sphere
+has_header: false
+layout: /layouts/pages/home/home-layout
+---
+
+## Todos and notes:
+
+- [Visualizing Geo-Political Sensitivities with the Google Static Maps API](/practicum/web-making/geopolitical-sensitivity-google-maps/)
+- [Geocoding gist](https://gist.github.com/dannguyen/787da4d8c54ee94bb69f)
+- [Officer Involved replica draft notes](/practicum/projects/officers-counted-involved-notes)
+
+I've created two landing pages for your convenience:
+
+- <%=link_to 'Assignments', '/assignments'%>
+- <%=link_to 'Articles', '/articles'%>
+ 
+
+
+##### COMM 113/213 - Winter 2016
+Tuesday and Thursday, 1:30 to 2:50PM \\
+Building 160, Room 322 [[CourseExplorer link](https://explorecourses.stanford.edu/search?view=catalog&filter-coursestatus-Active=on&page=0&catalog=&academicYear=&q=Computational+Methods+in+the+Civic+Sphere+&collapse=)]
+
+##### Getting in touch
+
+__Instructor:__ [Dan Nguyen](//danwin.com) | [@dancow](//twitter.com/dancow) | dun @ stanford \\
+__Office hours:__ Tuesday and Thursdays, 3 to 6PM. Or by appointment. \\
+__Slack Chat:__ [stanfordcompciv.slack.com](https://stanfordcompciv.slack.com) - Give this popular chat client a try if you haven't already. It might be an easier way to reach me and a much easier way for me to post code and so forth.
+
+(The 2015 site is [archived here](http://2015.compciv.org/))
+
+
+
+
+
+
+
+<section class="sec table-of-contents">
+<%= render_toc %>
+</section>
+
+
+
+# About COMM 113/213
+
+
+
+A winter elective on programming and journalism for the [Stanford Computational Journalism Lab](http://cjlab.stanford.edu), taught by [Dan Nguyen](https://twitter.com/dancow). The programming part involves [modestly-written](http://www.folklore.org/StoryView.py?story=MacBasic.txt), simple programs which are then executed with simple brute force. The journalism part involves finding something important about the world. 
+
+This does not work as elegantly as we want, [but once you've eliminated the boring](http://www.brainyquote.com/quotes/quotes/a/arthurcona134512.html), whatever remains, no matter how improbably, might be *less* boring.
+
+You aren't expected to have much if any experience with programming. So we'll take advantage of the years of time you've spent reading and writing. You will be writing some code. And you will eventually be reading more code than you write.
+
+
+
+
+
+
+## What you must know about programming
+
+Please open your browser to Paul Ford's ~40,000 word interactive essay in Bloomberg: ["What is Code?"](http://www.bloomberg.com/graphics/2015-paul-ford-what-is-code/).
+
+Then read it to this part: 
+
+> __You, using a pen and paper, can do anything a computer can__...
+
+OK, you can stop.
+
+Enjoy [this algorithmic art](https://www.artsy.net/artwork/brian-kernighan-hello-world). And remember its stated purpose:
+
+> "The only way to learn a new programming language is by writing programs in it. The first program to write is the same for all languages: 
+
+>Print the words                                                                
+>                    hello, world
+
+> This is the basic hurdle; to leap over it you have to be able to create the program text somewhere, compile it successfully, load it, run it, and find out where your output went. With these mechanical details mastered, everything else is comparatively easy."
+
+Finally, if you find yourself typing much faster than either of these two programmers, [Brian](https://www.youtube.com/watch?v=XvDZLjaCJuw&feature=youtu.be&t=5m15s) and [Linda](https://www.youtube.com/watch?v=XvDZLjaCJuw&feature=youtu.be&t=13m41s) -- you can slow down, if you need to.
+
+
+
+
+
+
+
+# Grading
+
+- __Attendance (10%)__ - Classes are discussion based, so your presence is desired; laptops are optional.
+- __Homework (50%)__ - Expect to write one or two programs and turn them in via Github an average 4 to 5 times a week. Don't worry, they're mostly complete, and they mostly involve repetition. You just have add or correct a few lines.
+- __Projects (40%)__ - Starting the fourth week, you'll come up with your own, short projects individually:
+  + __Make a tool useful to you:__ [How much more/less of a jerk in this email?](https://tone-analyzer-demo.mybluemix.net/)
+  + __Make a tool useful to you based on combining at least two different data sources and services__: Is it [safe to take this new medication](https://rxnav.nlm.nih.gov/InteractionAPIs.html#) based on what I've already been prescribed? 
+  + __Gather data to train a classifier. Then evaluate that classifier__: e.g. based on [publication date](https://en.wikipedia.org/wiki/Document_dump) and [words in the first paragraph](http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/nl-classifier.html), which news releases contain potentially embarrassing information?
+  + __Explore a topic in which you are not either an expert nor an advocate. Surprise yourself__: Learning computational methods allows us to greatly expand and speed-up our collection and filtering of data. Don't worry about not finding what you expect to find, or even how to find it. As [Google's Peter Norvig](https://www.youtube.com/watch?v=ql623nyCdKE) quipped: *When you have enough data, sometimes, you don’t have to be too clever about coming up with the best algorithm.*
+
+## Attendance policy
+
+Give notice several days in advance. If necessary, we can arrange for you to do a short-term project.
+
+
+
+
+# Things to do (for Thursday, January 7)
+
+I want you to install some things. Then ask me questions. There's not much else to do so don't do anything you don't know that [you don't know how to do](https://www.youtube.com/watch?v=GiPe1OiKQuk).
+
+## Learn how to switch applications with your keyboard
+
+- Look for the __Tab__ key
+- Look for the __Command__ key (or its Windows equivalent)
+- Go to whatever browser instance you're using to watch the game on ESPN or check Facebook, or other application, __but don't use your mouse__.
+- This small habit will be one of the most valuable things I can force you to learn.
+
+## Email me (dun at stanford.edu) at least once
+
+- If you run into *any* issue and in which Googling something does not provide an answer that you actually understand. While I highly encourage using the power of the Internet to explore things, I highly discourage you from just trying random things out.
+- After you've done the steps below, email me:
+  + The URL of your Github account
+  + The name and number of operating system you have, e.g. __Windows 10__, __OS X 10.11__
+  + If you can find it...the amount of remaining hard drive space you have. Just so I know when to warn you if we're about to do something that dumps a million-line database onto your hard drive.
+  - Using one of the Google Static Image APIs ([here](https://developers.google.com/maps/documentation/static-maps/intro) or [here](https://developers.google.com/maps/documentation/streetview/intro)), send me a link to an interesting location.
+  - Then, if you know how, try to include an __attachment__ of a location image derived from the API.
+
+
+## Install Anaconda 3
+
+You may already have Python on your system. If you already really, really know what you're doing (i.e. you used `pyenv` to set things up. Or you think you _could_ manage that, then you can ask me for help), then you can ignore this part.
+
+Otherwise, this is like installing any other program to your computer. Though keep in mind the file size is quite hefty. Email me if you are have hard drive space limitations, e.g. fewer than a few gigabytes.
+
+The [instructions are here](http://docs.continuum.io/anaconda/index). However, to make things consistent, don't download the most recent file. Download the most appropriate installer from the archive:
+
+- Windows: [Anaconda3-2.4.0-Windows-x86_64.exe](https://repo.continuum.io/archive/Anaconda3-2.4.0-Windows-x86_64.exe)
+- OS X: [Anaconda3-2.4.0-MacOSX-x86_64.pkg](https://repo.continuum.io/archive/Anaconda3-2.4.0-MacOSX-x86_64.pkg)
+- Linux: [Anaconda3-2.4.0-Linux-x86_64.sh](https://repo.continuum.io/archive/Anaconda3-2.4.0-Linux-x86_64.sh)
+
+If you are unsure of __anything__, just email me.
+
+### Other Python things
+
+Let's wait till Thursday before we try to install other packages. Although if you really know what you're doing, you can try to look up and install, in this order:
+
+- ffmpeg or libav
+- moviepy
+- [opencv3](http://stackoverflow.com/a/34586032/178779)
+
+If you can do this, then you can try out the face detection script, which will be the [most complicated kind of script we can copy from and execute](http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html). It's actually not that important, it's just an example of what we can do with just text.
+
+
+## Download and install Sublime Text 3
+
+[Sublime Text 3 is a plaintext editor](http://www.sublimetext.com/). It will be your primary, and possibly only tool you'll need to write and organize programs.
+
+## Join and add something to Github
+
+- Start a [Github account](https://github.com/).
+- Sign up for a [student developer pack if you haven't already](https://education.github.com/pack).
+- In general, we'll be using the [command-line](https://help.github.com/articles/set-up-git/) to push to Github. For now, you can [try out their desktop app](https://desktop.github.com/). 
+  - See if you can [create a repository](https://help.github.com/articles/create-a-repo/) named _exactly_ "hello-world" 
+  - Add a single file named README.md
+  - Add some text. And then a [picture of a cat](https://placekitten.com/) or of [Nicolas Cage](http://www.placecage.com/). I'm deliberately leaving this vague so get a feel for it yourself. But we'll be using much less of Github's feature set than what Github is normally used for.
+
+
+## Do some reading
+
+[Always bet on text](http://graydon2.dreamwidth.org/193447.html) by Graydon Hoare: 
+
+> Text is the most socially useful communication technology. It works well in 1:1, 1:N, and M:N modes. It can be indexed and searched efficiently, even by hand. It can be translated. It can be produced and consumed at variable speeds. It is asynchronous. It can be compared, diffed, clustered, corrected, summarized and filtered algorithmically. It permits multiparty editing. It permits branching conversations, lurking, annotation, quoting, reviewing, summarizing, structured responses, exegesis, even fan fic. The breadth, scale and depth of ways people use text is unmatched by anything. There is no equivalent in any other communication technology for the social, communicative, cognitive and reflective complexity of a library full of books or an internet full of postings. Nothing else comes close.
+
+> So this is my stance on text: always pick text first.
+
+        
+
+[Who Controls Your Facebook Feed](http://www.slate.com/articles/technology/cover_story/2016/01/how_facebook_s_news_feed_algorithm_works.single.html)
+
+
+We'll actually be reading a lot about Facebook over the course, so including it here is a bit overkill. Though this recent development (as of yesterday) is worth talking about. Most of the news about Facebook's research concerns their data science, but check out [their publications page for a long list of scientific papers](https://research.facebook.com/). Expect to be OK with being able to find the bigger picture, even if the math escapes you.
+
+
+[Unicode: A story of corruption, connection, and smiling poo](https://medium.com/@maggieshafer/unicode-a-story-of-corruption-connection-and-smiling-poo-598295e4af9d)
+
+> Unicode is traditionally something programmers hate, because of the bugs it causes in programs that read text (i.e. basically *all* of them). It took me awhile to realize that Unicode is one of the most amazing creations of
+
+
+#### Aren't Nigerian Prince Scams such an Obvious Scam?
+
+The Microsoft paper: http://research.microsoft.com/apps/pubs/?id=167719
+
+Yeah, those graphs seem intimidating...I don't know if I could easily explain them in English. But try to pick out the "bigger picture" reason -- what is it about email, the cost of email, the number of scammers vs. number of victims, and most importantly, the _type of victims_ that makes, "Hey, I'm a prince from an exotic place, send me money" seemingly effective?
+
+
+Related:
+
+
+- [The Los Angeles Times visits an actual Nigerian scam shop](http://www.latimes.com/la-fg-scammers20oct20-story.html) and asks them what the deal is.
+- [Why Nigerian Scams Work](http://www.onthemedia.org/story/234397-why-nigerian-email-scams-work/transcript/)
+
+
+
+-----------------
+
+
+# Syllabus
+
+## Week 1: Base installation
+
+#### An introduction to computers
+
+We start out by being introduced to the modern personal computer (PC), to install plain text editors and a text-based programming languages, for efficiently working with text. Then we learn how to use the web browser and [its development tools](http://www.compjour.org/tutorials/intro-to-the-web-inspector/) to see how webpages of text are generated by sending strings of text (including [cats](https://http.cat/), but described in text) between computers.
+
+Text is a valuable programming interface for communicating with computers. It can lead to many fundamental calculations and algorithmic computations, including: 
+
+- ["Hello World!"](https://www.artsy.net/article/ruse-laboratories-brian-kernighan)
+- [你好，世界](https://cloud.google.com/translate/v2/using_rest)
+- [Arithmetic](https://www.youtube.com/watch?v=sYqXlRQrBN4)
+- The number of [seconds since 1970](https://en.wikipedia.org/wiki/Unix_time)?
+- [How close](https://mapzen.com/projects/search) is the nearest [national park](http://www.nps.gov/gis/)?
+- How close is the [nearest asteroid](https://api.nasa.gov/api.html#NeoWS)?
+- When does an [asteroid most likely to annihilate](http://neo.jpl.nasa.gov/) us come closest to us?
+- [Display photos of Mars](https://api.nasa.gov/api.html#MarsPhotos), in both Martian and Earth time.
+- Approximate number of years since the birth of [someone who looks like Han Solo](https://pbs.twimg.com/media/CX-RvuaUsAISjPX.png:large) (via [Project Oxford](https://www.projectoxford.ai/demo/vision#Analysis)). 
+- [How much money](http://www.imdb.com/interfaces) have people spent to watch other people who look like Han Solo?
+- How many [self-driven automobiles have been involved in an accident](https://www.google.com/selfdrivingcar/reports/), [where](https://developers.google.com/maps/documentation/static-maps/?hl=en) did the accidents happen, what did it look like from roughly [the automobiles' vantage points](https://developers.google.com/maps/documentation/streetview/?hl=en), and, in the past decade, how many [fatal accidents involving human-driven vehicles](http://www.nhtsa.gov/FARS) have occurred at nearby intersections?
+- [How far](https://mapzen.com/projects/valhalla/) is to the nearest [Starbucks](https://openapi.starbucks.com/v1/stores/nearby?callback=jQuery17203644492062740028_1452020877310&radius=50&limit=50&latLng=37.4418834%2C-122.14301949999998&ignore=storeNumber%2CownershipTypeCode%2CtimeZoneInfo%2CextendedHours&brandCodes=SBUX&access_token=6hfbj8cfuke8t9yyez2dfmy4&_=1452020912189) that has a musical experience and oven-warmed food?  How about the [nearest In-N-Out Burger](http://www.in-n-out.com/locations) given the [current traffic conditions](https://developers.google.com/maps/documentation/directions/intro?hl=en)?
+- About how many tourists are on Stanford's campus right now?
+- How many people whom I've never met have photos of me?
+- Is there [_free_ food anywhere on campus today](https://mailman.stanford.edu/mailman/listinfo/free-food-alert)?
+- How many [times did politicians say a particular word on CSPAN today](https://twitter.com/CSPANFive/status/676557022075166720)?
+- How predictable is your [gender based on your first name](https://www.ssa.gov/oact/babynames/background.html)? How [predictable is your race and ethnicity is based on your last name and residence](http://graphics.wsj.com/ally-settlement-race-calculator/)?
+- How [much money have actresses](http://www.latimes.com/politics/la-pol-prez-hollywood-donors-story.html) contributed [to women running for Congress](https://www.opensecrets.org/news/reports/gender.php) since [1980](http://www.fec.gov/finance/disclosure/ftpdet.shtml)? 
+- Which U.S. Congressmembers, in the entire U.S. history, [never attended college](http://bioguide.congress.gov/biosearch/biosearch.asp)?
+- Which U.S. Congressmembers [own stock](http://clerk.house.gov/public_disc/financial-search.aspx)?
+- Which of today's [most popular music stars most similar to Taylor Swift but not actually Taylor Swift](http://developer.echonest.com/docs/v4/artist.html#similar) do [currently-elected U.S. politicians](https://sunlightlabs.github.io/congress/#legislator-spreadsheet) follow on Twitter? And what kind of tweets do they (the politicians) [regret sending](http://politwoops.sunlightfoundation.com/)?
+- Who are [Donald Trump's](https://twitter.com/realDonaldTrump) favorite users to mention in his tweets?
+- Every time @realDonaldTrump tweets at [Jeb Bush](https://twitter.com/jebbush), send yourself a [voicemail](https://www.twilio.com/voice) with the text of the tweet read in the [voice](https://github.com/antiboredom/audiogrep) of [Donald Trump](https://www.youtube.com/watch?v=apaToLjdRp4) when possible, with the adjectives [[1](http://www.nltk.org/), [2](https://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/doc/nl-classifier/)] amplified by [150%](https://github.com/jiaaro/pydub).
+- And many, many more examples, if you [know what services and data](http://cjlab.stanford.edu/2015/09/30/lab-launch-and-data-sets/) exist out there and how to connect them (hint: [just more text](http://json.org/example.html))
+
+
+---------------
+
+
+# Upcoming weeks
+
+### Week 2: Text and Regular Expressions
+
+- Get familiar with your text editor, especially its conveniences and [syntax highlighting](http://sublimetext.info/docs/en/extensibility/syntaxdefs.html).
+- Learn how to write a [little Markdown](https://daringfireball.net/projects/markdown/basics) and [generate a lot of HTML](https://help.github.com/articles/github-flavored-markdown/).
+- Learn how to manage, navigate, and search through a folder of files via your text editor, including its keyboard shortcuts ([OS X](http://docs.sublimetext.info/en/latest/reference/keyboard_shortcuts_osx.html), [Windows](http://docs.sublimetext.info/en/latest/reference/keyboard_shortcuts_win.html)).
+- Learn [regular expressions](http://www.theguardian.com/technology/2012/dec/04/ict-teach-kids-regular-expressions) and [just enough of its terse syntax](http://www.regular-expressions.info/) to save you from much more painful code later on. 
+- Learn all the ways human emotions and bodily functions can be [expressed via numerical code](http://unicode.org/emoji/charts/full-emoji-list.html).
+
+
+
+### Week 3: Conditional Statements, Functions, and Data Structures
+
+One of our goals in programming is to not let have to be there when the program does its work. The concept of a "block" will have us writing code more deliberately, and almost exclusively in our text editors.
+
+### Week 4: Standards and serializing text as data
+
+Hard to believe, but data formats, [such as JSON](http://www.json.org/), were designed to make data both efficient for machines and humans to consume. If you can read JSON, you can basically do the kinds of interesting data mishmashes that make startups and apps seem magical. Airbnb is a startup that uses [Facebook data](https://developers.facebook.com/docs/graph-api/using-graph-api), which you give it, combined with the data of its customers. Tinder does that too, probably in a much easier way. And Tinder also uses [JSON under its hood, apparently](https://gist.github.com/rtt/10403467).
+
+### Week 5: Application Programming Interfaces
+
+Learning programming without being connected to other computers is like learning a foreign language from a book. 
+
+Learning programming through APIs is like learning a foreign language by visiting a foreign country with its permission, and sometimes its hospitality.
+
+Something to think about:
+
+- What advantage is it for [Twitter](https://dev.twitter.com/rest/public) and [Spotify](https://developer.spotify.com/web-api/) to open up their APIs so that programmers who do not work for the companies can efficiently gobble up so much of their proprietary data?
+- Why doesn't Craigslist? Why doesn't Tinder?
+- Flickr's API allows a programmer to upload images. Instagram's does not. Both services contain lots of images. What's the deal?
+
+
+APIs are a technical thing. But their existence, their design, and their availability reflect things about their owners and the data that they distribute.
+
+Another way to put it: The Dallas Police Department as an API (via the Socrata portal) of [police involved shootings](http://www.dallaspolice.net/ois/ois.html). [Virtually no other police department does](http://www.cc.com/video-clips/v4l2pe/the-daily-show-with-jon-stewart-a-shot-in-the-dark). Why? 
+
+
+### Weeks 6 - 10
+
+By this point, we know how to write programs and we know how to make a computer run them, as many different times and contexts we need. Everything else is how to do it more efficiently and sanely, including error handling, function interfaces, and careful organization of files (i.e. two of the three hardest computer science challenges)
+
+
+

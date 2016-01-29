@@ -1,0 +1,20 @@
+title: "Print the 10 longest names, given to at least 2,000 babies in 2014"
+points: 1
+description: |
+  Of the names that have been given to at least 2,000 babies -- male and female combined -- in 2014, print the top 10 in descending order of character length, then in number of babies.
+
+  The 2,000 baby count is the _combined_ number of boys and girls for a given name. So you'll want to create a new list from the original data that aggregates both boy and girl babies into a single count per name.
+
+expectations:
+  output: |
+    Christopher        10293
+    Elizabeth           9498
+    Brooklynn           2043
+    Sebastian           9246
+    Alexander          15326
+    Mackenzie           4152
+    Charlotte          10055
+    Josephine           2255
+    Valentina           2769
+    Nathaniel           4257
+

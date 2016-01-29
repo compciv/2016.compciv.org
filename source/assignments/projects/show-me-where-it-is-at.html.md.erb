@@ -1,0 +1,132 @@
+---
+title: Show Me Where It's At
+description: |
+  Our first project: given a user-specified location, traverse a public dataset with geographic information, and deliver the user to a webpage showing the closest records/incidents.
+due_date: 2016-02-09
+points: 100
+summary: |
+  Write a program that shows the user where they are in relation to incidents from a geocoded dataset, using satellite map imagery and other data.
+kind: Project
+components:
+  - title: Write a command-line interface
+    slug: write-cli
+    points: 2
+  - title: Geocode a user-supplied address using a geocoding API
+    slug: geocode-user
+    points: 3
+  - title: Collect and curate a dataset that contains geographic data
+    slug: curate-dataset
+    points: 5
+  - title: Find nearest data items to a  given point
+    points: 2
+  - title: Access satellite imagery 
+    slug: get-satellite
+    points: 2
+  - title: Create a HTML report
+    slug: html-report
+    points: 4
+---
+
+# (STILL BEING DRAFTED)
+
+But maybe you should start thinking of ideas...
+
+# Requirements
+
+
+## A. Find a geolocated/geolocatable dataset
+
+- Find, collect, curate, and clean a dataset of _at least_ 100 records.
+- This dataset must have geocoordinates -- i.e. latitude and longitude -- or address information that can be sent to a geocoding service.
+
+## B. Write a user-facing program
+
+Write a program with these features:
+
+### 1. Geocodes a user's address
+
+- Takes in free-form text input from the user.
+- Given an address text string, uses a geocoding service to find the corresponding latitude and longitude coordinates.
+
+### 2. Finds n records in dataset, sorted by proximity to user
+
+- From the dataset collected in the previous requirement, find _n_ records (at least 3) in order of shortest distance to user
+
+### 3. Create a HTML report
+
+Create a webpage and send the user to it (via the [webbrowser](https://docs.python.org/3/library/webbrowser.html) module), with these features:
+
+1. Map imagery showing where the user is in relation to the _n_ closest incidents.
+2. A table/list of the _n_ closest incidents, with relevant data fields.
+3. The webpage can be created locally, i.e. as a text file on the user's hard drive.
+
+__For requirement 2__: For example, if your dataset consists of the last year's worth of [auto theft in San Francisco](https://data.sfgov.org/Public-Safety/SFPD-Incidents-from-1-January-2003/tmnf-yvry), besides listing the location and distance from user, your data table should probably also list:
+
+- Date of the incident
+- Specific subcategory of auto theft
+- Whether a suspect was arrested
+
+
+The design or aesthetic quality of the webpage is not being graded. But obviously, you should try to make it look nice if you have time.
+
+# Example datasets
+ 
+Examples of public datasets with geospatial data and/or physical addresses:
+
+- [Police shootings via the Fatal Encounters Project](https://docs.google.com/spreadsheet/ccc?key=0Aul9Ys3cd80fdHNuRG5VeWpfbnU4eVdIWTU3Q0xwSEE&usp=sharing)
+- [Police shootings via The Guardian](http://www.theguardian.com/us-news/ng-interactive/2015/jun/01/about-the-counted)
+- [USGS Earthquakes Catalog](http://earthquake.usgs.gov/fdsnws/event/1/)
+- [USGS National Hydrography Dataset](http://nhd.usgs.gov/data.html) - Probably requires a lot of domain knowledge to easily use...
+- [OSHA Chemical Exposure Health Data](https://www.osha.gov/opengov/healthsamples.html)
+- [Hospital complications](https://data.medicare.gov/Hospital-Compare/Complications-Hospital/632h-zaca)
+- [School locations with demographics, nationwide](http://nces.ed.gov/ccd/pubschuniv.asp)
+- [Clinical Trials](https://clinicaltrials.gov/ct2/resources/download)
+- [UK Police incident reports and stop-and-frisks](https://data.police.uk/data/)
++ [NYPD Stop-and-Frisks](http://www.nyc.gov/html/nypd/html/analysis_and_planning/stop_question_and_frisk_report.shtml)
++ [NYC MTA subway stations and bus stop locations](http://web.mta.info/developers/developer-data-terms.html#data)
+- [In-n-Out Burger Locations](http://www.in-n-out.com/locations) - requires web scraping and HTML parsing
+- [EPA Enforcement Data](https://echo.epa.gov/tools/data-downloads#downloads)
+- [National Park Boundaries](https://catalog.data.gov/dataset/national-park-boundariesf0a4c)
+### Socrata-powered data portals
+
+You can try [Open Data Network](http://www.opendatanetwork.com/) to do a search across all Socrata sites.
+
+Here are examples of Socrata data portals for various cities and jurisdictions, along with examples of geolocatable datasets:
+
+- [San Francisco Open Data Portal: Datasets](https://data.sfgov.org/data?category=&dept=&search=&type=datasets)
+  + [SFPD Incidents](https://data.sfgov.org/Public-Safety/SFPD-Incidents-from-1-January-2003/tmnf-yvry)
+  + [Restaurant inspections](https://data.sfgov.org/Health-and-Social-Services/Restaurant-Scores/stya-26eb)
+  + [311 Calls](https://data.sfgov.org/City-Infrastructure/Case-Data-from-San-Francisco-311-SF311-/vw6y-z8j6) - e.g. pot holes, graffiti, human waste
+  + [Street Tree List](https://data.sfgov.org/City-Infrastructure/Street-Tree-List/tkzw-k3nq)
+  + [Eviction Notices](https://data.sfgov.org/Housing-and-Buildings/Eviction-Notices/5cei-gny5)
+  + [Food truck schedules](https://data.sfgov.org/Economy-and-Community/Mobile-Food-Schedule/jjew-r69b)
+  + [Disabled Parking](https://data.sfgov.org/Transportation/Disabled-Parking/wc6f-brai) requires a bit of text string cleaning to get latitude/longitude fields
+  + [Film Locations in San Francisco](https://data.sfgov.org/Culture-and-Recreation/Film-Locations-in-San-Francisco/yitu-d5am) - a fun dataset, but requires geocoding and probably a significant amount of manual data-cleaning and agggregation.
+
+- [New York City Open Data Portal: Datasets](https://nycopendata.socrata.com/data?browseSearch=&scope=&agency=&cat=&type=datasets)
+  + [Restaurant inspections](https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j)
+  + [311 Calls](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9)
+  + [Major Felony Incidents](https://data.cityofnewyork.us/Public-Safety/NYPD-7-Major-Felony-Incidents/hyij-8hr7)
+  + [Motor Vehicle Collisions](https://data.cityofnewyork.us/Public-Safety/NYPD-Motor-Vehicle-Collisions/h9gi-nx95)
+  + [FDNY Firehouses](https://data.cityofnewyork.us/Public-Safety/FDNY-Firehouse-Listing/hc8x-tcnd)
+  + [Farmers Markets](https://data.cityofnewyork.us/Health/New-York-City-Farmers-Markets/j8gx-kc43)
+  + [Buildings with "Cool Roofs"](https://data.cityofnewyork.us/Environment/NYC-Cool-Roofs-Buildings/uuxn-wzxe)
+
+
+- [Dallas Open Data Portal: Datasets](https://www.dallasopendata.com/browse?limitTo=datasets&utf8=%E2%9C%93)
+  + [Dallas PD active calls](https://www.dallasopendata.com/dataset/Dallas-Police-Active-Calls/9fxf-t2tr)
+  + [Dallas PD reported crime incidents](https://www.dallasopendata.com/Police/Dallas-Police-Public-Data-RMS-Incidents/tbnj-w5hb)
+  + [Dallas PD Officer Involved Shootings](https://www.dallasopendata.com/Police/Dallas-Police-Public-Data-Officer-Involved-Shootin/4gmt-jyx2)
+  + [Code Violations](https://www.dallasopendata.com/dataset/Code-Violations/x9pz-kdq9)
+  
+- [Chicago Open Data Portal](https://data.cityofchicago.org/browse?limitTo=datasets&utf8=%E2%9C%93)
+  + [Reported crime incidents](https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present/ijzp-q8t2)
+  + [Building permits](https://data.cityofchicago.org/Buildings/Building-Permits/ydr8-5enu)
+
+- [Baltimore Open Data Portal: Datasets](https://data.baltimorecity.gov/browse?limitTo=datasets&utf8=%E2%9C%93)
+- [Iowa Open Data Portal: Datasets](https://data.iowa.gov/browse?&limitTo=datasets&utf8=✓)
+- [Los Angeles Open Data Portal: Datasets](https://data.lacity.org/browse?limitTo=datasets&utf8=%E2%9C%93)
+- [Maryland Open Data Portal: Datasets](https://data.maryland.gov/browse?limitTo=datasets&utf8=%E2%9C%93)
+- [Oakland Open Data Portal: Datasets](https://data.oaklandnet.com/browse?limitTo=datasets&utf8=%E2%9C%93)
+- [Santa Monica Open Data Portal: Datasets](https://data.smgov.net/browse?limitTo=datasets)
+- [Seattle Open Data Portal: Datasets](https://data.seattle.gov/browse?limitTo=datasets&sortBy=most_accessed&sortPeriod=week&utf8=%E2%9C%93)

@@ -1,0 +1,29 @@
+.page-content{
+  aside{
+    border: thin dashed #fcc;
+    font-size: $font-size-sm;
+    margin-bottom: 1.0rem;
+    padding: 0.5em;
+    h1,h2,h3,h4,h5,h6{
+      font-size: $font-size-sm * 1.05;
+    }
+
+    p:last-child{
+      margin-bottom: 0;
+    }
+  }
+
+
+  @include media-breakpoint-up(xl){
+    aside{
+      border: 0;
+      padding: 1px;
+      position: absolute;
+      right: 2%;
+      min-width: 220px;
+      width: 15%;
+      max-width: 440px;
+    }
+  }
+}
+

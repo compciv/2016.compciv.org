@@ -1,0 +1,16 @@
+title: Fetch President Obama's 2016 State of the Union Address
+points: 0.5
+description: |
+  Basically the same as exercise `a.py`, except using this specific URL:
+
+  [https://www.whitehouse.gov/the-press-office/2016/01/12/remarks-president-barack-obama-–-prepared-delivery-state-union-address/](https://www.whitehouse.gov/the-press-office/2016/01/12/remarks-president-barack-obama-–-prepared-delivery-state-union-address/)
+
+  Print out the status code, the length of the text, and the URL of the response.
+expectations:
+  output: |
+      200
+      147766   # approximately
+      https://www.whitehouse.gov/the-press-office/2016/01/12/remarks-president-barack-obama-%E2%80%93-prepared-delivery-state-union-address
+
+takeaways:
+  - "Once you know how to get one kind of webpage, you basically have the pattern for getting any (public) webpage or web resource"

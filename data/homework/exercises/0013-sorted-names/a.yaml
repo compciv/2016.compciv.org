@@ -1,0 +1,25 @@
+title: Download the 2014 text file of babynames and count the number of characters
+description: |
+
+    (Yes, this is virtually the same as 0012-got-babynames-2014/a.py)
+
+    - Make a tempdata subdirectory inside your working directory, i.e.
+
+            0014-sorted-names/tempdata
+
+    - Download the [list of Social Security babynames data for 2014](http://stash.compciv.org/ssa_baby_names/ssa-babynames-nationwide-2014.txt):
+
+      [http://stash.compciv.org/ssa_baby_names/ssa-babynames-nationwide-2014.txt](http://stash.compciv.org/ssa_baby_names/ssa-babynames-nationwide-2014.txt)
+
+      Save it to your `tempdata` folder at this path:
+
+            0014-sorted-names/tempdata/ssa-babynames-nationwide-2014.txt
+
+
+    - Count and print the number of _characters_  in the file.
+
+
+
+points: 0.5
+expectations:
+    output: There are 425485 characters in tempdata/ssa-babynames-nationwide-2014.txt

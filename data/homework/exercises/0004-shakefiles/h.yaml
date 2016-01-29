@@ -1,0 +1,29 @@
+title: Count and print the number of non-blank lines for each of Shakespeare's tragedies
+points: 1.0
+description: |
+  You already know how to collect the list of filenames in a single directory. And you know how to read through a file and count the lines. This exercise combines both problems and adds a few twists:
+
+  - Loop through _all_ of the Shakespeare files (there are 42 of them)
+  - When reading the lines, track of how many of the lines are __non-blank__.
+  - Print the number of non-blank lines versus total lines in each text.
+  - At the end, print the total count of non-blank lines and all lines.
+
+
+  "Non-blank" for this exercise is defined as: a line that has at least one non-whitespace character. However, it's hard to distinguish a completely empty line, and one that is full of invisible whitespace characters. So use the `strip()` function.
+
+hints: |
+  [This tutorial walks through the process.](/practicum/shakefiles/h-count-non-blank-lines-in-shakespeare-tragedies)
+
+expectations:
+  output:
+    excerpted: true
+    head:
+      text: |
+        tempdata/comedies/allswellthatendswell has 3164 non-blank lines out of 4515 total lines
+        tempdata/comedies/asyoulikeit has 2904 non-blank lines out of 4122 total lines
+        tempdata/comedies/comedyoferrors has 2112 non-blank lines out of 2937 total lines
+    tail:
+      text: |
+        tempdata/tragedies/titusandronicus has 2837 non-blank lines out of 3767 total lines
+        All together, Shakespeare's 42 text files have:
+        125097 non-blank lines out of 172948 total lines

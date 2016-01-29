@@ -1,0 +1,667 @@
+---
+title: "Lists, mutability, and in-place methods"
+description: |
+  Lists are ordered collections of other objects. And lists are mutable.
+summary: |
+
+  A list is a Python object that represents am ordered sequence of other objects. If loops allow us to magnify the effect of our code a million times over, then __lists__ are the _containers_ we use to easily store the increased bounty from our programs, and to pass large quantities of data into other programs.
+
+  Lists are one of the most important and ubiquitous data structures that we'll learn about and use. This lesson is a little on the verbose side because we cover not just the basics about lists, but we take the time to briefly consider what it means for an object to be "mutable", and also, what it means for a method to perform an "in-place" operation on an object.
+
+  It's recommend that you read this guide before reading about __tuples__ and __dictionaries__, which are very similar to lists but are important enough to have their own guides.
+
+references:
+  - slug: /guides/python/fundamentals/tuples-immutable
+    internal: true
+  - title: "The Python Tutorial: More on Lists"
+    slug: python-docs-tutorial-more-lists
+    publisher: Python documentation
+    url: https://docs.python.org/3/tutorial/datastructures.html#more-on-lists
+    description: |
+      A listing of list methods and examples of their usage.
+  - title: Mutation in Python
+    url: http://www-inst.eecs.berkeley.edu/~selfpace/cs9honline/Q2/mutation.html
+    slug: eecs-berkeley-mutation
+    publisher: UC-Berkeley EECS Electronics Support Group
+    author: Ka-Ping Yee
+
+  - title: "Chapter 4: Lists"
+    url: https://automatetheboringstuff.com/chapter4/
+    slug: automate-boring-lists
+    publisher: Automate the Boring Stuff
+    author: Al Sweigart
+    description: |
+      A great, concise walkthrough of the list and its "cousin", the tuple.
+  - slug: python-docs-tutorial
+    title: An Informal Introduction to Python
+    url: https://docs.python.org/3/tutorial/introduction.html
+  - slug: fowler-2-hard-things
+    url: http://martinfowler.com/bliki/TwoHardThings.html
+    title: TwoHardThings
+    description: |
+        Martin Fowler collects some variations on the "2 hard things in computer science" aphroism: there are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.
+    author: Martin Fowler
+  - slug: python-docs-stdtypes-range
+    title: "Built-in Types: Range"
+    url: https://docs.python.org/3/library/stdtypes.html#typesseq-range
+    publisher: Python documentation
+  - slug: /guides/python/fundamentals/dictionaries-overview
+    internal: true
+---
+
+
+
+
+
+## Syntax for declaring a list
+
+__Square brackets__ are used to denote a list object. Here's an empty list:
+
+~~~py
+mylist = []
+~~~
+
+And here's a list with just a single member:
+
+~~~py
+mylist = ['hello']
+~~~
+
+Lists can contain multiple objects. When the members of a list are written out in code, __commas__ are used to separate each member.
+
+Here's a very simple __list__ of 2 string objects:
+
+~~~py
+mylist = ["hello", "world"]
+~~~
+
+Lists can contain any other kind of object, including other lists. You can ignore the usual Python indentation rules when declaring a long list; note that in the list below, the list inside the main list counts as a single member:
+
+~~~py
+>>> mylist = ["hello", "world", 1, 2, 9999, "pizza",
+...          42, ["this", "is", "a", "sub list"], -100]
+>>> len(mylist)
+9
+~~~
+
+
+# Accessing the members of a list
+
+Given a list containing a bunch of objects, how do we actually access those objects to use in our programs?
+
+
+## Iterate through a list with a for-loop
+
+Lists are commonly used with loops, particularly for-loops. When a list is passed into the for-loop, it yields each of its members in sequential order:
+
+~~~py
+>>> mylist = ['a', 'b', 'c', 42]
+>>> for x in mylist:
+...     print("Hello", x)
+Hello a
+Hello b
+Hello c
+Hello 42
+~~~
+
+## Access a list's members by index
+
+The members of a list are indexed with __integers__. Lists are __zero-indexed__, which means that the first member of a list is available at the index value of `0`.
+
+To access a list's members, use __square brackets__ immediately following the list, with the desired __index__ inside the brackets:
+
+~~~py
+>>> mylist = [1, 2, 3]
+>>> mylist[0]
+1
+>>> mylist[2]
+3
+>>> [4, 5, 6][1]
+5
+~~~
+
+
+We can access members of a list starting from its _endpoint_ by providing a _negative_ value for the index. The value of `-1` will access the final member of a list, `-2` will get the _2nd_ to last member, and so forth. 
+
+
+### Trying to access a non-existent index
+
+A list is just "big" enough to contain all of its existing members. The interpreter will raise an error if you try to access an index value bigger than the length of the list:
+
+(Actually, if the index is _equal_ to the length of a list, we'll get an error. Hello <%=link_to "infamous off-by-one error!", ref_url("fowler-2-hard-things") %>)
+
+~~~py
+>>> mylist = ["hi"]
+>>> print(mylist[0])
+hi
+>>> print(mylist[1])
+IndexError: list index out of range
+~~~
+
+We can exceed the bounds of a list with negative-number indexing as well:
+
+~~~py
+>>> mylist = ["hi"]
+>>> print(mylist[-1])
+hi
+>>> print(mylist[-2])
+IndexError: list index out of range
+~~~
+
+### Accessing a list within a list
+
+Lists can contain objects of any type, including other lists:
+
+~~~py
+>>> mylist = [1, 2, ['hello', 'world']]
+~~~
+
+To access that nested list itself -- which is the _last_ element of `mylist` -- we use the same index-notation as we would for any other kind of object:
+
+~~~py
+>>> mylist[-1]
+['hello', 'world']
+>>> type(mylist[-1])
+list
+~~~
+
+As `mylist[-1]` is itself a list, we can continue to use the square-bracket index notation to access _its_ last member, which is the string object, `"world"`:
+
+~~~py
+>>> type(mylist[-1][-1])
+str
+>>> mylist[-1][-1]
+'world'
+~~~
+
+This notation can go as deep as you got your nests:
+
+~~~py
+>>> mylist = ['a', ['b', ['c', ['d', ['e', 'fin!']]]]]
+>>> mylist[1][1][1][1][1]
+'fin!'
+~~~
+
+...But obviously, try not to create lists that look like the above, contrived example.
+
+### Slicing a list into sublists
+
+Sometimes we only need _part_ of a list, such as the first _n_ members. The syntax for this uses the same square-bracket notation as for individual indexing. But instead of passing a single value, we pass in 2 values -- the starting and end point, respectively -- separated by a __colon__:
+
+~~~py
+>>> mylist = [0, 1, 2, 3, 4, 5]
+>>> x = mylist[0:3]
+>>> type(x)
+list
+>>> len(x)
+3
+>>> print(x)
+[0, 1, 2]
+~~~
+
+Note that the "slice" goes _up to_ the number that denotes the __endpoint__ -- i.e. `3` -- but does not _include_ it. This is consistent with how lists are zero-indexed, but will be another way that the "off-by-one" error will bite you.
+
+The <%=link_to "Python documentation's informal tutorial", ref_url("python-docs-tutorial")%> covers other variations of the slice notation, which can be used for any kind of sequence, including strings.
+
+A common real-world scenario for only needing part of a list is when we we use a file object's `readlines()` method, which returns all the lines of a text file as a list. Sometimes, data providers will put metadata or blank lines at the top of the file, e.g.
+
+~~~
+Data from the California Department of Education
+Last Updated: 2015-0101
+
+id,school,city,enrollment
+1001,Kennedy High School,Springfield,401
+1002,Washington Elementary School,Los Angeles,2226
+...etc
+~~~
+
+To skip the first 3 lines and iterate through the rest, we start at the index value of `3` (which corresponds to the 4th line, thanks to, again, Python's zero-indexed arrays). The endpoint index can be left blank, or set to `-1`:
+
+~~~py
+for line in myfile.readlines()[3:-1]:
+    do_something(line)
+~~~
+
+
+## But how do we modify the contents of a list?
+
+If you've read up to this point, then you might have noticed that I haven't discussed any of the methods belonging to the list object. Nor have I covered basic but obviously important concepts, such as how to add a new member to a list. Or remove members from a list. Or change the members of a list.
+
+I cover those operations in the next section. However, it might be worth taking a brief segue to read the guide: <%=link_to_reference "/guides/python/fundamentals/tuples-immutable" %> 
+
+First of all, I think it's worth looking at the __tuple__ object, which is similar to a list and frequently used in Python programs. If you understand lists, you understand tuples. The main difference is that tuples are __immutable__. After seeing examples of _immutable_ objects, you might appreciate better what it means when we say that a list is __mutable__, and that its __in-place__ methods "mutate" its contents.
+
+
+--------------------
+
+# In-place list methods and operations
+
+Lists have a variety of methods, many of them that I don't believe we need to actually memorize at this point. Instead, I'll focus on a subset of the most useful and frequently used list methods, as well as the ones that are "safest" -- i.e. least confusing to use.
+
+This section covers the __in-place__ methods: that is, the methods that can alter the contents of the list, such as adding members or altering their values.
+
+In the lesson on <%=link_to_reference "/guides/python/fundamentals/tuples-immutable" %>, I elaborate a bit more on __non-in-place__ methods. But in case you don't want to jump to that lesson, I'll review an example here of __non-in-place__ methods involving string objects. 
+
+Non-in-place methods don't alter their object; instead, they return a _copy_ of that object:
+
+~~~py
+>>> s = "hey"
+>>> t = s.upper()
+>>> t
+'HEY'           # a totally different string object
+>>> s
+'hey'           # the same object as before
+~~~
+
+## Adding to a list
+
+So, given a list, how do we add more members to it?
+
+### Concatenating lists with the plus operator
+
+Before we get to the __in-place__ way of adding a new member to a list, I'll cover a non-in-place way here: 
+
+
+We can use the __plus sign__ operator to _concatenate_ two lists, in the same way we can use it to concatenate two string objects. The result of the concatenation, for both the list and string scenarios, is an entirely new object: 
+
+~~~py
+>>> x = [1, 2, 3]
+>>> y = [4, 5]
+>>> z = x + y
+>>> len(z) 
+5                   # z definitely points to a list bigger than x and y
+>>> len(x)
+3                   # x seems to have the same size as before...
+>>> len(y)
+2                   # ...as does z
+~~~
+
+Can you predict what the variables `x`, `y`, and `z` contain?
+
+~~~py
+>>> print(x)
+[1, 2, 3]           # x seems the same...
+>>> print(y)
+[4, 5]              # y seems the same...
+>>> print(z)
+[1, 2, 3, 4, 5]
+~~~
+
+
+## The append() method
+
+OK, let's finally add to a list using an __in-place__ method.
+
+
+To add a new member to a listn -- and _change_ the list object itself -- we  use the list's `append()` method:
+
+~~~py
+>>> x = [1, 2, 3]
+>>> x.append('a')
+>>> print(x)
+[1, 2, 3, 'a']
+~~~
+
+See how the object that the `x` variable refers to has _changed_ after the `append()` call?
+
+So what's the big deal? Nothing. As long as we don't care whether the contents of the list that `x` points to stays the same or not, then we don't have to worry about in-place vs non-in-place. But it's important to at least be _aware_ that there is a difference...
+
+
+### Using extend() to append the members of another collection
+
+Suppose we want to add the contents of one list to another? Depends what  you mean by "_add_" -- once again, showing how human language isn't precise enough for computing -- because `append()` _might_ be exactly what we want:
+
+~~~py
+>>> x = [1, 2, 3]
+>>> x.append([4, 5, 6])
+~~~
+
+Remember that a list's members may be any kind of Python object, including other lists. So passing a _list_ as an argument into the `append()` call of _another list_ results in a _single_ member being added to the calling list:
+
+~~~py
+>>> len(x)
+4
+>>> print(x)
+[1, 2, 3, [4, 5, 6]]
+~~~
+
+If we were expecting something _different_, e.g. 
+
+~~~py
+>>> len(x)
+6
+>>> print(x)
+[1, 2, 3, 4, 5, 6]
+~~~
+
+
+&ndash; it's not because `append()` has a bug. It's because we failed to express our _expectations_ more _specifically_. We don't want to merely put one list inside another. We want to append each individual _member_ of one list to another, so that the resulting list is "flat" instead of "nested".
+
+We want the `extend()` method, which is also an __in-place__ method:
+
+~~~py
+>>> x = [1, 2, 3]
+>>> y = [4, 5, 6]
+>>> x.extend(y)
+>>> print(x)
+[1, 2, 3, 4, 5, 6]
+~~~
+
+(Note that `y` list itself does not get mutated; it's just the list that calls `extend()` that is mutated, i.e. the `x` list)
+
+The `extend()` method can be used to append individual methods of other sequences, such as tuples and strings (the latter of which are _sequences of individual characters_):
+
+~~~py
+>>> x = [1, 2, 3]
+>>> mytuple = (4, 5)
+>>> x.extend(mytuple)
+>>> len(x)
+5
+>>> print(x)
+[1, 2, 3, 4, 5]
+>>> x.extend("hello")
+>>> len(x)
+10
+>>> print(x)
+[1, 2, 3, 4, 5, 'h', 'e', 'l', 'l', 'o']
+~~~
+
+However, if pass a non-iterable object -- i.e. something that _isn't_ a __sequence__ of objects -- into `extend()`, such as a _number_, the result will be an error:
+
+~~~py
+>>> x = [1, 2, 3]
+>>> x.extend(4)
+TypeError: 'int' object is not iterable
+~~~
+
+
+## Altering the values of a list
+
+This section describes how to modify the values of a list __in-place__.
+
+### Changing the value at a specific index
+
+To change the value that exists at a given list's index, we can simply reassign it as we would a variable:
+
+~~~py
+>>> x = [0, 1, 2]
+>>> x[-1] = "happy happy joy joy"
+>>> print(x) 
+[0, 1, 'happy happy joy joy']
+~~~
+
+Note that we can't change the value for an index that _doesn't_ exist for the list, i.e. one that is out of bounds of for the list's size:
+
+~~~py
+>>> x = []
+>>> x[0] = 'first'
+IndexError: list assignment index out of range
+~~~
+
+## Removing members from a list
+
+This section describes how to _remove_ items from a list using in-place methods. I don't think there really is such a thing as removing elements from a list __non-in-place__, i.e. in such a way that the list isn't changed. I'm not sure what the point would be.
+
+But one quick clarification: __slicing__ a list is _not_ an in-place operation:
+
+~~~py
+>>> list_x = [1, 2, 3, 4, 5]
+>>> list_y = list_x[2:5]
+>>> print(list_y)
+[3, 4, 5]
+>>> print(list_x)
+[1, 2, 3, 4, 5]
+~~~
+
+Instead, the "slice" -- i.e. `list_y` is actually a new list object. The "sliced" list, `list_x`, is unchanged.
+
+### Using pop() to remove members from the end of the list
+
+To actually remove an item from a list, use its `pop()` method. When calling `pop()` without any arguments, the last member of the list is _removed_ from the list and returned:
+
+~~~py
+>>> mylist = [1, 2, 3]
+>>> q = mylist.pop()
+>>> print(mylist)
+[1, 2]
+>>> print(q)
+3
+~~~
+
+#### Don't pop() too much
+
+If we attempt to call `pop()` on an empty list, it will cause an error:
+
+~~~py
+>>> mylist = [1, 2, 3]
+>>> mylist.pop()
+3
+>>> mylist.pop()
+2
+>>> mylist.pop()
+1
+>>> mylist.pop()
+IndexError: pop from empty list
+~~~
+
+### Using pop(0) to remove members from the start of the list
+
+To remove items from the _front_ of a list, we use the `pop()` method but pass the value `0` as an argument:
+
+~~~py
+>>> mylist = [1, 2, 3]
+>>> mylist.pop(0)
+1
+>>> mylist.pop(0)
+2
+>>> mylist.pop(0)
+3
+~~~
+
+
+## Other in-place list methods that we probably won't need to use
+
+There are more __in-place__ methods for lists, including:
+
+- `reverse()` - reverse the order of a list's members
+- `remove(val)` - delete the first member in the list that matches `val`
+- `sort()` - rearrange the order of a list based on a sorting algorithm
+- `insert(x, val)` - insert a new member, `val`, before the index at `x`
+- `clear()` - remove all members from the list
+
+
+### In-place side effects are hard to track
+
+It's not that these methods aren't _useful_, it's just that their __in-place__ effects can unintentionally lead to hard-to-find bugs.
+
+For example, pretend we have 4-line file that looks like this:
+
+```
+Oh Romeo 
+Wherefore are thou
+Pizza?
+COPYRIGHT SHAKESPEERE
+```
+
+Pretend we have a program in which we read the file's contents, via `readlines()`, so that the variable `textlist` points to a list object containing those text lines. That list and its members looks like this:
+
+```py
+['Oh Romeo \n', 'Wherefore are thou\n', 'Pizza?\n', 'COPYRIGHT SHAKESPEERE']
+```
+
+Pretend the program is required to print every line of the poem except for the copyright notice. Pretend that the program is also required, at the end, to print the total number of lines in the file, including the copyright notice.
+
+So how to print all the text lines except for the unneeded meta-text? One approach is to use `remove()` to just delete that pesky copyright notice:
+
+~~~py
+textlist.remove('COPYRIGHT SHAKESPEERE')
+for line in textlist:
+    print(line)
+~~~
+
+Seems straightforward, right? But what happens when it comes time to print the total number of lines to screen?
+
+~~~py
+print("Total lines:", len(textlist))
+~~~
+
+The result of that `len()` function will not be __4__ -- it will be __3__, because `textlist` no longer contains all the lines of the text file, due to the in-place effects of the `remove()` function. Sure, this may seem like an easy bug to track in this ridiculously contrived simple example. But it won't be in any non-trivial program.
+
+So for these lessons and exercises, I try to compel you to work with lists and other objects in non-mutating ways:
+
+~~~py
+IGNORE_THIS_LINE = 'COPYRIGHT SHAKESPEERE'
+for line in textlist:
+    txt = line.strip()
+    if txt != IGNORE_THIS_LINE:
+        print(txt)
+print("Total lines:", len(textlist))
+~~~
+
+This "avoid-all-in-place-side-effects" sometimes results in a few extra lines of code, and more planning beforehand. But trust me; those extra minutes are much, _much_ less than the time it takes to pore through a program, trying to figure out which function irrevocably altered an object.
+
+In a later lesson, I'll cover the `sorted()` method, which is a __non-in-place__ way of sorting a sequence. Sorting is such a common -- and complicated -- taks that it deserves its own tutorial.
+
+
+
+
+
+# List methods and operations, the non-in-place variety
+
+This section covers list methods that don't have any effect on the list object itself.
+
+## Finding things within and about a list
+
+### Getting a list's size with len()
+
+As we've seen in previous examples, the `len()` function returns the number of members in a list:
+
+~~~py
+>>> mylist = [1, 2, 3]
+>>> len(mylist)
+3
+~~~
+
+### Counting values in a list
+
+The `count()` method (which is common to all sequences, including string objects) takes in a single argument and returns the number of values that are equal to the argument:
+
+~~~py
+>>> a_list = ['she', 'sells', 'seashells']
+>>> a_list.count('she')
+1
+>>> b_list = [42, "42", 42, 4242]
+>>> b_list.count(42)
+2
+~~~
+
+### Finding where a value is with index()
+
+Sometimes we don't know exactly where a value is inside a given list. The list's `index()` method takes in a single argument and returns the index value of the _first_ matching value inside the list. However, if no value inside the list matches the argument, then an error is raised:
+
+~~~py
+>>> mylist = ['a', 'b', 'b', 'a']
+>>> mylist.index('b')
+1
+>>> mylist.index('c')
+ValueError: 'c' is not in list
+~~~
+
+### Testing membership with `in` and `not in` keywords
+
+So the problem of using the list's `index()` method is that if you don't know whether a list contains an exact value, you have to deal with the `ValueError` stopping your program.
+
+The `in` keyword, which we've used when testing for substrings in bigger strings, also works for testing whether a value exists inside a collection, such as a list. 
+
+~~~py
+>>> mylist = ['abba', 'dabba', 'doo']
+>>> 'abba' in mylist
+True
+~~~
+
+Note that this tests for whether value is exactly equal to an object in the list -- if the value we search for is merely just a _substring_ of a string inside the list, i.e. a partial match, the test will return `False`:
+
+~~~py
+>>> 'dab' in mylist
+False
+~~~
+
+We can invert the test by using `not in`:
+
+~~~py
+>>> 'dab' not in mylist
+True
+~~~
+
+
+# The list() constructor function 
+
+Just as other objects have __constructor functions__ -- e.g. `str()` and `int()` for the string and integer objects, respectively -- the list object has `list()`.
+
+Calling it without any arguments will create an empty list:
+
+~~~py
+>>> mylist = list()
+>>> len(mylist)
+0
+>>> print(mylist)
+[]
+~~~
+
+Passing in an _iterable_ object as an argument -- i.e. any type of sequence or collection -- will create a new list containing the members of the passed-in object:
+
+~~~py
+>>> mystr = "hello"
+>>> mylist = list("hello")
+>>> print(mylist)
+['h', 'e', 'l', 'l', 'o']
+~~~
+
+The `list()` constructor is very handy for converting other collections into nice and simple lists. For example, do you have a tuple object that you want a copy of, but a copy that you can actually _alter_? Passing it into `list()` creates the same sequence of elements, except as a list object:
+
+~~~py
+>>> mytuple = (1, 2)
+>>> mylist = list(mytuple)
+>>> print(mylist)
+[1, 2]
+>>> mylist.append(3)
+>>> print(mylist)
+[1, 2, 3]
+~~~
+
+When we instantiate a range object with the `range()` constructor, it acts similar to a list, in that we can access individual members and slice it. But a range isn't _exactly_ like a list of numbers:
+
+~~~py
+>>> r = range(5)
+>>> r[-1]
+4
+>>> print(r)
+range(0, 5)
+>>> r.pop()
+AttributeError: 'range' object has no attribute 'pop'
+~~~
+
+That can be fixed by converting the range object into a list with `list()`:
+
+~~~py
+>>> r = range(5)
+>>> rx = list(r)
+>>> type(rx)
+list
+>>> print(rx)
+[0, 1, 2, 3, 4]
+~~~
+
+
+
+# Enough with lists
+
+Lists are a topic in which I could write endlessly about -- we haven't even looked at how lists are used when dealing with real-world data, for example. However, I think this is enough of a primer for now. I may update this guide with more examples and elaboration. But once you get the gists of lists, they feel very natural to use in your programs.
+
+And if you can understand how to iterate (i.e. loop) through a list, you've pretty much understood how to iterate through all the kinds of data structures that we will work with.
+
+## Moving on to dictionaries
+
+The other equally ubiquitous Python data object is the __dictionary__, i.e. the `dict` object. Dictionaries are _unordered_ collections of objects which are indexed with "keys" that, unlike lists, are not restricted to integers.
+
+Dictionaries are important enough to <%= link_to "deserve their own guide", ref_url("/guides/python/fundamentals/dictionaries-overview")%>. But understanding lists is important to understanding dictionaries, and why we use both when dealing with real-world data.

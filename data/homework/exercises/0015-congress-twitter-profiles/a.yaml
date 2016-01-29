@@ -1,0 +1,17 @@
+title: Download and count the number of Twitter accounts operated by Congressmembers
+description: |
+
+    - Make a tempdata subdirectory inside this working directory.
+    - Download the [JSON file of Twitter profiles](http://stash.compciv.org/congress-twitter/2016-01/congress-twitter-profiles.json) (this may take awhile)
+    - Count the lines and print the number.
+
+    The file can be found here:
+
+    [http://stash.compciv.org/congress-twitter/2016-01/congress-twitter-profiles.json](http://stash.compciv.org/congress-twitter/2016-01/congress-twitter-profiles.json)
+
+
+points: 0.5
+expectations:
+    output: There are 83556 lines in tempdata/congress-twitter-profiles.json
+takeaways:
+  - Note that the number of lines in the file do _not_ correspond to number of Twitter accounts.

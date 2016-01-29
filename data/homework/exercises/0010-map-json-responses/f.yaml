@@ -1,0 +1,24 @@
+title: "Print the parameters used to query the Mapzen Search API and the type of data it responded with, as found in its JSON response,"
+description: |
+  Like the Google Maps Geocoder, the Mapzen Search API returns metadata along with a set of geocoded results.
+
+  Print out the `type` of result returned, according to the JSON file.
+
+  Then read the `geocoding` object, which  has a `query` object, and from that  `query` object, read the following key-value pairs, in this exact order:
+
+  Please print the key-value pairs for the following keys, in this order:
+
+  - text
+  - size
+  - boundary.country
+
+points: 0.5
+expectations:
+  output: |
+    type: FeatureCollection
+    text: Stanford
+    size: 10
+    boundary.country: USA
+
+
+

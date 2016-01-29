@@ -1,0 +1,13 @@
+title: Computational Methods in the Civic Sphere at Stanford University
+description: |
+  Civic accountability journalism taught at the Stanford University Graduate Journalism Program
+author: Dan Nguyen
+image_url: https://middlemanapp.com/images/middleman-logo.svg
+baseurl: "http://www.compciv.org"
+
+
+
+
+services:
+  google_analytics:
+    id: UA-71830545-1

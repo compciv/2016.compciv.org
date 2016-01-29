@@ -1,0 +1,357 @@
+---
+title: Conditional branching fundamentals
+description: |
+  How to use if/else statements to create branches of code in your program that may or may not actually execute.
+summary: |
+  When you start out learning to program, you learn by typing and executing every line of code that you, well, want to execute, based on what you want to do right at that moment. But the true power in programming involves telling a computer what to do based on conditions that you can predict and plan for.
+
+  This lesson is probably one of the more tedious ones, but it's to emphasize the basic syntax and purpose of if/else branching, so that you reflexively recognize the construct when seeing it in real-world examples.
+
+references: 
+
+  - title: "Chapter 2: Flow Control"
+    url: https://automatetheboringstuff.com/chapter2
+    description: |
+        Sweigart's lessons come not only with video demonstrations, but really useful diagrams that explain the flow of a program when branches are in effect.
+    publisher: Automate the Boring Stuff
+    author: Al Sweigart
+    slug: automate-boring-flow
+  - url: https://docs.python.org/3/tutorial/controlflow.html
+    title: More Control Flow Tools
+    publisher: Python Documentation
+  - slug: /guides/python/fundamentals/for-loops
+    internal: true
+---
+
+Note: I plan to expand this section a little bit, but you could also just read the excellent lesson here: <%=link_to_reference 'automate-boring-flow' %>
+#  - url: http://c2.com/cgi/wiki?FizzBuzzTest
+---
+
+
+# A single simple if-statement
+
+I recommend that you read the <%= link_to "lesson on for-loop fundamentals", "/guides/python/fundamentals/for-loops" %>, as using __if/else__ statements aren't much fun when you're running code just once. But they _can_ exist on their own, so let's start simple:
+
+
+~~~py
+if 1 > 0:
+    print("One is greater than zero")
+~~~
+
+Saving this code into a file (e.g. `my_first_if.py`, then running it through the command-line Python interpreter:
+
+~~~
+$ python my_first_if.py
+One is greater than zero
+~~~
+
+Yes, that should seem very non-revelatory. Adjust the script's first line by turning that __greater than__ sign (i.e. `>`) into a __less than__ sign, i.e. `<`. You can also change the `print()` function to print something nonsensical, though it makes no difference:
+
+~~~py
+if 1 < 0:
+    print("One is less than zero?????")
+~~~
+
+Now run the script -- you should get no output at all:
+
+~~~
+$ python my_first_if.py
+~~~
+
+Is that an error? Were you expecting the `print()` function to actually execute and print something to screen? While it may be a "real-world" error, or an error of human expectations (i.e. you _expected_ the program to do something but didn't realize your _logical_ error), the Python interpreter did exactly as it should have: with an __if-statement__, we are telling it: _Run this block of code if the specified condition is True_.
+
+Since `1` is _not_ less than `0`, the indented code block -- i.e. the  `print()` function -- never runs.
+
+By using an __if-statement__, we have created a _branch_ in our code that the interpreter may or may not follow. Along with <%= link_to "loops", "/guides/python/fundamentals/for-loops" %>, this represents a completely different paradigm of programming than just typing in code, line by line, and expecting it to be executed. When we can write conditional branches, we can write programs that make decisions for themselves, without us having to be there, writing and executing code, line-by-line.
+
+
+## Anatomy of a simple single if-statement
+
+Let's look at the essential parts of that simple if-statement -- again, I recommend that you read the <%= link_to "lesson on for-loop fundamentals", "/guides/python/fundamentals/for-loops" %>, as some of the concepts are the same (basically, the _indented code block_):
+
+
+~~~py
+if 1 > 0:
+    print("One is greater than zero")
+~~~
+
+
+
+- The `if` keyword is one of Python's special reserved keywords
+- Immediately after the `if` keyword is an _expression_ that evaluates to `True` or `False`
+- Immediately after the expression is a __colon__, which signifies to the Python interpreter that the __indented code block__ that follows in the next lines are to be executed _if the expression is_ `True`
+- The code block -- which can consist of any number of lines and code constructs -- to be conditionally executed is at the same indentation level, 4 spaces in from the `if` statement
+
+
+
+# The simple if/else statement
+
+While it's perfectly valid to have an if-statement by its lonesome, you'll often use it in conjunction with the `else` keyword, which denotes a block of code to be executed _if_ the expression in the `if`-statement is `False`:
+
+~~~py
+if x > 0:
+    print("It's a positive number")
+else:
+    print("It's not a positive number")
+~~~
+
+The keyword `else`, like `if`, is a reserved Python keyword. It is indented at the same level as its corresponding `if` statement. Unlike the `if`-statement, no expression is provided to `else`, as the `else` block executes for every situation in which the `if`-expression is false.
+
+In the above code snippet, the `else` branch executes when `x` is a negative number, such as `-42`. But it will also execute if `x` is _exactly_ `0`.
+
+One more thing to note: it _never_ makes sense to have an `else` statement without a corresponding `if`-statement (er...[except in `try`/`except` branches](https://docs.python.org/3/tutorial/errors.html), which is a different kind of conditional branching that we will discuss much later).
+
+
+## The simple if/elif/else statement
+
+Just as in real life, there are often choices programs have to make that are not simply `True` or `False`. For situations in which there are _three_ or more choices, there is the `elif` keyword, which is an abbreviation for _else, if_. It is constructed virtually the same as an `if`-statement, except that it always appears _after_ an `if`-statement. And, if the conditional branching includes an `else`-statement, the `elif` always comes before the `else`-statement:
+
+~~~py
+if x < 0:
+    print("x is a negative")
+elif x == 0:
+    print("x is 0")
+else:
+    print("x is positive")
+~~~
+
+
+You can sandwich as many `elif` statements as you want:
+
+~~~py
+if letter is 'a':
+    print("a is for apple")
+elif letter is 'b':
+    print('b is for banana')
+elif letter is 'c':
+    print('c is for coconut')
+elif letter is 'd':
+    print('d is for dragonfruit')
+elif letter is 'z':
+    print('z is for zebra steaks')
+else:
+    print("I don't know what this is:", letter)
+~~~
+
+
+# Using if-statements inside for-loops
+
+If you've been following along up to this point, typing out each line of these banal examples...the value of the `if/else` branching might not seem...self-evident. That's because conditional branching only has value when you're at the stage of writing an automated program, in which the computer is expected to make thousands/_millions_ of actions on your behalf.
+
+I find it difficult to illustrate if-statements without the use of some kind of loop (or function), [so please read the lesson on for-loops](/guides/python/fundamentals/for-loops). 
+
+Then look at the following example of a for-loop that iterates through a string literal:
+
+~~~py
+for letter in 'hello':
+    print(letter)
+~~~
+
+Type out and run the code if you don't know what it does -- I'll assume that you can figure out that it prints out each letter of the given text string (e.g. `hello`) on separate lines:
+
+~~~
+h
+e
+l
+l
+o
+~~~
+
+
+Now let's throw in a single, simple if-statement:
+
+~~~py
+for letter in 'hello':
+    if letter is 'e':
+        print(letter, "is a vowel")
+~~~
+
+
+Predict what the output is. If you don't understand what's going on, write this out in the interactive Python shell. Sometimes typing out even simple code snippets can make things click:
+
+Here's the output you should see:
+
+~~~
+>>> for letter in 'hello':
+...    if letter is 'e':
+...        print(letter, "is a vowel")
+e is a vowel
+~~~
+
+Why didn't any of the other letters print? Because the `print()` function is nested in the block of code that follows the `if`-statement. There is no `print()` call _outside_ of that block.
+
+But let's move on and add an `elif`-branch:
+
+~~~py
+for letter in 'hello':
+    if letter is 'e':
+        print(letter, "is a vowel")
+    elif letter is 'o':
+        print(letter, "is a vowel")
+~~~
+
+Again, predict the output. Then write out the code -- at this point, I recommend doing it in a Python script -- name it something like `ifelsetest.py`, and run it via the command-line Python interpreter:
+
+~~~
+$ python ifelsetest.py
+e is a vowel
+o is a vowel
+~~~
+
+
+Now let's add an `else` branch, which acts as a catch-all for all letters that are _not_ `e` nor `o`:
+
+
+~~~py
+for letter in 'hello':
+    if letter is 'e':
+        print(letter, "is a vowel")
+    elif letter is 'o':
+        print(letter, "is a vowel")
+    else:
+        print(letter, "is not a vowel")
+~~~
+
+
+Again, assuming you've written the code into a text file and saved it as `ifelsetest.py`, here's what you should see when you run the script from the command-line Python interpeter:
+
+~~~
+$ python ifelsetest.py
+h is not a vowel
+e is a vowel
+l is not a vowel
+l is not a vowel
+o is a vowel
+~~~
+
+
+Let's make one more modification to the script: instead of iterating over `"hello"`, iterate over `"hello world"`. And to keep things a little neater, we'll assign the string to a variable:
+
+~~~py
+x = "hello world!"
+for letter in x:
+    if letter is 'e':
+        print(letter, "is a vowel")
+    elif letter is 'o':
+        print(letter, "is a vowel")
+    else:
+        print(letter, "is not a vowel")
+~~~
+
+
+The output of the above script:
+
+~~~
+$ python ifelsetest.py
+h is not a vowel
+e is a vowel
+l is not a vowel
+l is not a vowel
+o is a vowel
+  is not a vowel
+w is not a vowel
+o is a vowel
+r is not a vowel
+l is not a vowel
+d is not a vowel
+! is not a vowel
+~~~
+
+OK, this getting kind of lame..., for-loop or not. But let's suffer a little more tedium to make sure we're fully comfortable with `if/elif/else` branching:
+
+
+~~~py
+x = "hello adios!"
+for letter in x:
+    if letter is 'a':
+        print(letter, "is a vowel")
+    if letter is 'e':
+        print(letter, "is a vowel")
+    if letter is 'i':
+        print(letter, "is a vowel")
+    elif letter is 'o':
+        print(letter, "is a vowel")
+    elif letter is 'u':
+        print(letter, "is a vowel")
+    else:
+        print(letter, "is not a vowel")
+~~~
+
+
+There are many, many ways to write `True`/`False` expressions in Python, such that covering them all requires a separate lesson. However, understanding how to construct compound expressions (i.e. testing for more tha one condition at once) can vastly simplify your `if/elif/else` logic.
+
+Here's a simpler version of the above snippet:
+
+~~~py
+x = "hello adios!"
+for q in x:
+    if q is 'a' or q is 'e' or q is 'i' or q is 'o' or q is 'u':
+        print(q, "is a vowel")
+    else:
+        print(q, "is not a vowel")
+~~~
+
+And, once you better understand the `in` keyword and how it is used to see if one string literal is contained by another, the logic can be as simple as this:
+
+~~~py
+x = "hello adios!"
+for q in x:
+    if q in 'aeiou':
+        print(q, 'is a vowel')
+    else:
+        print(q, 'is not a vowel')
+~~~
+
+
+Admittedly, none of the above examples are very exciting, for-loop or not. It's difficult to come up with conditional-branching examples that have real-world value that _aren't_ confusing as heck to interpret.
+
+It's enough to recognize the syntax; subsequent lessons will make it clear how valuable conditional branching is. 
+
+Assuming [you've read the section on for-loops](/guides/python/fundamentals/for-loops), see if you can [solve the classic FizzBuzz test](/guides/python/fundamentals/fizzbuzz-challenge), which has purportedly stumped countless programmers on job interviews, but is completely doable with loops and conditional branching.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,13 @@
+title: Print the formatted address and longitude and latitude in the Google Maps geocoder JSON file
+description: |
+  For each result in the Google Maps geocoder JSON file, print a semicolon-delimited list of:
+
+  - the `formatted_address` value
+  - the `lng` value in the `location` object within the `geometry` object
+  - the `lat` value in the `location` object within the `geometry` object
+
+points: 0.5
+expectations:
+  output: |
+    Stanford, CA, USA;-122.1660756;37.42410599999999
+

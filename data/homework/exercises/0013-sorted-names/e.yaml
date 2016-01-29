@@ -1,0 +1,19 @@
+title: Print the percentage of babies in 2014 who had popular names.
+points: 1.5
+description: |
+
+    Print the percentage of babies -- rounded to the nearest percent -- who have a name in these five brackets of popularity:
+
+    - Top 10 most popular names
+    - Top 11 to 100 most popular names
+    - Top 101 to 1000 most popular names
+    - Top 1,001 to 10,000 most popular names
+    - All other names, 10,001 and so on
+
+expectations:
+  output: |
+    Names 1 to 10: 4.9
+    Names 11 to 100: 22.9
+    Names 101 to 1000: 43.0
+    Names 1001 to 10000: 23.9
+    Names 10001 to 30579: 5.3

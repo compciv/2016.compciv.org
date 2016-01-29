@@ -1,0 +1,37 @@
+title: 'Count up the times "Applause" is used in the 2016 SOTU webpage'
+points: 0.5
+description: |
+  The raw HTML of a webpage is just text, i.e. a String object. String objects in Python have the __count()__ method, which takes in a single argument -- another string object to search for -- and returns an integer, representing how many times that string was found in the invoking string:
+
+  ~~~py
+  >>> a = "hello world"
+  >>> a.count('world')
+  1
+  >>> a.count('o')
+  2
+  ~~~
+
+  For this exercise, print out the following calculations for [the webpage of the 2016 State of the Union address](https://www.whitehouse.gov/the-press-office/2016/01/12/remarks-president-barack-obama-%E2%80%93-prepared-delivery-state-union-address)
+
+  1. The number of times the string `"Applause"` appears.
+  2. The number of times the string `"Applause"` appears _regardless_ of case, i.e. `"APPLAUSE"`, `"applause"`, etc.
+  3. The number of times "`<p>`" appears.
+
+
+  Hint:
+
+  - Don't try to guess all the different ways `"Applause"` can be capitalized. Use the `lower()` or `upper()` methods to convert all of the characters in the HTML into one case or the other, than search accordingly.
+  - |
+    Since `upper()` and `lower()` both return string objects, you can chain method calls like this: `"hello world".upper().count("L")`
+  - |
+    The fact that the results for #2 and #3 are the same is a weird coincidence. I guess we can interpret that as: President Obama received applause for every paragraph-long statement he made, on average.
+
+expectations:
+  output: |
+    84
+    89
+    89
+
+takeaways:
+  - |
+    Why does "<p>" appear so many times in the HTML, but we don't see it at all when we view the URL via browser? That's the point of HTML -- it includes a bunch of meta information that your browser uses to render the page. But the raw HTML itself is not shown. Our simple program doesn't know how to parse HTML in such a way that ignores the HTML tags...but we will learn that soon...

@@ -1,0 +1,560 @@
+---
+title: Print the final 5 lines of each of Shakespeare's tragedies
+description: |
+    Using a for-loop inside another for-loop to experience a whole lot of tragedy.
+references:
+  - slug: python-docs-glob
+    url: https://docs.python.org/3/library/glob.html
+    title: "glob — Unix style pathname pattern expansion"
+    publisher: Python documentation
+  - slug: python-docs-packages
+    url: https://docs.python.org/3/tutorial/modules.html#packages
+    title: Modules and Packages
+    publisher: Python documentation
+  - slug: automateboringstuff-lists
+    url: https://automatetheboringstuff.com/chapter4/
+    title: "Chapter 4 – Lists"
+    author: Al Sweigart
+  - slug: python-docs-io-file-methods
+    url: https://docs.python.org/3/tutorial/inputoutput.html#methods-of-file-objects
+    title: "Input and Output: Methods of File Objects"
+
+summary: |
+  This exercise is similar to the [previous exercise](/practicum/shakefiles/f-print-final-5-romeo-juliet-lines), except we repeat it across all of Shakespeare's tragedies. While we can use some of the previous code with a for-loop, we also have to learn a few new techniques and get a little better at organizing code. One new module we'll learn about is the __glob__ module, handy for collecting a __list__ of files to loop through.
+
+  This lesson contains a somewhat convoluted solution that "just works", even if you don't know about Python's __list__ data structure, as well as variations of that solution that are much more graceful once you've learned more about Python lists.
+
+
+
+sequence:
+  landing: /practicum/shakefiles/shakefiles-landing-page
+  previous: /practicum/shakefiles/f-print-final-5-romeo-juliet-lines
+  next: /practicum/shakefiles/h-count-non-blank-lines-in-shakespeare-tragedies
+mymeta:
+  exercise_slug: '0004-shakefiles/g'
+---
+
+<!--associated_exercise-->
+
+# The problem
+<% exercise = load_exercise(page_mymeta.exercise_slug) %>
+
+Here's the problem we're trying to solve &ndash; if you're doing this as homework, see the <%=link_to "full info for this exercise", exercise.exercise_set_path %>:
+
+<% content_card do %>
+  <%= partial '/layouts/coursework/partials/exercise', 
+      :locals => {:exercise => exercise, :show_abstract => true } %>
+<% end %>
+<!--//associated_exercise-->
+
+# Getting the tragic file list with the glob module and glob() function
+
+The first thing we need to do is generate a list of all the files in the `tempdata/tragedies` folder, which looks like this:
+
+    tempdata/
+    └── tragedies
+        ├── antonyandcleopatra
+        ├── coriolanus
+        ├── hamlet
+        ├── juliuscaesar
+        ├── kinglear
+        ├── macbeth
+        ├── othello
+        ├── romeoandjuliet
+        ├── timonofathens
+        └── titusandronicus
+
+
+There's a Python module to help with that: [it's called __glob__](https://docs.python.org/3/library/glob.html) and it (confusingly) has a method named __glob()__:
+
+> The glob module finds all the pathnames matching a specified pattern according to the rules used by the Unix shell, although results are returned in arbitrary order. No tilde expansion is done, but *, ?, and character ranges expressed with [] will be correctly matched. 
+
+The main takeaway is that if we pass in `tempdata/tragedies/*` as an argument into `glob.glob()`, it will return a __list__ object containing the file paths (as text strings) to the 10 tragedies' texts. That asterisk (i.e. __star__) `*` is a __wildcard__ character.
+
+In the snippet below, note how I use `os.path.join` to not only create the path using `tempdata` and `tragedies`, but I also throw in the __star__ as well. Here's what it looks like from the interactive prompt:
+
+~~~py
+>>> import glob
+>>> import os
+>>> tragic_path = os.path.join('tempdata', 'tragedies', '*')
+>>> print(tragic_path)
+tempdata/tragedies/*
+>>> tragic_filenames = glob.glob(tragic_path)
+>>> type(tragic_filenames)
+list
+>>> print(tragic_filenames)
+['tempdata/tragedies/antonyandcleopatra', 'tempdata/tragedies/coriolanus', 'tempdata/tragedies/hamlet', 'tempdata/tragedies/juliuscaesar', 'tempdata/tragedies/kinglear', 'tempdata/tragedies/macbeth', 'tempdata/tragedies/othello', 'tempdata/tragedies/romeoandjuliet', 'tempdata/tragedies/timonofathens', 'tempdata/tragedies/titusandronicus']
+~~~
+
+
+## Abbreviating the namespace
+
+That `glob.glob()` call seems inelegant. For that matter, so does `os.path.join()`. Fully discussing the concept of [Python modules and packages](https://docs.python.org/3/tutorial/modules.html#packages) is something we can do in a later lesson, but the gist of modules and packages is that -- via the `import` statement -- they allow us to bring in external code libraries.
+
+Because our script can bring in many, many libraries, the `os.path` module, for instance, can't assume that none of the other packages will have a method named `join()`. That's why we've been specifying the entire path to the `join()` function like so:
+
+~~~py
+mypath = os.path.join("path", "to", "somewhere", "*")
+~~~
+
+However, in a small program, in which we _know_ that there is no other function, package, or variable with the exact name of `join`, we can specify in the `import` statement that we want to do away with the _prefix_ of `os.path`. 
+
+This is done by using the `from` keyword:
+
+~~~py
+from os.path import join
+from glob import glob
+mypath = join("path", "to", "somewhere", "*")
+myfiles = glob(mypath)
+~~~
+
+This is _purely an aesthetic change_, but one that can make code far more readable. It's entirely optional for completing the exercises, but from now on, I will be using this style of `import` statement when I feel that it makes the code more legible, at the price of explicitness. I'll be using it throughout this exercise to help you acclimate to the different style. 
+
+Here's the code for globbing a list of Shakespeare tragedy filenames, using the `from`...`import` syntax:
+
+~~~py
+from os.path import join
+from glob import glob
+tragic_path = join('tempdata', 'tragedies', '*')
+tragic_filenames = glob(tragic_path)
+~~~
+
+
+# Iterating through each tragedy
+
+With `tragic_filenames` containing a __list__ of filename strings, now we use a for-loop to iterate through each name. Since the exercise requirements state that we need to print out each tragedy's filename, the total number of lines in the tragedy, and then the 5 final lines of the tragedy, let's fulfill the filename-printing requirement first.
+
+Here's what it looks like via the interactive prompt:
+
+~~~py
+>>> for fname in tragic_filenames:
+...     print(fname)
+tempdata/tragedies/antonyandcleopatra
+tempdata/tragedies/coriolanus
+tempdata/tragedies/hamlet
+tempdata/tragedies/juliuscaesar
+tempdata/tragedies/kinglear
+tempdata/tragedies/macbeth
+tempdata/tragedies/othello
+tempdata/tragedies/romeoandjuliet
+tempdata/tragedies/timonofathens
+tempdata/tragedies/titusandronicus
+~~~
+
+Now we just have to do the line counting...
+
+
+# Counting the lines of each tragedy
+
+This is directly taken from the counting lines in Hamlet exercise, which looked like this:
+
+~~~py
+fname = os.path.join('tempdata', 'tragedies', 'hamlet')
+hamletxtfile = open(fname, 'r')
+line_num = 0
+for x in hamletxtfile:
+    line_num += 1
+hamletxtfile.close()
+print(fname, "has", line_num, "lines")
+~~~
+
+
+## A refresher on using a for-loop and file object
+
+As a quick refresher, recall that this form of a for-loop:
+
+~~~py
+for x in hamletxtfile:
+    line_num += 1
+~~~
+
+&ndash; uses the `hamletxtfile` file object as the thing to iterate through. Which means that with every iteration, `x` is a line of text. This is a shorter, more elegant equivalent to this code snippet:
+
+~~~py
+for n in range(however_many_lines_hamlet_has):
+    x = hamletxtfile.readline()
+    line_num += 1
+~~~
+
+&ndash; which we can't use because _we don't know the number of lines in Hamlet_ before executing this code.
+
+## A file-reading loop inside a loop of filenames
+
+So for our purposes, the code is placed inside a for-loop and abstracted (yes, that means we'll have the file-reading-loop _inside_ the _filename_-iterating loop). Again, via the interactive prompt:
+
+~~~py
+>>> for fname in tragic_filenames:
+...     txtfile = open(fname, 'r')
+...     line_num = 0
+...     for line in txtfile:
+...         line_num += 1
+...     txtfile.close()
+...     print(fname, "has", line_num, "lines")
+tempdata/tragedies/antonyandcleopatra has 5998 lines
+tempdata/tragedies/coriolanus has 5836 lines
+tempdata/tragedies/hamlet has 6045 lines
+tempdata/tragedies/juliuscaesar has 4107 lines
+tempdata/tragedies/kinglear has 5525 lines
+tempdata/tragedies/macbeth has 3876 lines
+tempdata/tragedies/othello has 5424 lines
+tempdata/tragedies/romeoandjuliet has 4766 lines
+tempdata/tragedies/timonofathens has 3973 lines
+tempdata/tragedies/titusandronicus has 3767 lines
+~~~
+
+As a script, all of our code so far looks like this:
+
+~~~py
+from os.path import join
+from glob import glob
+tragic_path = join('tempdata', 'tragedies', '*')
+tragic_filenames = glob(tragic_path)
+
+for fname in tragic_filenames:
+    txtfile = open(fname, 'r')
+    line_num = 0
+    for line in txtfile:
+        line_num += 1
+    txtfile.close()
+    print(fname, "has", line_num, "lines")
+~~~
+
+
+# Printing the final 5 lines of each tragedy
+
+So this is where things get seemingly tricky: 
+
+- For each tragedy text file, we first have to read through the entire file just to get the line count. 
+- Then we take that line count number and subtract by 5 to get the line number from which we begin printing lines of text.
+- Then we loop through those 5 final lines and print out each line.
+
+After we've read through the file, _how do we go back 5 lines_? The answer: __not very easily__. In fact, if you've run the code above in a script, you might have noticed one thing: it is _extremely_ fast to whip through all of Shakespeare's 10 tragedies, read each of their thousands of lines, and then print out the final line count. On my laptop, it takes _less than a 10th of a second_.
+
+## The quick and dirty solution: re-open and re-read everything
+
+So...rather than delve into the dirty details of how we step backwards through a file that we've just read through...why not just __re-open__ and __re-read__ each file? Opening and reading every file once is so fast that _re-opening_ and _re-reading_ each file, a second time, won't be much of a wait at all.
+
+To reiterate the steps:
+
+1. Open a file.
+2. Read through its entirety to get the line count (which we store in a variable for later usage).
+3. Close the file.
+4. __Re-open the file.__
+5. Re-read through it again, using the line count to calculate when to actually start printing the final 5 lines.
+
+
+
+
+
+## All together
+
+Here's the code from the previous exercise, in which we printed the final 5 lines of Romeo and Juliet:
+
+~~~py
+import os.path
+FNAME = os.path.join('tempdata', 'tragedies', 'romeoandjuliet')
+TOTAL_LINES = 4766
+STARTING_LINE_NUM = TOTAL_LINES - 5 
+
+txtfile = open(FNAME, 'r')
+for line_num in range(TOTAL_LINES): 
+    line = txtfile.readline()
+    if line_num >= STARTING_LINE_NUM:
+        the_line = str(TOTAL_LINES) + ": " + line.strip()
+        print(the_line) 
+txtfile.close()
+~~~
+
+We just have to abstract this out and throw it in a loop. For those keeping count, this means we'll have 2 for-loops inside the for-loop that goes through each filename. But it's no big deal:
+
+(though, to be honest, this is a pretty long program...)
+
+~~~py
+from os.path import join
+from glob import glob
+tragic_path = join('tempdata', 'tragedies', '*')
+tragic_filenames = glob(tragic_path)
+
+for fname in tragic_filenames:
+    # open the file to count the lines
+    txtfile = open(fname, 'r')
+    total_lines = 0
+    for line in txtfile:
+        total_lines += 1
+    txtfile.close()    
+    # print out the filename this one time, with the line count
+    print(fname, "has", total_lines, "lines")
+    # calculate the line from which to start printing text
+    starting_line_num = total_lines - 5
+    # reopen the file again
+    txtfile = open(fname, 'r')
+    for line_num in range(total_lines): 
+        line = txtfile.readline()
+        if line_num >= starting_line_num:
+            # print the final lines
+            the_line = str(line_num + 1) + ": " + line.strip()
+            print(the_line) 
+    txtfile.close()
+~~~
+
+And, the final output:
+
+~~~
+tempdata/tragedies/antonyandcleopatra has 5998 lines
+5994: In solemn show attend this funeral;
+5995: And then to Rome. Come, Dolabella, see
+5996: High order in this great solemnity.
+5997: 
+5998: [Exeunt]
+tempdata/tragedies/coriolanus has 5836 lines
+5832: Which to this hour bewail the injury,
+5833: Yet he shall have a noble memory. Assist.
+5834: 
+5835: [Exeunt, bearing the body of CORIOLANUS. A dead
+5836: march sounded]
+tempdata/tragedies/hamlet has 6045 lines
+6041: Becomes the field, but here shows much amiss.
+6042: Go, bid the soldiers shoot.
+6043: 
+6044: [A dead march. Exeunt, bearing off the dead
+6045: bodies; after which a peal of ordnance is shot off]
+tempdata/tragedies/juliuscaesar has 4107 lines
+4103: Most like a soldier, order'd honourably.
+4104: So call the field to rest; and let's away,
+4105: To part the glories of this happy day.
+4106: 
+4107: [Exeunt]
+tempdata/tragedies/kinglear has 5525 lines
+5521: Speak what we feel, not what we ought to say.
+5522: The oldest hath borne most: we that are young
+5523: Shall never see so much, nor live so long.
+5524: 
+5525: [Exeunt, with a dead march]
+tempdata/tragedies/macbeth has 3876 lines
+3872: We will perform in measure, time and place:
+3873: So, thanks to all at once and to each one,
+3874: Whom we invite to see us crown'd at Scone.
+3875: 
+3876: [Flourish. Exeunt]
+tempdata/tragedies/othello has 5424 lines
+5420: The time, the place, the torture: O, enforce it!
+5421: Myself will straight aboard: and to the state
+5422: This heavy act with heavy heart relate.
+5423: 
+5424: [Exeunt]
+tempdata/tragedies/romeoandjuliet has 4766 lines
+4762: Some shall be pardon'd, and some punished:
+4763: For never was a story of more woe
+4764: Than this of Juliet and her Romeo.
+4765: 
+4766: [Exeunt]
+tempdata/tragedies/timonofathens has 3973 lines
+3969: Make war breed peace, make peace stint war, make each
+3970: Prescribe to other as each other's leech.
+3971: Let our drums strike.
+3972: 
+3973: [Exeunt]
+tempdata/tragedies/titusandronicus has 3767 lines
+3763: By whom our heavy haps had their beginning:
+3764: Then, afterwards, to order well the state,
+3765: That like events may ne'er it ruinate.
+3766: 
+3767: [Exeunt]
+~~~
+
+
+So that's _one_ solution to the exercise. And it is _extremely_ inelegant -- but it works. You can move on to the [next exercise, which actually will be much simpler than this one](/practicum/shakefiles/h-count-non-blank-lines-in-shakespeare-tragedies), but I recommend reading the "Alternative approaches" section below, in which I foreshadow the necessity of learning Python's list data structure (basically, it's an object that is a collection of other objects), which I will cover in a later lesson. However, once you know them, this kind of exercise becomes _much_ simpler to think through and write out.
+
+
+# Alternative approaches
+
+The rest of this section elaborates on the problem at hand and more elegant solutions -- basically, it's kind of silly to open, close, and re-open a file, even if there is no real speed penalty. You don't have to implement the approaches here, but reading this will give you a better sense of how files can be thought of __streams__ of data. And how we use the __list__ data structure (which we haven't formally covered, yet...) to gather multiple objects into a single variable reference.
+
+
+## Rewinding a file stream
+
+Let's pretend re-opening a file is not possible. So, given a file object that is currently open, how do we go back to a previously-read line in a file? 
+
+
+### Reading a file past its end
+
+First of all, it's worth testing out what happens when you try to read a file in which you've already read through to the final line. Here's the setup, given our current example Shakespeare files (let's use Romeo and Juliet again).
+
+I recommend testing this out in your interactive prompt -- the `pass` keyword below simply tells the interpreter: _nothing to do here, move on to the next iteration_:
+
+~~~py
+>>> from os.path import join
+>>> FNAME = join('tempdata', 'tragedies', 'romeoandjuliet')
+>>> txtfile = open(FNAME, 'r')
+>>> for line in txtfile: 
+...     pass
+~~~
+
+Alternatively, you could just use the file object's `read()` or `readlines()` methods, which returns the entirety of the given file, and save yourself the trouble of writing a for-loop:
+
+~~~py
+>>> from os.path import join
+>>> FNAME = join('tempdata', 'tragedies', 'romeoandjuliet')
+>>> txtfile = open(FNAME, 'r')
+>>> allthetext = txtfile.read()
+~~~
+
+Use either snippet; at the end, `txtfile` will still be a file object, with the ability to call `read()`, `readline()`, and so forth...but doing so will return __empty__ strings (not even newline characters):
+
+~~~py
+>>> txtfile.readline()
+''
+>>> txtfile.readline()
+''
+~~~
+
+### Seek, and you may rewind
+
+The answer: it's a bit complicated. File objects act as _streams_. Each time we call __readline()__ (or any of the __read__ methods), we advance a step forward. And if we didn't save the previous line(s) in a variable, then there's not a straightforward method to accessing those lines.
+
+Think of a file stream as a tape cassette...or, if you weren't alive back then, the scrubber bar on your Netflix video player. To go back to a previous point, you have to _rewind_ or drag the scrubber bar _back_ to the desired point.
+
+In Python, file objects have [the `seek()` method](https://docs.python.org/3/library/io.html#io.IOBase.seek), which takes one argument -- the numerical position (in bytes) to jump to. The value `0` will take you back to the beginning of the file:
+
+~~~py
+>>> txtfile.seek(0)
+0
+~~~
+
+(the `0` value that is returned is simply the argument that we passed into the `seek()` method)
+
+Then we can go back to reading the file from the very beginning:
+
+~~~py
+>>> txtfile.readline()
+'\tROMEO AND JULIET\n'
+>>> txtfile.readline()
+'\n'
+>>> txtfile.readline()
+'\n'
+>>> txtfile.readline()
+'\tDRAMATIS PERSONAE\n'
+~~~
+
+If `seek()` accepts the _number of bytes_ as an argument...how many bytes are in a single line? That's basically unknowable, which is why I do not recommend using the `seek()` method in a typical solution. I don't mean that it's a bad method, just that it doesn't solve the problem that we were having: how to go back to any given line after reading through a file.
+
+## Storing each line in list
+
+The much more common and elegant solution is to _store each line as we read it_. This requires using the __list__ data structure, which we haven't covered yet, but it's one of the most ubiquitous things we'll use ([here's a nice primer in Al Sweigart's Automate the Boring Stuff](https://automatetheboringstuff.com/chapter4/)).
+
+It's beyond the scope of this lesson to fully explain lists, so I'll just demonstrate with code. The list object can contain a sequence of other objects (e.g. strings, numbers, even other lists). The list object has an `append()` function, which adds a new member to itself:
+
+~~~py
+>>> mylist = []
+>>> mylist.append('apples')
+>>> mylist.append('oranges')
+>>> type(mylist)
+list
+>>> len(mylist)
+2
+>>> print(mylist)
+['apples', 'oranges']
+~~~
+
+
+
+Going back to the code in which we read through every line of Romeo and Juliet:
+
+~~~py
+>>> from os.path import join
+>>> FNAME = join('tempdata', 'tragedies', 'romeoandjuliet')
+>>> txtfile = open(FNAME, 'r')
+>>> for line in txtfile: 
+...     pass
+~~~
+
+Here's how we could use a list:
+
+~~~py
+>>> from os.path import join
+>>> FNAME = join('tempdata', 'tragedies', 'romeoandjuliet')
+>>> mylist = []
+>>> txtfile = open(FNAME, 'r')
+>>> for line in txtfile: 
+...     mylist.append(line)
+>>> txtfile.close()
+~~~
+
+If we use the `len()` function on `mylist`, we'll get the number of objects it contains, i.e. the number of lines in Romeo and Juliet:
+
+~~~py
+>>> len(mylist)
+4766
+~~~
+
+And by using the syntax for accessing individual members of a list, we can access any of the collected lines as we please: 
+
+~~~py
+>>> mylist[4761]
+"\tSome shall be pardon'd, and some punished:\n"
+>>> mylist[4762]
+'\tFor never was a story of more woe\n'
+>>> mylist[4763]
+'\tThan this of Juliet and her Romeo.\n'
+~~~
+
+Basically, by appending each line as we it into `mylist`, we have transferred the text of _Romeo and Juliet_, which existed only via a file stream, into the [_system memory_](https://en.wikipedia.org/wiki/Computer_memory). That's more low-level detail than we need to know...the main takeaway is: it is very much in your best interests to understand the __list__ data object, which we will cover later.
+
+### The readlines() method
+
+One more thing: the `read()` method -- which reads all of the file's contents as one big string, cannot by itself split the text into separate lines. But Python [file objects also have a `readlines()` method](https://docs.python.org/3/tutorial/inputoutput.html#methods-of-file-objects), which is like `readline()`, except done for all of the lines.
+
+Thus, this for-loop:
+
+~~~py
+mylist = []
+for line in txtfile:
+    mylist = txtfile.readline()
+~~~
+
+Can be simplified to this:
+
+~~~py
+mylist = txtfile.readlines()
+~~~
+
+
+
+
+## All together, with readlines()
+
+Again, the [previous solution](#all-together) worked just fine. The variation I present below is more conceptually elegant, but requires understanding more of Python's data structures, i.e. the __list__. This elegance is completely worth it, as the concept of "let's open a file, close it, and re-open it" is really kind of non-intuitive. And it complicates the script's structure.
+
+
+If you already know about Python's lists -- or have studied their equivalent in another language (they're known as __Arrays__ in Java, JavaScript, Ruby, etc.), then go ahead and do things this way. If you don't know lists (or arrays) at all, then keep this usecase in mind when we _do_ study them:
+
+
+~~~py
+from os.path import join
+from glob import glob
+tragic_path = join('tempdata', 'tragedies', '*')
+tragic_filenames = glob(tragic_path)
+
+for fname in tragic_filenames:
+    # open the file to count the lines
+    txtfile = open(fname, 'r')
+    mylist = txtfile.readlines()
+    txtfile.close()    
+    total_lines = len(mylist)
+    # print out the filename this one time, with the line count
+    print(fname, "has", total_lines, "lines")
+    # calculate the line from which to start printing text
+    starting_line_num = total_lines - 5
+    for line_num in range(starting_line_num, total_lines):
+        line = mylist[line_num]
+        proper_line = str(line_num + 1) + ": " + line.strip()
+        print(proper_line) 
+~~~
+
+## A note about performance and real-world streaming
+
+Using `readlines()` or `read()` -- i.e. reading the entirety of a file in one swoop -- is almost _always_ the way we will do things. However, there may be a few real-world situations in which this is _impossible_. Sometimes the data that we're reading from is coming from a _remote_ stream (i.e. we're downloading it), and we want to read and operate on it line-by-line as it comes in. In this situation, it's impossible to load the entire thing into memory because it does not yet exist on our hard drive.
+
+The other main scenario is that even if the file exists on our hard drive, loading it into __system memory__ (which is usually significantly smaller than your hard drive space) _all at once_ may be either impossible or extremely slow.
+
+In other words, the time we spent reading a file, line-by-line, was not at all just time wasted on learning about meaningless low-level theory. 99% of the files we care to deal with are small enough to read into memory all at once. But knowing how to deal with that 1% of files that are...less manageable...is essential in real-world data wrangling.

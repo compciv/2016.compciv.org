@@ -1,0 +1,286 @@
+---
+title: The Quick Start Guide
+description: |
+  Setting up your text-editor and file system for creating and running Python programs.
+---
+
+Note: This intro is geared for people who haven't had shell-level experience with their computers. If you already have had it, go ahead and skip to the bottom in which I describe reading [this chapter on Python](https://automatetheboringstuff.com/chapter1/) and emailing me the answers before __Tuesday__ next week.
+
+
+# Setting up your homework folder
+
+The homework for this class will be submitted and maintained as a __Git repository__. Git is a popular program used in software development, specifically what's called __version control__: think of it as fancy file backup on steroids. Git is popularly associated with the mega-web-platform Github, which is used to _host_ git repositories on the web.
+
+__One way to think of it is:__ Github is to git repositories as Google Drive is to documents (or spreadsheets).
+
+But what is a git repository in the first place? For all intents and purposes, __it's just a file folder (i.e. file directory) on your computer__.  
+
+The only thing that makes your typical file directory a _git repository_ is the existence of a hidden folder inside of it. We'll get to that later. 
+
+First, let's just create a file folder.
+
+## Where to create a folder?
+
+Finding a file you just downloaded, or a folder you just created, may seem really trivial, especially if you are the kind of person who can remember what you downloaded or created days and weeks later.
+
+But that's not the point. When we write programs, __it is our computers__ that have to know where things are. And computers are __dumb__ when you get past the mass-market-consumer-friendly graphical user interface.
+
+__In programming-world, there is no Recycling Bin__. If you write and execute a command that deletes every file in a directory, the computer will _just do it_ without asking if that's what you _really really_ want to do. Because after all, you're the programmer, and you should know what you're doing. 
+
+What kind of idiot would delete the wrong folder? Just read how [Pixar nearly wiped out all of Toy Story 2 with a single command](http://thenextweb.com/media/2012/05/21/how-pixars-toy-story-2-was-deleted-twice-once-by-technology-and-again-for-its-own-good/). 
+
+<iframe width="853" height="480" src="https://www.youtube.com/embed/8dhp_20j0Ys?rel=0" frameborder="0" allowfullscreen></iframe>
+
+That's a pretty extreme accident, which probably happened because a programmer just didn't realize what directory they were in when they ran the "wipe them all out" command. But if it could happen to Pixar, it could happen to any of us. More importantly, it's just one example of how computers need to be told exactly what to do.
+
+So follow these next steps exactly which describe creating a folder named `compciv-2016` onto your __Desktop__
+
+Note: You can actually create it anywhere: I choose __Desktop__ (which you can think of as just another folder) because most people can find the Desktop of their own operating system.
+
+## Be exact in the naming
+
+Easiest way to create a folder in Mac OS X is to __right-click on the Desktop__:
+
+![image right-click-desktop.png](/files/images/guides/quick-start-intro/right-click-desktop.png)
+
+Then choose __New Folder__, which creates a new folder (and an icon for it):
+
+![image desktop-new-folder.png](/files/images/guides/quick-start-intro/desktop-new-folder.png)
+
+
+Now, rename that `untitled folder` to: `compciv-2016`.
+
+__Use that exact spelling__.
+
+Again: __Use that exact spelling__. This includes spelling it _correctly_ and using the _exact same case_ (all lowercase, in this case), no extra spaces, etc. 
+
+![image desktop-new-folder-renamed.png](/files/images/guides/quick-start-intro/desktop-new-folder-renamed.png)
+
+
+And that's all there is to it, for now. If you know what you're doing -- i.e. you can successfully navigate your own file system via the command line, which we'll cover later --  you can move that folder wherever is convenient for you. But if you don't think you can do that -- whatever "that" was I just described -- then just leave it on the Desktop for now.
+
+
+Double click the `compciv-2016` folder. It should be empty.
+
+![image compciv-folder-empty.png](/files/images/guides/quick-start-intro/compciv-folder-empty.png)
+
+This may vary depending on how your OS X configuration is set up, but in screenshot, take note of that "breadcrumb" bar at the bottom of the folder window, which shows where `compciv-2016` is in relation to the rest of file system: 
+
+![image compciv-folder-breadcrumb.png](/files/images/guides/quick-start-intro/compciv-folder-breadcrumb.png)
+
+
+When we start programming from the text-only command-line, we'll see how that cute little breadcrumb of icons is simply known to our programs as:
+
+    /Users/dtown/Desktop/compciv-2016
+
+Creating that simple folder revealed that things are a little more complicated than you might have expected. For one thing, the `Desktop` folder is just a subfolder within `/Users/dtown`. And what is `dtown/`? That's a folder that represents the name of my user account (on my own system). __This will be different for you__ unless by some weird coincidence you named yourself `dtown` as well. 
+
+But let's move on to the using our text editors to write programs.
+
+
+# Creating files with Sublime
+
+There are other text editors out there, but I am assuming that you're using [Sublime Text 3](http://www.sublimetext.com/). After you've downloaded and installed it, open it as you would any other program.
+
+## Opening folders as projects
+
+Like any other document-handling program, Sublime Text can open and handle one file at a time. But we'll see that when programming, ST will act as more than just a textfile editor. It acts as lightweight __project management__ software, letting us navigate and sift through folders of text-files, which shouldn't sound very exciting until you realize that that's pretty much what a complicated program is: a bundle of text files.
+
+So after Sublime Text opens up, click the __File > Open__ (get used to hitting __Command-O__ keyboard shortcut) command:
+
+![image sublime-text-command-open-menu.png](/files/images/guides/quick-start-intro/sublime-text-command-open-menu.png)
+
+Then navigate to your `Desktop` folder and select the `compciv-2016`:
+
+![image sublime-text-open-compciv-2016.png](/files/images/guides/quick-start-intro/sublime-text-open-compciv-2016.png)
+
+What you should see is a mostly-empty interface:
+
+![image sublime-text-open-new-compciv.png](/files/images/guides/quick-start-intro/sublime-text-open-new-compciv.png)
+
+Take special notice of that left-side panel, which will contain the directory tree of our `compciv-2016` homework folder.
+
+### Adding a new text file: README.md
+
+Let's change that by __adding a new file__ inside the `compciv-2016` folder.
+
+Right-click the folder, that should bring up a pop-up menu, then click __New File__. The feedback is a little hard to see but what _should have_ happened is that a new tab popped up in the main window.
+
+If you __Save__ the file (shortcut: __Command + S__), then a dialog box should pop-up asking you for a file name.
+
+Type in: __README.md__
+
+What is that `.md` extension? It's the generally accepted way to label Markdown-syntax files. What's [Markdown](https://daringfireball.net/projects/markdown/syntax)? It's a popular way to write HTML as plaintext...we don't have to worry about the specifics right now. Just note how the file pops-up in the side-panel:
+
+![image makeafile-readme-sublimetext.png](/files/images/guides/quick-start-intro/makeafile-readme-sublimetext.png)
+
+
+Go ahead and enter some text and save the file. Now that we know how to create a file, save it as -- well, whatever we want -- we now have _one_ way of _creating a Python program_
+
+
+# Writing our first Python program
+
+A Python program is just a text file, just like that `README.md` file we just created. Which means it _doesn't do anything_ until we tell our computers to _run_ it.
+
+But first, let's just create a simple program named `hello-world.py`,[ the world's most well-known program](https://www.artsy.net/article/ruse-laboratories-brian-kernighan).
+
+- In your `compciv-2016` directory, create a new __subdirectory__ named `hello`
+- Inside the `hello` subdirectory, i.e. `compciv-2016/hello`, create a new __file__ named `hello-world.py`:
+
+Your project side-panel should look like this:
+
+![image sublime-text-hello-hello-world.png](/files/images/guides/quick-start-intro/sublime-text-hello-hello-world.png)
+
+Inside `hello-world.py`, type this single command:
+
+
+~~~py
+print("hello world")
+~~~
+
+Save the file. And that's your first program.
+
+Now, we'll learn how to __run__ it.
+
+
+
+# The system shell
+
+The __shell__ -- the thing that looks like the Matrix -- is part of the same system that you've been using most of your computing life. It's just a __text-based__ interface instead of a graphical-user-interface. 
+
+It's easier to learn by _doing_. The first step is to find how to get into it. Open __Finder__ (the OS X GUI interface/file system), and navigate to your __Applications__ folder. Inside the __Applications__ folder, there's a __Utilities__ folder:
+
+![image finder-applications-utility.png](/files/images/guides/quick-start-intro/finder-applications-utility.png)
+
+Open the __Utilities__ folder and look for __Terminal.app__: 
+
+![image finder-applications-utility-terminal-app.png](/files/images/guides/quick-start-intro/finder-applications-utility-terminal-app.png)
+
+Note: if you have an icon that just says __Terminal__, let's make a change to one of your system settings. Follow the instructions here to [__Show all filename extensions__](https://support.apple.com/kb/ph19072?locale=en_US). By default, it's disabled just to make things look cleaner and simpler. Functionality doesn't change because the operating system just magically knows how to open each file. But generally, when you start to program, you want things to be more _explicit_, i.e. less magic.
+
+
+## Using the Terminal app to access your shell
+
+Open the __Terminal__ application -- if I were you, I'd drag it to your __Dock__ so that it's just one click away.
+
+__Terminal__ is the program that let's you type and run commands in the __shell__. It should look sparse and unwelcoming; I've made mine a little more welcoming by changing the colors and adding a ghost to it (you can figure out how to do that later) -- but, for the most part, the Terminal is just a place to enter one command at a time. 
+
+One of those commands will be the `python` interpreter which will run your code.
+
+### Say "hello world" via OS X
+
+But let's run a more fun command: `say`. This is _not_ a Python program, but an OS X program. Just type it in and hit Enter:
+
+![image say-hello-world.png](/files/images/guides/quick-start-intro/say-hello-world.png)
+
+If your volume was up, your computer should have spoken to you. Your OS X shell is pretty much like a programming environment, which will get confusing when you enter the __Python shell__...on the other hand, that's a consequence of programming languages and systems being fairly similar, underneath the superficial differences.
+
+## Navigating your file system via shell
+
+Just to make it obvious how this text-only shell is tied to the same foundation as the friendly GUI, run the following command, but do not copy the __dollar sign__; I put the dollar sign there just to signify that we're at the system shell prompt.
+
+~~~sh
+$  pwd
+~~~
+
+In other words, just type `pwd` and hit Enter:
+
+![image getpwd.png](/files/images/guides/quick-start-intro/getpwd.png)
+
+
+`pwd` stands for __print working directory__ -- it is a program whose sole job is to tell you where you currently are. By default, you should be at your __Home__ directory, which is in the form of `/Users/whateveryournameis`. 
+
+But just to make sure, type in this command:
+
+~~~sh
+$  cd ~
+~~~
+
+The `cd` command is "change directory".  And that `~` (tilde) symbol stands for "home directory". So, "change to home directory".
+
+Note that after executing that command, you get absolutely no feedback, i.e. you aren't told where you are. So type in `pwd` again to see where you are. It should be the same as before. If not, no big deal, at least you know how to get back to your "home" directory.
+
+Now that you are most definitely in your "Home" directory, let's change into the `Desktop` directory:
+
+~~~sh
+$ cd Desktop
+~~~
+
+You can run the `pwd` command to see where you landed:
+
+![image cd-to-desktop-pwd.png](/files/images/guides/quick-start-intro/cd-to-desktop-pwd.png)
+
+### open your Desktop
+
+Let's try one more __shell command__ before we get to running actual Python. The `open` command, followed by a file name (or even a URL), will act as if you __double-clicked__ that file (or visited that URL).
+
+In fact, let's try it with a URL:
+
+~~~sh
+$ open https://www.nytimes.com
+~~~
+
+What happens when you open a folder, such as `Desktop`? I'll assume that you _are not_ in your Desktop folder. But we can always refer to `Desktop` as an _absolute path_ with `~/Desktop`, because that tilde sign is a shortcut for "home directory".
+
+Try this:
+
+~~~sh
+$ open ~/Desktop
+~~~
+
+Switch back to your Terminal (i.e. your shell). See if you can figure out how to get to the `compciv-2016` folder. Here's one way to do it:
+
+
+~~~sh
+$ cd ~/Desktop/compciv-2016
+~~~
+
+Hint: if you hit the __Tab__ key when typing a partial-name, the shell will attempt to __autocomplete__ the command or path, if it exists.
+
+Type in this:
+
+~~~sh
+$ cd ~/D
+~~~
+
+Then hit Tab, and it should autocomplete to `~/Desktop`. Using the Tab key is one of the most important and easiest ways to have a less painful programming life. It's not as if you are expected to actually remember how to spell everything...
+
+
+# Run your Python program
+
+In the shell, make sure you're in your `~/Desktop/compciv-2016` folder.
+
+Then change into the `hello` subdirectory.
+
+This is where your `hello-world.py` program should be, if you remember from your Sublime Text project view:
+
+![image sublime-text-hello-hello-world.png](/files/images/guides/quick-start-intro/sublime-text-hello-hello-world.png)
+
+__This is how you run your Python program__:
+
+~~~sh
+$ python hello-world.py
+~~~
+
+And that's it:
+
+![image hello-world-program.png](/files/images/guides/quick-start-intro/hello-world-program.png)
+
+Did you get a "can't open 'asdf'" error? Make sure you're in the correct directory.
+
+
+## Class Note/Homework
+
+In class I'll show how to use the `ipython` interactive shell -- it basically looks like the OS X shell...but it's for Python only. This will be pretty confusing at first. Nonetheless, I'd like you to try reading through this lesson: [Automate the Boring Stuff in Python - Chapter 1: The Basics](https://automatetheboringstuff.com/chapter1/).
+
+At the end of the chapter, there are 10 practice questions. Try to answer them the best you can and __send it to me in an email by __Monday, Jan. 11, 2015, 11:59PM__.
+
+
+
+
+
+
+
+
+
+

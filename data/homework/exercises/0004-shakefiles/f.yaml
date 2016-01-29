@@ -1,0 +1,33 @@
+title: Print the final 5 lines of Romeo and Juliet
+points: 1.0
+description: |
+
+  Open the file at `tempdata/tragedies/romeoandjuliet` and read and print the __final 5 lines__.
+
+  This seems like the same exercise as `d.py` -- except that we read from _Romeo and Juliet_ instead of _Hamlet_. And that we read the _final_ 5 lines instead of the _first_ 5 lines.
+
+  That first difference is easy to do; that second one is a much different problem to tackle.
+
+
+hints: |
+  [This tutorial walks through the process.](/practicum/shakefiles/f-print-final-5-romeo-juliet-lines)
+
+  Pay special attention to the expected output, particularly:
+
+  - There is no space between the line number and the colon, e.g. `2:` _not_ `2 :`
+  - The last line ends at __4766__. Make sure you're not off-by-one.
+
+  Having trouble with adding a number to a string, i.e. `1` and `":"` to make `"1:"`? [Try using the `str()` function](https://docs.python.org/3/library/stdtypes.html#str) to convert a number to a string.
+
+expectations:
+  output: |
+    4762: Some shall be pardon'd, and some punished:
+    4763: For never was a story of more woe
+    4764: Than this of Juliet and her Romeo.
+    4765:
+    4766: [Exeunt]
+
+takeaways:
+  - The `range()` function is an easy way to generate a list of numbers to loop through.
+  - |
+    Combining strings and other data values in order to generate a pre-defined format of string is common situation and extremely annoying if all you know is how to add strings together via the `+` operator. Stay on the lookout [for other methods, as compliciated as they first seem](https://docs.python.org/3/library/string.html#string-formatting).

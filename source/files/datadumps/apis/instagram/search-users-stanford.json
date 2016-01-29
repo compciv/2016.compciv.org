@@ -1,0 +1,193 @@
+{
+  "meta": {
+    "code": 200
+  },
+  "data": [
+    {
+      "username": "stanford",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/10724659_1490326554553807_417700412_a.jpg",
+      "id": "466003",
+      "full_name": "Stanford University"
+    },
+    {
+      "username": "stanfordbusiness",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/11249438_741660282613082_1081227897_a.jpg",
+      "id": "178297848",
+      "full_name": "Stanford Business"
+    },
+    {
+      "username": "stanfordfball",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/s150x150/11363894_501317690037091_1034367125_a.jpg",
+      "id": "355987032",
+      "full_name": "Stanford Football"
+    },
+    {
+      "username": "stanfordjournalism",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/10895366_1374384409539219_1418931395_a.jpg",
+      "id": "1523263399",
+      "full_name": "Stanford Journalism Program"
+    },
+    {
+      "username": "stanfordeng",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/11821139_1179959755353784_971658228_a.jpg",
+      "id": "7894802",
+      "full_name": "Stanford Engineering"
+    },
+    {
+      "username": "gostanford",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/10948795_1554495364789855_59914498_a.jpg",
+      "id": "355969973",
+      "full_name": "Stanford Athletics"
+    },
+    {
+      "username": "stanforddschool",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/11821252_1655347661347859_1218589082_a.jpg",
+      "id": "204690652",
+      "full_name": "Stanford d.school"
+    },
+    {
+      "username": "stanfordalumni",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/s150x150/12568786_1674983546110362_1598973830_a.jpg",
+      "id": "9059745",
+      "full_name": "Stanford Alumni Association"
+    },
+    {
+      "username": "stanfordarts",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/11336087_1631331407142810_78671927_a.jpg",
+      "id": "461618262",
+      "full_name": "Stanford Arts Institute"
+    },
+    {
+      "username": "stanfordtaps",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/11373989_1481304565503366_1519497445_a.jpg",
+      "id": "672060993",
+      "full_name": "Stanford TAPS"
+    },
+    {
+      "username": "stanfordhwc",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/10249177_678980002237125_2039478894_a.jpg",
+      "id": "21639548",
+      "full_name": "Stanford Hume Writing Center"
+    },
+    {
+      "username": "stanfordwvb",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/10903415_631261353686717_628340660_a.jpg",
+      "id": "496014142",
+      "full_name": "Stanford Women's Volleyball"
+    },
+    {
+      "username": "stanfordbball",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/10895473_515708855235764_987043546_a.jpg",
+      "id": "398025469",
+      "full_name": "Stanford Men's Hoops"
+    },
+    {
+      "username": "stanford.med",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/11419218_601175696652078_656745453_a.jpg",
+      "id": "3096331",
+      "full_name": "Stanford Medicine"
+    },
+    {
+      "username": "stanfordequestrian",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/10964021_541639305977090_1635555631_a.jpg",
+      "id": "1523620556",
+      "full_name": "Stanford Equestrian Team"
+    },
+    {
+      "username": "stanfordgymnastics",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/10914351_1506408762982324_1770266344_a.jpg",
+      "id": "209112923",
+      "full_name": "Stanford Gymnastics"
+    },
+    {
+      "username": "stanfordkat",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/11849425_1465166523784407_393378840_a.jpg",
+      "id": "297666172",
+      "full_name": "Kappa Alpha Theta at Stanford"
+    },
+    {
+      "username": "stanfordwlax",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/10932204_657300261058927_416021009_a.jpg",
+      "id": "1439661681",
+      "full_name": "Stanford Women's Lax"
+    },
+    {
+      "username": "stanfordgop",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/s150x150/11850128_1644687205810183_1693422326_a.jpg",
+      "id": "2159740458",
+      "full_name": "Stanford College Republicans"
+    },
+    {
+      "username": "stanford_boys_gymnastics",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/s150x150/12362368_509784665855793_1280448331_a.jpg",
+      "id": "2115700765",
+      "full_name": "Stanford Boys Gymnastics"
+    },
+    {
+      "username": "stanfordmensgymnastics",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/10643970_322957517875518_1931119599_a.jpg",
+      "id": "1486121474",
+      "full_name": "Stanford Men's Gymnastics"
+    },
+    {
+      "username": "stanfordfieldhockey",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/10914528_328022217402036_383521618_a.jpg",
+      "id": "21189953",
+      "full_name": "Stanford Field Hockey"
+    },
+    {
+      "username": "stanfordbsb",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/10755838_784533074952546_266441038_a.jpg",
+      "id": "355977980",
+      "full_name": "Stanford Baseball"
+    },
+    {
+      "username": "stanfordgrill",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/11820734_525060500977566_753204775_a.jpg",
+      "id": "986755947",
+      "full_name": "Stanford Grill"
+    },
+    {
+      "username": "treehousestanford",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/11917837_424413317752730_887178026_a.jpg",
+      "id": "53039783",
+      "full_name": "The Treehouse at Stanford"
+    },
+    {
+      "username": "spoon_stanford",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/10499130_690003117704074_1574907673_a.jpg",
+      "id": "1405576159",
+      "full_name": "Stanford Spoon"
+    },
+    {
+      "username": "stanfordcardinalcouncil",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/s150x150/12277623_1694855857397382_702029271_a.jpg",
+      "id": "1514778400",
+      "full_name": "Cardinal Council"
+    },
+    {
+      "username": "stanfordwwaterpolo",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/10731752_1482823841942455_1860129120_a.jpg",
+      "id": "1535296331",
+      "full_name": "Stanford Women's Water Polo"
+    },
+    {
+      "username": "stanfordwgolf",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/s150x150/12107703_926903117385122_1759225667_a.jpg",
+      "id": "583326478",
+      "full_name": "Stanford Women's Golf"
+    },
+    {
+      "username": "cardinalrec",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/11372368_906047012789176_2058069854_a.jpg",
+      "id": "550702949",
+      "full_name": "Stanford Recreation"
+    },
+    {
+      "username": "stanfordmswim",
+      "profile_picture": "https://scontent.cdninstagram.com/t51.2885-19/10748029_883693141650317_2098395984_a.jpg",
+      "id": "1434322178",
+      "full_name": "Stanford Men's Swimming"
+    }
+  ]
+}

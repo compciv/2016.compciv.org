@@ -1,0 +1,11 @@
+title: Print the verbose address of every result from in the Google Maps geocoder JSON file
+description: |
+  For every result in the Google Maps geocoder JSON file, print the text composed of the `long_name` form of each of the result's `address_components`, delimited by a semicolon and a space.
+points: 0.5
+hints: |
+  This is similar to the previous exercise, except that extracting the `long_name` part of each of the `address_components` is slightly maddeningly complicated. However, if you take some time to think over the details, you might notice how having each address component be its own dictionary, with not just a `long_name` key-value pair, might be very useful when trying to determine if a given result has certain geopolitical boundaries.
+expectations:
+  output: |
+    Stanford; Santa Clara County; California; United States
+
+

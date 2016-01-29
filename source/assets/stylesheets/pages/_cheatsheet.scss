@@ -1,0 +1,27 @@
+.cheatsheet{
+    table{
+        // TODO: move this to general table styles??
+        @extend .table;
+        @extend .table-striped;
+        @extend .table-sm;
+        p, td{
+            font-family: $font-family-sans-serif;
+        }
+
+        td.shortcut-meta{
+            vertical-align: top;
+            width: 40%;
+            .description{
+                font-size: $font-size-sm;
+            }
+            .title{
+                font-weight: bold;
+            }
+        }
+
+        td.shortcut-tokens{
+            vertical-align: middle;
+            font-family: $font-family-monospace;
+        }
+    }
+}

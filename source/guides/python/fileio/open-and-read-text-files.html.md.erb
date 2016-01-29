@@ -1,0 +1,361 @@
+---
+title: Opening files and reading from files
+description: | 
+  How to opening files and read from files and avoid annoying mistakes when reading files
+summary: |
+  Opening files and reading their data is something we learn how to do with a simple double-click in our earliest interactions with computers. However, at the programmatic layer, things are substantially more complicated...
+references:
+  - slug: /guides/python/fileio/open-and-write-files
+    internal: true
+  - slug: dive-python3-files
+    author: Mark Pilgrim
+    publisher: Dive into Python 3
+    title: Chapter 11. Files
+    url: http://www.diveintopython3.net/files.html    
+  - title: Python Input and Output Tutorial
+    slug: python-docs-io
+    url: https://docs.python.org/3/tutorial/inputoutput.html
+    description: |
+      There are several ways to present the output of a program; data can be printed in a human-readable form, or written to a file for future use. This chapter will discuss some of the possibilities.
+    publisher: Python Documentation
+---
+
+
+# The basic pattern of opening and reading files in Python
+
+Here's [the official Python documentation on reading and writing from files](https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files). But before reading that, let's dive into the bare minimum that I want you to know.
+
+Let's just go straight to a code example. Pretend you have a file named __example.txt__ in the current directory. If you don't, just create one, and then fill it with these lines and save it:
+
+~~~
+hello world
+and now
+I say
+goodbye
+~~~
+
+Here's a short snippet of Python code to open that file and print out its contents to screen -- note that this Python code has to be run in the same directory that the `example.txt` file exists in.
+
+~~~py
+myfile = open("example.txt")
+txt = myfile.read()
+print(txt)
+myfile.close()
+~~~
+
+Did that seem too complicated? Here's a less verbose version:
+
+~~~py
+myfile = open("example.txt")
+print(myfile.read())
+myfile.close()
+~~~
+
+
+Here's how to read that file, line-by-line, [using a for-loop](/guides/python/fundamentals/for-loops):
+
+~~~py
+myfile = open("example.txt")
+for line in myfile:
+    print(line)
+myfile.close()
+~~~
+
+
+(Note: If you're getting a __FileNotFoundError__ _already_ -- that's almost to be expected. Keep reading!)
+
+Still seem too complicated? Well, there's no getting around the fact that at the programmatic layer, __opening__ a file is distinct from __reading__ its contents. Not only that, we also have to manually close the file. 
+
+Now let's take this step-by-step.
+
+
+# How to open a file -- an interactive exploration
+
+To open a file, we simply use the `open()` method and pass in, as the first argument, the _filename_:
+
+~~~py
+myfile = open("example.txt")
+~~~
+
+That seems easy enough, so let's jump into some common errors.
+
+## How to mess up when opening a file
+
+Here is likely the most common error you'll get when trying to _open_ a file.
+
+~~~
+FileNotFoundError: [Errno 2] No such file or directory: 'SOME_FILENAME'
+~~~
+
+In fact, I've seen students waste dozens of hours trying to get past this error message, because they _don't stop to read it_. So, __read it__: What does `FileNotFoundError` mean? 
+
+Try putting spaces where the capitalization occurs:
+
+      File Not Found Error
+
+You'll get this error because you tried to open a file that simply doesn't exist. Sometimes, it's a simple typo, trying to `open()` a file named `"example.txt"` but accidentally misspelling it as `"exmple.txt"`.
+
+But more often, it's because you _know_ a file exists under a given filename, such as `"example.txt"` -- but how does your Python code know where that file is? Is it the `"example.txt"` that exists in your __Downloads__ folder? Or the one that might exist in your __Documents__ folder? Or the thousands of other folders on your computer system?
+
+That's a pretty complicated question. But the first step in _not wasting your time_ is that if you ever see this error, stop whatever else you are doing. Don't tweak your convoluted for-loop. Don't try to install a new Python library. Don't restart your computer, then re-run the script to see if the error magically fixes itself. 
+
+The error `FileNotFoundError` occurs because you either don't know where a file actually is on your computer. Or, even if you do, you don't know how to tell your Python program where it is. Don't try to fix other parts of your code that aren't related to specifying filenames or paths.
+
+## How to fix a FileNotFoundError
+
+Here's a surefire fix: make sure the file actually exists.
+
+Let's start from scratch by making an error. In your __system shell__ (i.e. Terminal), change to your __Desktop__ folder:
+
+~~~sh
+$ cd ~/Desktop
+~~~
+
+Now, run __ipython__:
+
+~~~sh
+$ ipython
+~~~
+
+And now that you're in the interactive Python interpreter, try to open a filename that you _know does not exist on your Desktop_, and then enjoy the error message:
+
+~~~py
+>>> myfile = open("whateverdude.txt")
+~~~
+
+
+~~~
+---------------------------------------------------------------------------
+FileNotFoundError                         Traceback (most recent call last)
+<ipython-input-1-4234adaa1c35> in <module>()
+----> 1 myfile = open("whateverdude.txt")
+
+FileNotFoundError: [Errno 2] No such file or directory: 'whateverdude.txt'
+~~~
+
+Now manually create the file __on your Desktop__, using __Sublime Text 3__ or whatever you want. Add some text to it, then save it.
+
+~~~
+this
+is my
+file
+~~~
+
+Look and see for yourself that this file actually exists in your __Desktop__ folder:
+
+
+![image desktop-whateverdude.png](/files/images/guides/python/fileio/desktop-whateverdude.png)
+
+
+OK, now switch back to your __interactive Python shell__ (i.e. __ipython__), the one that you opened after changing into the __Desktop__ folder (i.e. `cd ~/Desktop`). Re-run that `open()` command, the one that resulted in the __FileNotFoundError__:
+
+
+~~~py
+>>> myfile = open("whateverdude.txt")
+~~~
+
+Hopefully, you shouldn't get an error.
+
+But what is that object that the `myfile` variable points to? Use the `type()` method to figure it out:
+
+~~~py
+>>> type(myfile)
+ _io.TextIOWrapper
+~~~
+
+And what _is that_? The details aren't important, other than to point out that `myfile` is most definitely not just a string literal, i.e. `str`.
+
+Use the __Tab__ autocomplete (i.e. type in `myfile.`) to get a list of existing methods and attributes for the `myfile` object:
+
+~~~
+myfile.buffer          myfile.isatty          myfile.readlines
+myfile.close           myfile.line_buffering  myfile.seek
+myfile.closed          myfile.mode            myfile.seekable
+myfile.detach          myfile.name            myfile.tell
+myfile.encoding        myfile.newlines        myfile.truncate
+myfile.errors          myfile.read            myfile.writable
+myfile.fileno          myfile.readable        myfile.write
+myfile.flush           myfile.readline        myfile.writelines
+~~~
+
+Well, we can do a lot more with files than just `read()` from them. But let's focus on just reading for now.
+
+
+
+
+# How to read from a file -- an interactive exploration
+
+Assuming the `myfile` variable points to some kind of file object, this is how you read from it:
+
+~~~py
+>>> mystuff = myfile.read()
+~~~
+
+What's in that `mystuff` variable? Again, use the `type()` function:
+
+~~~py
+>>> type(mystuff)
+str
+~~~
+
+It's just a string. Which means of course that we can print it out:
+
+~~~py
+>>> print(mystuff)
+this
+is my
+file
+~~~
+
+Or count the number of characters:
+
+~~~py
+>>> len(mystuff)
+15
+~~~
+
+Or print it out in all-caps:
+
+~~~py
+>>> print(mystuff.upper())
+THIS
+IS MY
+FILE
+~~~
+
+
+And that's all there's to reading from a file that has been opened.
+
+Now onto the mistakes.
+
+
+## How to mess up when reading from a file
+
+Here's a very, very common error:
+
+~~~py
+>>> filename = "example.txt"
+>>> filename.read()
+~~~
+
+The error output:
+
+~~~
+AttributeError                            Traceback (most recent call last)
+<ipython-input-9-441b57e838ab> in <module>()
+----> 1 filename.read()
+
+AttributeError: 'str' object has no attribute 'read'
+~~~
+
+
+Take careful note that this is _not_ a __FileNotFoundError__. It is an __AttributeError__ -- which, admittedly, is not very clear -- but read the next part:
+
+
+    'str' object has no attribute 'read'
+
+
+The error message gets to the point: the `str` object -- i.e. a string literal, e.g. something like `"hello world"` does not have a `read` attribute.
+
+Revisiting the erroneous code:
+
+~~~py
+>>> filename = "example.txt"
+>>> filename.read()
+~~~
+
+If `filename` points to "example.txt", then `filename` is simply a `str` object.
+
+In other words, a __file name__ is _not_ a __file object__. Here's a clearer example of errneous code:
+
+~~~py
+>>> "example.txt".read()
+~~~
+
+And to beat the point about the head:
+
+~~~py
+>>> "hello world this is just a string".read()
+~~~
+
+Why is this such a common mistake? Because in 99% of our typical interactions with files, we see a filename on our Desktop graphical interface and we double-click that filename to open it. The graphical interface obfuscates the process -- and for good reason. Who cares what's happening as long as my file opens when I double-click it!
+
+Unfortunately, we have to care when trying to read a file programmatically. _Opening_ a file is a discrete operation from _reading_ it. 
+
+- You _open_ a file by passing its _filename_ -- e.g. `example.txt` -- into the `open()` function. The `open()` function returns a file object.
+- To actually _read_ the contents of a file, you call that file object's __read()__ method.
+
+Again, here's the code, in a slightly more verbose fashion:
+
+~~~py
+>>> myfilename = "example.txt"
+>>> myfile = open(myfilename)
+>>> mystuff = myfile.read()
+>>> # do something to mystuff, like print it, or whatever
+>>> myfile.close()
+~~~
+
+The file object also has a `close()` method, which formally cleans up after the opened file and allows other programs to safely access it. Again, that's a low-level detail that you never think of in day-to-day computing. In fact, it's something you probably will forget in the programming context, as _not_ closing the file won't automatically break anything (not until we start doing much more complicated types of file operations, at least...). Typically, as soon as a script finishes, any unclosed files will automatically be closed.
+
+However, I like closing the file explicitly -- not just to be on the safe side -- but it helps to reinforce the concept of that file object.
+
+
+
+
+# How to read from a file -- line-by-line
+
+One of the advantages of getting down into the lower-level details of opening and reading from files is that we now have the ability to read files line-by-line, rather than one giant chunk. Again, to read files as one giant chunk of content, use the `read()` method:
+
+~~~py
+>>> myfile = open("example.txt")
+>>> mystuff = myfile.read()
+~~~
+
+It doesn't seem like such a big deal now, but that's because `example.txt` probably contains just a few lines. But when we deal with files that are _massive_ -- like all 3.3 million records of everyone who has [donated more than $200 to a single U.S. presidential campaign committee in 2012](http://www.fec.gov/finance/disclosure/metadata/DataDictionaryContributionsbyIndividuals.shtml) or everyone who has ever visited the White House -- opening and reading the file all at once is noticeably slower. And it may even crash your computer.
+
+If you've wondered why spreadsheet software, such as Excel, has a limit of rows ([roughly 1,000,000](https://support.office.com/en-us/article/Excel-specifications-and-limits-ca36e2dc-1f09-4620-b726-67c00b05040f)), it's because most users _do_ want to operate on a data file, all at once. However, many interesting data files are just too big for that. We'll run into those scenarios later in the quarter.
+
+For now, here's what reading line-by-line typically looks like:
+
+~~~py
+myfile = open("example.txt")
+for line in myfile:
+    print(line)
+myfile.close()
+~~~
+
+
+Because each line in a textfile has a __newline__ character (which is represented as `\n` but is typically "invisible"), invoking the __print()__ function will create double-spaced output, because __print()__ adds a newline to what it outputs (i.e. think back to your original `print("hello world")` program).
+
+To get rid of that effect, call the `strip()` method, which belongs to `str` objects and removes whitespace characters from the left and right side of a text string:
+
+~~~py
+myfile = open("example.txt")
+for line in myfile:
+    print(line.strip())
+myfile.close()
+~~~
+
+And of course, you can make things loud with the good ol' `upper()` function:
+
+~~~py
+myfile = open("example.txt")
+for line in myfile:
+    print(line.strip())
+myfile.close()
+~~~
+
+
+That's it for now. We haven't covered how to __write__ to a file (which is a far more dangerous operation) -- I save that for a <%= link_to "separate lesson", ref_url("/guides/python/fileio/open-and-write-files") %>. But it's enough to know that when dealing with files as a programmer, we have to be much more explicit and specific in the steps.
+
+
+
+
+
+
+
+
+
+
+
+

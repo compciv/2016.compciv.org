@@ -1,0 +1,79 @@
+<% wrap_layout :default_wrapper do %>
+
+  <% if page_banner? %>
+    <div class="page-banner">
+      <%= partial "layouts/components/partials/banner", :locals => page_banner_data %>
+    </div>
+  <% end %>
+
+
+  <section id="the-page-meta">
+    <div class="container">
+      <h1 class="title page-title"><%=page_title%></h1>
+      <% if page_description.present? %>
+        <div class="description page-description">
+          <%= page_description %>
+        </div>
+      <% end %>
+
+      <section class="more-meta">
+        <%= yield_content :more_meta %>
+      </section>
+
+
+      <% if page_sequence.present? %>
+        <%= partial "/layouts/components/partials/page-sequence", :locals => {:sequence => page_sequence} %>
+      <% end %>
+
+
+
+      <% if page_summary.present? %>
+        <section class="summary">
+            <h4>Summary</h4>
+            <%= markdownify page_summary %>
+        </section>
+      <% end %>
+
+
+
+    </div>
+  </section>
+
+    <% if page_toc? %>
+      <section class="sec table-of-contents page">
+        <div class="container">
+          <div class="toc-card">
+            <div class="header">Table of contents</div>
+            <div class="body">
+              <%= render_toc %>
+            </div>
+          </div>
+        </div>
+      </section>
+     <% end %>
+
+
+    <section id="the-page-content">
+      <div class="container">
+        <%= yield %>
+      </div>
+    </section>
+
+    <section id="the-page-footcontent">
+      <div class="container">
+        <% if page_sequence.present? %>
+          <%= partial "/layouts/components/partials/page-sequence", :locals => {:sequence => page_sequence} %>
+        <% end %>
+      </div>
+
+        <%- if current_page_references -%>
+        <div class="container">
+            <section class="references sec">
+              <h3 id="page-references">References and Related Readings</h3>
+              <%= partial '/layouts/components/partials/references_list' %>
+            </section>
+        </div>
+        <%- end %>
+
+    </section>
+<% end %>

@@ -1,0 +1,28 @@
+title: Print the first 5 lines of the Hamlet text
+description: |
+  From the text file at `tempdata/tragedies/hamlet`, read and print the first 5 lines of text.
+
+hints: |
+    [This tutorial walks through the process.](/practicum/shakefiles/d-print-first-5-lines-of-hamlet)
+
+
+points: 0.5
+takeaways:
+  - |
+    A __filename__ is _not_ an actual file. It's just a __string__ that represents the human-readable name of a file, e.g. `tempdata/tragedies/hamlet`
+  - |
+    Opening a file, by calling the `open()` function on a filename, does not actually _read_ the file. It just gives us access to a _stream_ object, which has several methods for reading data from the "stream", including all-at-once or line-by-line.
+  - |
+    By default, the `open()` function will attempt to _read_ a file and will throw an error if that file doesn't exist. This is much, much preferable to the situation when you open an existing file to _write_ to it -- which will immediately wipe out that file.
+  - |
+    Each line of text in a file has a newline character. That's what makes it separate from the next line. Keeping in mind that a line of text is, well, a string -- you can use its `strip()` method to remove whitespace from both sides of the text, including newlines.
+  - |
+    It's considered good manners to invoke a file stream's `close()` method when you're done with the file. Imagine a scenario in which other programs are trying to open that file...
+
+expectations:
+  output: |
+    HAMLET
+
+
+    DRAMATIS PERSONAE
+

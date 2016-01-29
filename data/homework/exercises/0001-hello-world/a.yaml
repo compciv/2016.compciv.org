@@ -1,0 +1,14 @@
+title: Print "hello world"
+description: |
+  The easiest and most ubiquitous and most important program in computer science.
+points: 1
+expectations:
+  output: "hello world"
+takeaways:
+  - You know how to call the Python interpreter from your system's shell/command-line.
+  - "You know how to execute a function: in this case, the `print()` function."
+  - |
+    You're acquainted with the concept of __string literals__ -- not all text is meant to be translated into a computer command. Quotation marks _delimit_ text that is meant for humans, e.g. `"hello world"` -- and text that is meant to be directly interpreted by the computer (e.g. `print()`)
+  - |
+    You know how to print text to screen. If you're new to programming, word of warning: unlike consumer software, your programs do not by default talk to you or let you know what's going on (at least, not until it's too late).
+  - You know how to tell the Python interpeter to read a text file and turn it into commands that control your computer. This is an often overlooked but incredible first step.

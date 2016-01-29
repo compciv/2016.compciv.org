@@ -1,0 +1,21 @@
+title: Create the `tempdata` directory idempotently
+points: 0.5
+description: |
+  For many of the assignments, you will be stashing downloaded files and data into a local directory named `tempdata`. Write a Python program to create that directory. This function should be "smart" enough not to crash/error-out if the `tempdata` directory already exists.
+
+
+
+hints: |
+  [This tutorial walks through the process.](/practicum/shakefiles/a-creating-a-directory-idempotently)
+
+expectations:
+  requirements:
+    - The program must not crash if the `tempdata` directory already exists.
+  effects:
+    created_paths:
+      - tempdata/
+takeaways:
+  - |
+    __idempotent__ is a fun word to use. It's also a "feature" that is useful to design towards, as a programmer. You never know how many times your program will be executed, or under what circumstances.
+  - |
+    It's kind of neat how `os.makedirs()` will throw an error if you try to use it to create an existing directory, and you leave out the `exist_ok` argument. However, other file-system changing functions will not be nearly as careful by default...

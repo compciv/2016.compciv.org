@@ -1,0 +1,32 @@
+title: "Deserialize the Google Maps geocoder's JSON file and read its status code"
+description: |
+
+  The Google Geocoding API, along with a set of results, returns metadata, including a top-level `status` object, so that the requesting program has an easy way to check if the API was able to fulfill the request.
+
+  For this exercise, simply print out the _value_ that the `status` key points to.
+
+
+hints: |
+
+  This is a situation in which you can just look at the actual file and find the corresponding object/key-value pair. But please try to do this _programatically_.
+
+  Here's some sample code to open and read the file, and then deserialize it into a Python dictionary:
+
+  ~~~
+  import json
+  f = open(MYFILENAME, 'r')
+  txt = f.read()
+  f.close()
+
+  mydict = json.loads(txt)
+  ~~~
+
+  Now you just have to print its status key.
+
+
+
+
+points: 0.5
+expectations:
+  output: OK
+

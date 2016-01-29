@@ -1,0 +1,356 @@
+---
+title: Replicating the Intercept's Officer Involved Visualization
+---
+
+
+
+http://www.theguardian.com/us-news/ng-interactive/2015/jun/01/about-the-counted
+
+https://interactive.guim.co.uk/2015/the-counted/thecounted-data.zip
+
+https://theintercept.co/officer-involved/
+
+https://developers.google.com/maps/documentation/streetview/intro
+
+
+# Get the shooting data
+
+~~~py
+https://interactive.guim.co.uk/2015/the-counted/thecounted-data.zip
+~~~
+
+
+# Write functions to fetch satellite and streetview imagery
+
+~~~py
+from os.path import join
+from os import makedirs
+import requests
+DATADIR = 'tempdata'
+MAPSDIR = join(DATADIR, 'gmaps')
+
+def prepare_staticmap_url(location):
+    url = "https://maps.googleapis.com/maps/api/staticmap"
+    map_params = {
+      'zoom': 18,
+      'size': '400x400',
+      'maptype': 'hybrid',
+      'center': location
+    }
+    req = requests.PreparedRequest()
+    req.prepare_url(url, params=map_params)
+    return req.url
+
+def prepare_streetview_url(location):
+    url = "https://maps.googleapis.com/maps/api/streetview"
+    map_params = {
+      'size': '400x400',
+      'fov': 90,
+      'location': location
+    }
+    req = requests.PreparedRequest()
+    req.prepare_url(url, params=map_params)
+    return req.url
+
+
+def fetch_staticmap(location, file_basename):   
+   fdir = join(MAPSDIR, 'staticmap')
+   makedirs(fdir, exist_ok=True)
+   fname = join(fdir, file_basename + '.png')
+
+   url = prepare_staticmap_url(location)
+   print("...Downloading", url)
+   resp = requests.get(url)
+   
+   with open(fname, 'wb') as f:
+      f.write(resp.content)
+      print("...Saving to", fname)
+
+def fetch_streetview(location, file_basename):   
+   fdir = join(MAPSDIR, 'streetview')
+   makedirs(fdir, exist_ok=True)
+   fname = join(fdir, file_basename + '.jpg')
+
+   url = prepare_streetview_url(location)
+   print("...Downloading", url)
+   resp = requests.get(url)
+   
+   with open(fname, 'wb') as f:
+      f.write(resp.content)
+      print("...Saving to", fname)
+~~~
+
+
+~~~py
+from os.path import join
+from os import makedirs
+from csv import DictReader
+import requests
+DATADIR = 'tempdata'
+MAPSDIR = join(DATADIR, 'gmaps')
+
+DATAFNAME = join(DATADIR, 'the-counted.csv')
+
+def prepare_staticmap_url(location):
+    url = "https://maps.googleapis.com/maps/api/staticmap"
+    map_params = {
+      'zoom': 18,
+      'size': '400x400',
+      'maptype': 'hybrid',
+      'center': location
+    }
+    req = requests.PreparedRequest()
+    req.prepare_url(url, params=map_params)
+    return req.url
+
+def prepare_streetview_url(location):
+    url = "https://maps.googleapis.com/maps/api/streetview"
+    map_params = {
+      'size': '400x400',
+      'fov': 90,
+      'location': location
+    }
+    req = requests.PreparedRequest()
+    req.prepare_url(url, params=map_params)
+    return req.url
+
+def prepare_staticmap_filename(file_basename):
+   fdir = join(MAPSDIR, 'staticmap')
+   makedirs(fdir, exist_ok=True)
+   fname = join(fdir, file_basename + '.png')
+   return fname
+
+def prepare_streetview_filename(file_basename):
+   fdir = join(MAPSDIR, 'streetview')
+   makedirs(fdir, exist_ok=True)
+   fname = join(fdir, file_basename + '.jpg')
+   return fname
+
+
+def fetch_staticmap(location, file_basename):   
+   url = prepare_staticmap_url(location)
+   print("...Downloading", url)
+   resp = requests.get(url)
+
+   fname = prepare_staticmap_filename(file_basename)      
+   with open(fname, 'wb') as f:
+      f.write(resp.content)
+      print("...Saving to", fname)
+
+def fetch_streetview(location, file_basename):   
+   url = prepare_streetview_url(location)
+   print("...Downloading", url)
+   resp = requests.get(url)
+
+   fname = prepare_streetview_filename(file_basename)   
+   with open(fname, 'wb') as f:
+      f.write(resp.content)
+      print("...Saving to", fname)
+~~~
+
+
+
+# Organize data
+
+~~~py
+from csv import DictReader
+from os.path import join
+DATADIR = 'tempdata'
+DATA_FILENAME = join(DATADIR, 'the-counted.csv')
+
+def get_shootings(howmany = 30):
+    f = open(DATA_FILENAME)
+    rows = list(DictReader(f))
+    f.close()
+    return rows[0:howmany]
+~~~
+
+# Get the maps
+
+~~~py
+from foodata import get_shootings
+from foogoo import fetch_streetview, fetch_staticmap
+from time import sleep
+
+
+for row in get_shootings():
+   location = ", ".join([row['streetaddress'], row['city'], row['state']])
+   file_id = row['uid']
+   print(file_id, location)
+   sleep(1)
+   fetch_streetview(location, file_id)
+   fetch_staticmap(location, file_id)
+~~~
+
+
+# Make the webpage
+
+~~~py
+from os.path import abspath, join
+from foogoo import prepare_streetview_filename, prepare_staticmap_filename
+from foodata import get_shootings
+WEBPAGE_FILENAME = join(abspath("."), "mywebpage.html")
+
+f = open(WEBPAGE_FILENAME, 'w')
+
+
+f.write("""
+
+<html>
+<head>
+<title>Officer Involved</title>
+<meta name="robots" content="index, follow" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=1040">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<!-- <link rel="shortcut icon" href="favicon.ico"> -->
+
+<meta name="keywords" content="">
+<meta itemprop="description" name="description" content="A visualization of police violence in 2015. By Teju Cole and Josh Begley.">
+<link rel="image_src" href="https://theintercept.co/officer-involved/places.jpg">
+<!-- <meta name="author" content="Teju Cole, Josh Begley"> -->
+<!-- FB -->
+<meta property="og:title" content="Officer Involved"/>
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="The Intercept" />
+<meta property="og:description" content="A visualization of police violence in 2015. By Teju Cole and Josh Begley.">
+<meta property="og:url" content="https://theintercept.co/officer-involved/"/>
+<meta property="og:image" content="https://theintercept.co/officer-involved/places.jpg"/>
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@the_intercept">
+<meta name="twitter:domain" content="The Intercept"/>
+<!-- <meta name="twitter:creator" content="@joshbegley"> -->
+<meta name="twitter:title" content="Officer Involved">
+<meta name="twitter:description" content="A visualization of police violence in 2015. By Teju Cole and Josh Begley.">
+<meta name="twitter:image" content="https://theintercept.co/officer-involved/places.jpg">
+<meta name="twitter:image:width" content="628">
+<meta name="twitter:image:height" content="471">
+<!-- Fonts -->
+<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="fancybox/source/jquery.fancybox.css" type="text/css" media="screen" />
+
+<style>
+
+html,a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}
+html{min-width:1092px;margin:0}
+/*iframe{margin:-2px auto}*/
+body{font:16px/1.5em Lato,Helvetica,sans-serif;font-weight:300;background-color:#000}
+a{text-decoration:none;color:#fff}
+.bld{font-weight:700}
+.ital{font-style:italic;}
+.byline{font-style:italic;}
+.no-ital{font-family: Lato,Helvetica,sans-serif;font-style:normal!important;}
+header{background-color:#000;height:60px;text-align:center;font-family:Lato,Helvetica,sans-serif;font-size:24px;color:#fff;line-height:60px;min-width:1040px!important; letter-spacing: 0.5px;}
+.item{float:left;width:150px;margin:3px;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;overflow:hidden;-webkit-animation-duration:3s;-webkit-animation-timing-function:ease-in;-webkit-animation-iteration-count:1}
+@-webkit-keyframes fadeIn {
+0%,50%{opacity:0}
+100%{opacity:1}
+}
+#spread{width:1092px;margin:2px auto 20px;display:block;}
+#spread img:hover{opacity:.9}
+#btm{display:inline-block;height:60px;width:100%;position:relative;text-align:center;padding:40px 0 20px;color:#fff}
+#btm a{color:#f9f9f9}
+#about-nav{position:absolute;width:68px;height:60px;margin:0 40px;float:left;padding:5px;line-height:60px;font-size:16px;font-weight:400;color:#d3d3d3;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;overflow:hidden;-webkit-transition:all .1s ease-in-out}
+.about-nav-content{background:#000;height:20px;background-position:center;padding:5px;margin:10px auto;font-size:16px;line-height:18px;text-align:center;font-weight:400;color:#aaa;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px}
+.about-nav-content:hover{background-color:#f0f0f0;color:#008cdd}
+#about-container{width:680px;padding:32px 60px;margin:0 auto 60px;border-top:1px solid #aaa;border-bottom:1px solid #aaa; overflow: hidden;}
+#about-container p{color:#d3d3d3;font-size: 1em;letter-spacing: 0.5px;line-height: 1.4em;padding-bottom: 1em;overflow: hidden;}
+#about-container a{color:#d3d3d3;}
+#about-container a:hover{color: #fff;}
+/*#about-container a:hover{color: #df3f3d;}*/
+#about-container img{-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;margin-right:5px;-webkit-animation-name:fadeIn;-webkit-animation-duration:2s;-webkit-animation-timing-function:ease-in;-webkit-animation-iteration-count:1}
+#buttons{position:relative;right:0;float:right;height:0;width:1040px;display:inline-block;margin-top:-40px}
+#twitter{float:right;height:60px}
+#facebook{position:relative;float:right;height:60px}
+@media only screen and (min-device-width :320px) and (max-device-width:667px) {
+html{min-width:936px}
+header{font-size: 4em;height: 3em;line-height: 3em;letter-spacing: 1px;font-weight: 400;}
+#about-container{width: 936px;padding:60px 60px;}
+#about-container p{font-size: 3em;letter-spacing: 1px;}
+#spread{width:936px;}
+.item{-webkit-border-radius:25px;-moz-border-radius:25px;border-radius:25px}
+.byline{font-style:italic;font-size: 2.6em!important;}
+#btm{font-size: 2em!important;}
+}
+</style>
+</head>
+<body>
+
+
+<div id="spread">
+""")
+
+
+IMG_HTML = """
+<div class="item">
+  <img class="lazy" src="%s" alt="" height="150px">
+</div>
+"""
+
+for row in get_shootings():
+    file_id = row['uid']
+    image_url = prepare_streetview_filename(file_id)
+    print(image_url)
+    f.write(IMG_HTML % (image_url))
+
+
+
+
+f.write(
+"""
+</div>
+<div id="btm">With thanks to <span class="ital"><a href="http://theguardian.com/thecounted">The Guardian</span>'s The Counted</a>.</div>
+""")
+~~~
+
+
+
+
+
+# Fetch the satellite imagery
+
+https://developers.google.com/maps/documentation/static-maps/intro?hl=en
+
+https://maps.googleapis.com/maps/api/streetview?size=400x400&location=McClatchy+Hall,Stanford,CA&fov=90&heading=235&pitch=10
+
+https://maps.googleapis.com/maps/api/streetview?size=400x400&location=Main+Quad,Stanford,CA&fov=90&heading=235&pitch=10
+
+https://maps.googleapis.com/maps/api/streetview?size=400x400&location=Memorial+Church,Stanford,CA&fov=90&heading=235&pitch=10
+
+
+https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=400x400&maptype=roadmap&markers=The+Dish,Stanford,CA
+
+https://maps.googleapis.com/maps/api/streetview?size=400x400&location=The+Dish,Stanford,CA&fov=90&heading=235&pitch=10
+
+
+
+<!-- https://maps.googleapis.com/maps/api/staticmap?zoom=10&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318
+&markers=color:red%7Clabel:C%7C40.718217,-73.998284
+ -->
+
+# Attempt to get street view data
+
+https://maps.googleapis.com/maps/api/streetview?size=400x400&location=600%201st%20St%20SW,%20Mt%20Vernon,%20IA%2052314&fov=90&heading=235&pitch=10
+
+https://maps.googleapis.com/maps/api/streetview?size=400x400&location=The+Dish,Stanford,CA&fov=90&heading=235&pitch=10
+
+http://maps.google.com/cbk?output=json&ll=39.470611,-0.3899&radius=50&cb_client=maps_sv&v=4
+
+http://maps.google.com/cbk?output=json&location=New+York,NY&radius=50&cb_client=maps_sv&v=4
+
+# Write helpers
+
+
+http://theguardian.com/thecounted/list#lonnie-niesen-1147
+
+
+# Write the HTML
+
+
+
+
+
+# Turn it into a webpage
+

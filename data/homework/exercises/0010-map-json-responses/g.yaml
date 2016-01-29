@@ -1,0 +1,28 @@
+title: "Print the location, confidence score, and coordinates for each result in the Mapzen Search JSON response"
+description: |
+  For each `Feature`-type object in the Mapzen Search JSON file, print out the following values in a semicolon delimited list:
+
+  - label
+  - confidence
+  - longitude (as found in the `Point` object's `coordinates`, within `geometry`)
+  - latitude (as found in the `Point` object's `coordinates`, within `geometry`)
+
+points: 0.5
+hints: |
+  - The `longitude` is the _first_ value inside each `coordinates` object.
+  - The `latitude` is in the _second_ value inside each `coordinates` object.
+
+expectations:
+  output: |
+    Stanford, Santa Clara County, CA;0.949;-122.16608;37.42411
+    Stanford, Lincoln County, KY;0.945;-84.66189;37.53119
+    Stanford, Allin, IL;0.941;-89.21786;40.43476
+    Stanford, Judith Basin County, MT;0.94;-110.21826;47.15358
+    Stanford, Santa Clara County, CA;0.737;-122.167340615422;37.4251401412163
+    Stanford, Oakland County, MI;0.731;-83.1792681531045;42.6751206714193
+    Stanford, Clay County, IL;0.725;-88.4167904448051;38.6696905856532
+    Stanford, Isanti County, MN;0.725;-93.407649642371;45.4442114012486
+    Stanford, Dutchess County, NY;0.725;-73.6917318290657;41.8885062048017
+    Stanford, Lincoln County, KY;0.725;-84.6605602220764;37.5349694856098
+
+

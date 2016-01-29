@@ -1,0 +1,84 @@
+---
+title: Reading Through Shakespeare's Text Files
+description: |
+  Practicing the ins-and-outs of managing files and reading through them, featuring the works of Shakespeare.
+due_date: 2016-01-26
+exercises_slug: 0004-shakefiles
+summary: |
+  This set of exercises is less meant as a challenge and more a test to make sure you know how to navigate your own file system, and also a tour of how file operations work "under the hood". Virtually all of the answers to the exercises are [given and explained in this separate guide](/practicum/shakefiles/shakefiles-landing-page/).
+mymeta:
+  prereads:
+    - /guides/devwork/code-conventions
+    - /guides/python/fundamentals/for-loops
+    - /guides/python/fundamentals/conditional-branching
+    - /guides/python/fileio/open-and-read-text-files
+    - /guides/python/how-tos/downloading-files-with-requests
+    - /guides/python/fileio/open-and-write-files
+---
+
+This is an expansive, overly verbose set of exercises that not only cover a fairly boring topic -- how to organize and read files -- but also attempts to introduce software design concepts, such as how to write a program by tackling its smallest problem, and then stepping backwards through the process -- rather than the typical top-down approach.
+
+Although these exercises follow basic patterns that will apply to virtually everything else we'll do, don't worry about memorizing the details. Make sure that you can actually get the code to work on your computer. And make sure you can _reason_ through it. Because all of the finished code and answers are basically just _given_ to you, I'm expecting that you actually take the time to write it out, and __not just copy-paste__ it.
+
+The finished programs are fairly intimidating at first glance. However, even just typing out the code and changing up the variables will slow you down enough to see how everything fits together. Try re-arranging or tidying up the code on your own. 
+
+For example, I'm often verbose in my solutions so that you can follow the process, line-by-line:
+
+~~~py
+DATA_DIR = 'tempdata'
+filepattern = join(DATA_DIR, '**', '*')
+filenames = glob(filepattern)
+~~~
+
+But if you're wondering, "Well, that seems like it could all be one line" -- then _do it yourself_, and see what happens:
+
+~~~py
+filenames = glob(join('tempdata', '**', '*'))
+~~~
+
+
+Don't take my solutions as gospel -- that's not the way programming works. You should try things out that _seem_ to make sense to you. In later exercises, I will not be doing as much hand-holding, and it's going to be more of a free-for-all in terms of how I feel like naming things and organizing my code. Since the provided code and answers should just "work", you should take the time to be confident with not just rewriting the code, but altering it to your tastes.
+
+
+## Before you start this lesson 
+
+
+
+### Create a .gitignore
+
+[Your Git repository should be properly configured](/guides/devwork/setting-up-github-and-cli-operations). In your `compciv-2016` folder, create a text file named `.gitignore`. It should contain this:
+
+~~~
+.DS_Store
+creds_*
+tempdata/
+__pycache__/
+*.py[cod]
+~~~
+
+Here's an example of what it [would look like in your Github repo](https://github.com/some-student/compciv-2016/blob/master/.gitignore).
+ 
+The point of this file is to keep you from pushing `tempdata` into your __Github repository__. The `tempdata` directory, during the exercise, contains downloaded files that you _work with_, but never actually alter. Thus, I don't need to ever see this directory -- as I can recreate it on my own. 
+
+Basically, there's no point in everyone pushing Shakespeare's complete works into their online repos. The upshot is that you will never see `tempdata` when doing any of the __git__ commands, such as `git status`. This is the point of `.gitignore`.
+
+
+### Reading about the fundamentals
+
+Though I've [created guides on how to complete every one of these exercises](/practicum/shakefiles/shakefiles-landing-page/), it's expected that you've read these following guides so that you're familiar with the basics:
+
+<section class="uniform-content-resource-listing">
+<% page_mymeta.prereads.each do |r| %>
+<%= content_resource_tag r %>
+<% end %>
+</section>
+
+### An overview of the new functions 
+
+Here are the specific modules and functions you'll practice in these exercises:
+
+- [glob.glob()](https://docs.python.org/3/library/glob.html#glob.glob) - Return a possibly-empty list of path names that match pathname, which must be a string containing a path specification. 
+- [os.path.join()](https://docs.python.org/3/library/os.path.html#os.path.join) - Join one or more path components intelligently. 
+- [os.makedirs()](https://docs.python.org/3/library/os.html#os.makedirs) - Recursive directory creation function
+- [shutil.unpack_archive()](https://docs.python.org/3/library/shutil.html#shutil.unpack_archive) - Unpack an archive.
+

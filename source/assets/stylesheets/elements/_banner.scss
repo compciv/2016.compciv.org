@@ -1,0 +1,50 @@
+.banner{
+  margin-left: auto;
+  margin-right: auto;
+  @include media-breakpoint-down(md){
+    max-height: 400px;
+  }
+  @include media-breakpoint-down(sm){
+    max-height: 240px;
+  }
+}
+
+.banner-home{
+  padding: 1.0em 0;
+  .title{
+    font-size: $font-size-h1 * 1.1;
+    @extend .container;
+  }
+}
+
+
+.banner-image{
+  background-color: black;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow-y: hidden ! important;
+  overflow-x: hidden ! important;
+  text-shadow: 1px 1px 1px #000;
+  background-position: 50% 0%;
+}
+
+.banner-iframe{
+  background-color: black;
+  text-align: center;
+  iframe{
+      margin-left: auto;
+      margin-right: auto;
+      @include make-container-max-widths();
+      @include media-breakpoint-down(md){
+        max-height: 400px;
+      }
+      @include media-breakpoint-down(sm){
+        max-height: 240px;
+      }
+  }
+}
+
+
+.banner-caption{
+  font-style: italic;
+}

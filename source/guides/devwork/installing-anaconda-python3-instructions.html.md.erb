@@ -1,0 +1,32 @@
+---
+title: Installing Python 3.x with the Anaconda Installer package
+description: |
+  For this class, we'll use the Anaconda installer, which provides a convenient one-click package of the Python interpreter and libraries that we need.
+---
+
+You may already have Python on your system. If you already really, really know what you're doing (i.e. you used `pyenv` to set things up. Or you think you _could_ manage that, then you can ask me for help), then you can ignore this part.
+
+Otherwise, this is like installing any other program to your computer. Though keep in mind the file size is quite hefty. Email me if you are have hard drive space limitations, e.g. fewer than a few gigabytes.
+
+The [instructions are here](http://docs.continuum.io/anaconda/index). However, to make things consistent, don't download the most recent file. Download the most appropriate installer from the archive:
+
+- Windows: [Anaconda3-2.4.0-Windows-x86_64.exe](https://repo.continuum.io/archive/Anaconda3-2.4.0-Windows-x86_64.exe)
+- OS X: [Anaconda3-2.4.0-MacOSX-x86_64.pkg](https://repo.continuum.io/archive/Anaconda3-2.4.0-MacOSX-x86_64.pkg)
+- Linux: [Anaconda3-2.4.0-Linux-x86_64.sh](https://repo.continuum.io/archive/Anaconda3-2.4.0-Linux-x86_64.sh)
+
+
+
+After the installation process is done, go to your shell's command prompt via __Terminal__:
+
+~~~sh
+$ python --version
+~~~
+
+(note: don't include the `$` -- I use that to indicate that this command is to be executed at your shell)
+
+The response should look like:
+
+~~~
+Python 3.5.1 :: Anaconda 2.4.0 (x86_64)
+~~~
+

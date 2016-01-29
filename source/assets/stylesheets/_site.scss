@@ -1,0 +1,35 @@
+@import "site/header";
+@import "site/headroom";
+@import "site/footer";
+@import "pages/page";
+@import "pages/home";
+@import "pages/cheatsheet";
+@import "pages/exercises";
+@import "pages/site-articles";
+
+body{
+  padding-top: $header-height;
+}
+
+body.no-header{
+  padding-top: 0;
+}
+
+p{
+  font-family: $font-family-serif;
+}
+
+
+.sec{
+  margin-top: 2.5em;
+
+  &:first-child{
+    margin-top: 0;
+    margin-bottom: 2.5em;
+  }
+}
+
+.TK{
+/*  outline: 3px dashed $tk-color;*/
+}
+

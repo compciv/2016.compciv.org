@@ -1,0 +1,112 @@
+title: "Print the total number of babies in 2014, by last character of their given names"
+points: 1.0
+description: |
+  This is similar to the previous exercise, except that instead of aggregating by a manageable number of categories, i.e. `M` and `F`, we're asked to keep count for every letter in the alphabet.
+
+  Don't try to simply do what you did for __e.py__, but on a much more tedious scale.
+
+  Learn to use the __dictionary__ object which can be used to contain any arbitrary and scalable collection of keys (in this case, _alphabet letters_) and values (in this case, baby counts for a given letter)
+
+hints: |
+
+  Remember that string objects are sequences, and like lists, can have their last member be accessed using square-bracket notation and the index value of `-1`.
+
+
+  The way to do this exercise is _not_ to have a massive if/elif/else conditional branch, even though it would technically work.
+
+  Instead, use a __dictionary__, in which its keys are the letters of the alphabet, and the values are the current count of babies for a given letter.
+
+  For example, instead of doing this (assuming `fileobject` is the file of records):
+
+  ~~~py
+  ax = 0
+  bx = 0
+  cx = 0
+  for line in fileobject:
+      name, sex, babies = line.strip().split(',')
+      last_letter = name[-1]
+      if last_letter == 'a':
+          ax += int(babies)
+      elif last_letter == 'b':
+          bx += int(babies)
+      elif last_letter == 'c':
+          cx += int(babies)
+
+  # etc.
+  ~~~
+
+  Try this:
+
+  ~~~py
+  mydict = {}
+  for line in fileobject:
+      name, sex, babies = line.strip().split(',')
+      last_letter = name[-1]
+      if mydict.get(last_letter):
+          mydict[last_letter] += int(babies)
+      else:
+          mydict[last_letter] = int(babies)
+  ~~~
+
+  If you don't understand the puprose of the if-statement, or the `get()` method, recall what happens when you try to access a dictionary's key without it being previously set.
+
+  If you feel pretty confident about dictionaries and iterable objects in general, feel free to use the __defaultdict__ or even the __Counter__ types -- both of which are in the [collections module](https://docs.python.org/3/library/collections.html) and offer a few relevant conveniences if you take the time to study and try them out.
+
+  For the final part of this exercise, in which you print the list of sums in alphabetical order, remember that you can't simply iterate through the dictionary of counts like this:
+
+  ~~~
+  for key, val in mydict.items():
+      print(key + ':', val)
+
+  ~~~
+
+  This doesn't work because dictionaries are __unordered__ collections...those keys won't come out in alphabetical or any non-arbitrary order.
+
+  We can get around this by iterating through a sequence that we _know_ to be in alphabetical order, even if we have to create it ourselves:
+
+  ~~~
+  for letter in 'abcdefg':
+       val = mydict[letter]
+       # etc
+  ~~~
+
+
+  Python has the [__string__ module for common string operations](https://docs.python.org/3/library/string.html), including _constants_, such as `string.ascii_letters` which lists all lower and uppercase letters from `a` to `Z`. You probably want to use `string.ascii_lowercase`, rather than manually typing out the alphabet, no matter how well you've memorized your abcs:
+
+  ~~~
+  >>> import string
+  >>> string.ascii_lowercase
+  'abcdefghijklmnopqrstuvwxyz'
+  ~~~
+
+
+
+
+expectations:
+  output: |
+    a: 683400
+    b: 31658
+    c: 24966
+    d: 46701
+    e: 459362
+    f: 3003
+    g: 5375
+    h: 228547
+    i: 103362
+    j: 1537
+    k: 36097
+    l: 170789
+    m: 63365
+    n: 901859
+    o: 84050
+    p: 2569
+    q: 363
+    r: 225161
+    s: 148429
+    t: 72840
+    u: 3965
+    v: 3364
+    w: 30306
+    x: 20757
+    y: 313782
+    z: 4544

@@ -1,0 +1,134 @@
+---
+title: Count the lines of Shakespeare's Hamlet
+description: |
+  To count all the lines in a file, we have to read every line in the file.
+sequence: 
+  landing: /practicum/shakefiles/shakefiles-landing-page
+  next: /practicum/shakefiles/f-print-final-5-romeo-juliet-lines
+  previous: /practicum/shakefiles/d-print-first-5-lines-of-hamlet
+mymeta:
+  exercise_slug: '0004-shakefiles/e'
+summary: |
+  In day-to-day computing, we're used to double-clicking a file and having immediate access to all of its contents. For example, double-click a PDF file, wait for the reading program (e.g. Acrobat Reader) to load up, and then you can scroll through the entire file. But at the byte-level, files are actually read (and written), well, byte-by-byte. This means that our program doesn't know seemingly basic facts about a given file -- such as how many lines are in the file -- until the file has been completely read by the program.
+---
+
+<!--associated_exercise-->
+
+# The problem
+<% exercise = load_exercise(page_mymeta.exercise_slug) %>
+
+Here's the problem we're trying to solve &ndash; if you're doing this as homework, see the <%=link_to "full info for this exercise", exercise.exercise_set_path %>:
+
+<% content_card do %>
+  <%= partial '/layouts/coursework/partials/exercise', 
+      :locals => {:exercise => exercise, :show_abstract => true } %>
+<% end %>
+<!--//associated_exercise-->
+
+
+
+# Count every line by reading every line
+
+This is mostly an extension of the <%= link_to "previous exercise", "/practicum/shakefiles/d-print-first-5-lines-of-hamlet" %>, to prepare you for the similar-sounding yet significantly more complicated next exercise: <%=link_to_content_resource '/practicum/shakefiles/f-print-final-5-romeo-juliet-lines' %>
+
+The main takeaway of this lesson is that in order to get a count of how many lines are in a file, we have to literally _read every line in the file_ (and keep count).
+
+
+# Using a for-loop with a file object
+
+Revisiting the code for the <%= link_to "previous exercise", "/practicum/shakefiles/d-print-first-5-lines-of-hamlet" %>:
+
+~~~py
+import os
+fname = os.path.join('tempdata', 'tragedies', 'hamlet')
+hamletfile = open(fname, 'r')
+for x in range(5):
+    print(hamletfile.readline().strip())
+hamletfile.close()
+~~~
+
+Instead of iterating through the first 5 lines (i.e. `range(5)`), we want to iterate through _all_ of the lines. 
+
+However, we can't use `range()` because we don't know what number to use (without manually looking it up) to signify the end of file.
+
+So instead of passing in a `range()` as the iterable object, we pass in the __file object__ _itself_, making the __file object__ the thing that the for loop iterates over:
+
+~~~py
+for x in hamletfile:
+  # ...
+~~~
+
+By convention, this variation of the for-loop will iterate over _each line_ of the file stream. In this variation, the variable `x` does not represent an integer within a given `range`. Instead, with each iteration, `x` points to a __line__ (i.e. a string object). 
+
+If we wanted to use this form of the for-loop and yet still print the first 5 lines of Shakespeare, we have to manually keep track of the line number with our own variable, and then use a __conditional branch__ to test if that variable is less than `5`:
+
+~~~py
+line_num = 0
+for x in hamletfile:
+    if line_num < 5:
+        print(x.strip()) # x is a line of text, i.e. a string object
+    line_num += 1
+~~~
+
+
+We also don't have to call the `readline()` function explicitly; that's already done for us by using this kind of for-loop. Here's the full code snippet in context:
+
+~~~py
+import os
+fname = os.path.join('tempdata', 'tragedies', 'hamlet')
+hamletfile = open(fname, 'r')
+line_num = 0
+for x in hamletfile:
+    if line_num < 5:
+        print(x.strip()) # x is a line of text, i.e. a string object
+    line_num += 1
+
+hamletfile.close()
+~~~
+
+
+# Keeping count
+
+However, for this exercise, we don't have to print the actual text of the lines. We just want a line count -- which is stored inside the `line_num` variable.
+
+But how does the for-loop know when to end? The loop quits when the final line of the `hamletfile` file object has been reached. At that point, `line_num` should contain the final line count:
+
+~~~py
+import os
+fname = os.path.join('tempdata', 'tragedies', 'hamlet')
+hamletfile = open(fname, 'r')
+line_num = 0
+for x in hamletfile:
+    line_num += 1
+hamletfile.close()
+
+print(fname, "has", line_num, "lines")
+~~~
+
+
+# Why is counting lines so complicated?
+
+So that's that for the requirements of this exercise. It's worth asking: _isn't there an easier way to count lines?_
+
+With modern computers, reading files happens so quickly that even a 10,000 line file seems to be read "instantaneously". However, this is just not _physically possible_. At the physical layer (i.e. the itty-bitty-electron level), data bits are being read sequentially. While it's possible to get the __byte count__ of a file -- i.e. how much memory it physically takes up on the hard drive -- using a helper method:
+
+~~~py
+>>> import os
+>>> fname = os.path.join('tempdata', 'tragedies', 'hamlet')
+>>> os.path.getsize(fname)
+182567
+~~~
+
+&ndash; you have no idea which of those individual bytes represent __newline characters__, i.e .`"\n"`, which make up the very definition of what a line in a text file is. Thus, the need to read every line to get an exact counting of lines.
+
+So if the next exercise involves printing just the final 5 lines of a given text file...you can guess that that will require reading every line up to and including those final 5 lines.
+
+
+
+
+
+
+
+
+
+

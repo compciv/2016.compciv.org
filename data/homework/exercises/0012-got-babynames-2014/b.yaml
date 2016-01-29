@@ -1,0 +1,16 @@
+title: Print the sum of the babies whose names were recorded in 2014
+points: 0.5
+description: |
+  Read through each line in the 2014 babynames file and sum the __count__ of babies (the __3rd__ column). Print the total value to screen.
+
+hints: |
+  - Inside the for-loop with which you iterate and read each line of _text_, you should be calling the string object's __split()__ method, which pretty much does what it says. Check out the [Python documentation for a more detailed explanation](https://docs.python.org/3/library/stdtypes.html#str.split).
+
+  - When you call the string's `split()` function, it returns a list of __strings__.
+
+  - If a string _looks_ like a number -- e.g. `"42"` -- it is _still a string_, i.e. the result of `"42" + "42"` is probably _not_ what you want it to be. Use one of the number types's constructor functions -- e.g. `int()` -- to convert strings into numbers.
+
+expectations:
+  output: |
+    There are 3670151 babies whose names were recorded in 2014.
+

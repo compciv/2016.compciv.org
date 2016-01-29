@@ -1,0 +1,227 @@
+---
+title: Getting acquainted with Requests and scraping webpages as text
+description: |
+  This set of exercises is meant to as a hands-on overview to the concept of libraries and objects -- and their methods and attributes -- while throwing in the basic concept behind scraping webpages for data.
+exercises_slug: 0003-requests-sotu
+due_date: 2016-01-19
+---
+
+
+With every [State of the Union address](https://www.whitehouse.gov/sotu), it's a common data news story to analyze what's been said over the years. 
+
+Here's how [The Atlantic did it last year](http://www.theatlantic.com/politics/archive/2015/01/the-language-of-the-state-of-the-union/384575/):
+
+![image sotu-analysis-atlantic.png](/files/images/assignments/exercise-sets/0003-requests-sotu-set/sotu-analysis-atlantic.png)
+
+Here's a [fancy visualization by the Washington Post](https://www.washingtonpost.com/graphics/politics/2015-sotu/language/):
+
+![image sotu-analysis-wapo.png](/files/images/assignments/exercise-sets/0003-requests-sotu-set/sotu-analysis-wapo.png)
+
+And why restrict ourselves to States of the Union? [All of Obama's speeches and remarks can be found here](https://www.whitehouse.gov/briefing-room/speeches-and-remarks). NPR [did a word analysis of those, except focused on the things that the press corps asked](http://www.npr.org/2014/12/30/373738692/the-fleeting-obsessions-of-the-white-house-press-corps):
+
+
+![image npr-whitehouse-press-words.png](/files/images/assignments/exercise-sets/0003-requests-sotu-set/npr-whitehouse-press-words.png)
+
+
+NPR even did an [analysis of the _cadence_ of President Obama's speeches](http://www.npr.org/templates/story/story.php?storyId=99838355).
+
+All of these involve different levels of insight and data-wrangling. But at the core of each analysis is simply: gather up the speeches and count up the words.
+
+For this exercise, we will focus on President Obama's State of the Union addresses, just to get acquainted with basic web request operations and text searching. In future exercises, we'll learn more techniques and libraries for more expansive searches, but the core process will be the same.
+
+
+## About the Requests library
+
+Our primary library for downloading data and files from the Web will be [Requests, dubbed "HTTP for Humans"](http://docs.python-requests.org/en/latest/).
+
+To bring in the Requests library into your current Python script, use the `import` statement:
+
+~~~py
+import requests
+~~~
+
+You have to do this at the beginning of every script for which you want to use the Requests library.
+
+Note: If you get an error, i.e. `ImportError`, it means you don't have the __requests__ library installed. Email me if you're having that issue, because it likely [means you probably don't have Anaconda installed properly](/guides/devwork/installing-anaconda-python3-instructions).
+
+
+## The `get` method
+
+The `get` method of the `requests` module is the one we will use most frequently -- which corresponds to how the [majority of the HTTP requests](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods) your browser makes involve the `GET` method. Even without knowing much about HTTP, the concept of `GET` is about as simple as its name: it will __get__ a resource from a web server.
+
+The `get()` method requires one argument: a web URL, e.g. `http://www.example.com`. The [URL's __scheme__](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier) -- i.e. `"http://"` -- is required, even though you probably never type it out in your browser.
+
+Run this from the interactive prompt:
+
+~~~py
+>>> requests.get("http://www.example.com")
+<Response [200]>
+~~~
+
+You might have expected the command to just dump the text contents of `http://www.example.com` to the screen. But it turns out there's a lot more to getting a webpage than just getting what you see rendered in your browser.
+
+You can see this for yourself by popping open the Developer Tools (in Chrome, for OSX, the shortcut is: __Command-Alt-J__), clicking the __Network__ panel, then visiting a page:
+
+![image example-com-get-request.png](/files/images/assignments/exercise-sets/0003-requests-sotu-set/example-com-get-request.png)
+
+What each of those various attributes mean isn't important to figure out now, it's just enough to know that they _exist_ as part of every request for a web resource, whether it's a webpage, image file, data file, etc.
+
+Returning to our previous code snippet, let's assign the result of the `requests.get()` command to a variable, then inspect that variable. I like using `resp` for the variable name -- short for "response"
+
+~~~py
+>>> resp = requests.get("http://www.example.com")
+~~~
+
+Use the `type()` function to see what that `resp` object actually is:
+
+~~~py
+>>> type(resp)
+requests.models.Response
+~~~
+
+If you want to get the text of a successful `requests.get()` response, use its `text` attribute:
+
+~~~py
+>>> resp = requests.get("http://www.example.com")
+>>> print(resp.text)
+<!doctype html>
+<html>
+<head>
+    <title>Example Domain</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type="text/css">
+    # .... and so on
+~~~
+
+
+So that's the basics of just getting the contents of a webpage. Here's a little more explanation of the concepts:
+
+
+## A quick primer on objects and their methods and attributes
+
+The concept of "objects" in programming is a complicated, and somewhat boring and confusing topic that's easier to explain by example. This is a segue into introducing the concept, just so that you have some context when trying to access the data/contents, etc. after successfully downloading a webpage via `requests.get()`.
+
+Here's a brief overview of what you need to know about objects for this lesson:
+
+- Use the `type()` function to find out the type of an object, e.g. `type('hello')`
+- Getting a web resource means getting all of the metadata involved in the transaction. Thus, the `requests.get("http://somepage.com")` method returns an object of type `requests.models.Response`, not just a text string of `somepage.com`'s raw HTML.
+- Objects have __methods__ and __attributes__. Different objects have different methods and attributes.
+- At the interactive Python prompt, use the __Tab key__ to autocomplete names of methods and attributes belonging to the object that a particular variable refers to. This is a much better alternative than trying to memorize everything.
+- Methods and attributes will _feel_ like the same kind of concept. Practically speaking, invoking a __method__ requires including the closed parentheses: `"hello world".upper()`. Attributes do _not_ require the parentheses, e.g. `9.denominator`
+- To get the raw text of a webpage from a `requests.models.Response`, use its `text` attribute.
+
+
+And here's a longer explanation:
+
+### So what is that `requests.models.Response`?
+
+Just as `"hello world"` is an __object__ of the type `str` (i.e. string literal) and `42` is an object of type `int` (i.e. integer), the object returned by `requests.get()`, and subsequently assigned to the `resp` variable, has its own type: `requests.models.Response`.
+
+Each type of object has its own __methods__ and __attributes__ that can be referenced. The difference between a _method_ and _attribute_ can be...confusing...so for awhile, it may be a matter of memorization and just knowing how to inspect things.
+
+#### Methods
+
+Think of methods as __functions__ that belong to an object (`type()` and `print()` are examples of functions that are called without being part of an object).
+
+For instance, the `str` object has a __method__ named __upper()__ (return an upper-cased version of the string):
+
+~~~py
+>>> "Hello world".upper()
+'HELLO WORLD'
+~~~
+
+It doesn't make sense to call `upper()` all by its lonesome, i.e.
+
+~~~py
+>>> upper()
+~~~
+
+...because there is nothing to translate to uppercase. The `upper()` (and its counterpart, `lower()`) method only makes sense in the context of a text string. Hence, we think of `upper()` as being a method that belongs to the String object.
+
+You can think of __methods__ as referring to things that require an "action" or calculation of some sort, e.g. `"hello world".upper()` executes an action in which the characters of `"hello world"` are translated into their upper-case equivalents: `"HELLO WORLD"`. The use of the closed parentheses is what executes that action. If you don't include the parentheses, nothing happens except Python telling you, "Yep, that's a function"
+
+~~~py
+>>> 'hello world'.upper
+<function str.upper>
+~~~
+
+
+#### Attributes
+
+
+Think of __attributes__ as properties inherent to an object -- i.e. no calculation or action is required to derive them -- they just _are_. For example, a person's __birthdate__ can be thought of as an __attribute__ -- an unchangeable _fact_ about that person. But a person's __age__ is better thought of as a __method__ -- because age is derived from _birthdate_, i.e. finding the difference between the current date and the _birthdate_.
+
+For our practical purposes, attributes are referenced the same way as methods, _but without the use of closed parentheses_:
+
+~~~py
+>>> a = 42
+>>> a.numerator
+42
+>>> a.denominator
+1
+~~~
+
+### Exploring the methods and attributes of `requests.models.Response` 
+
+
+Because the `requests.models.Response` object encapsulates
+
+Let's use the autocomplete functionality of interactive Python to get a list of __methods__ and __attributes__ belonging to the `requests.models.Response` object.
+
+Starting from the very beginning, including the `import` statement:
+
+~~~py
+>>> import requests
+>>> resp = requests.get("http://www.example.com")
+~~~
+
+At the next prompt, type out `resp`, then the __dot__. Then, hit __Tab__ -- the interactive prompt should return a list of all possible methods and attributes:
+
+~~~py
+>>> resp.  #( hit the Tab key)
+resp.apparent_encoding      resp.iter_lines
+resp.close                  resp.json
+resp.connection             resp.links
+resp.content                resp.ok
+resp.cookies                resp.raise_for_status
+resp.elapsed                resp.raw
+resp.encoding               resp.reason
+resp.headers                resp.request
+resp.history                resp.status_code
+resp.is_permanent_redirect  resp.text
+resp.is_redirect            resp.url
+resp.iter_content    
+~~~
+
+
+The `text` attribute contains the raw HTML of the webpage you requested. It's just a String object, which you can verify for yourself:
+
+~~~py
+>>> type(resp.text)
+str
+~~~
+
+And you can use the `len()` function to get the number of characters:
+
+~~~py
+>>> len(resp.text)
+1270
+~~~
+
+
+#### The `status_code` attribute
+
+Check out the [HTTP Status Cats](https://www.flickr.com/photos/girliemac/sets/72157628409467125/) photo gallery (or [HTTP Status Dogs](http://httpstatusdogs.com/), if you prefer dogs) for an informal overview of HTTP status codes.
+
+Then find the status code of the response that you received with the `status_code` method:
+
+~~~py
+>>> resp.status_code
+200
+~~~
+
+We'll use a few other of the attributes and methods of the `requests.models.Response` in other situations. But `text` and `status_code` will fulfill the majority of our needs.
+

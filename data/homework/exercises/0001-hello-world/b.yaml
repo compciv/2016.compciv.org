@@ -1,0 +1,27 @@
+title: 'Deliberately crash the program with a `NameError`'
+description: |
+  Errors happen. Fixing them with confidence requires not panicking.
+
+  You already know how to print out the string literal, `"hello"`.
+
+  Try to print `"hello"` (or any string of characters) without quotes and see the error message that comes up.
+
+  For this exercise, write a script that successfully prints `"hello"`, then crashes due to a NameError in the second line.
+
+
+
+points: 0.5
+expectations:
+  output: hello
+  error:
+    type: NameError
+    sample_message: "NameError: name 'world' is not defined"
+takeaways:
+  - Errors aren't so bad. Try to see where something you actually wrote in the code is quoted in the error message.
+  - |
+    If a text word is unquoted, e.g. `world` , the Python interpreter will interpret it as an actual command, function, object -- i.e. it _won't_ interpret `world` as just some piece of text to print or otherwise manipulate.
+  - |
+    Jumping ahead of ourselves: if `world` _had_ been brought to _existence_ (e.g. declared as a __variable__, which we will cover later), then the Python interpreter would know what to do with it. However, without such direction, the Python interpreter will shut the show down.
+  - |
+    Why is the interpreter (and computers, in general) so picky? As you get better at programming, you'll learn to appreciate programs that crash _as soon and as nosily as possible_, and fear the programs that are "silent but deadly."
+

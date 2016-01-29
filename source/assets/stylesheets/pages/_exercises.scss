@@ -1,0 +1,107 @@
+.exercise-set-meta{
+    span.value{
+        font-size: 1.05rem;
+        font-weight: bold;
+        padding: 0.1em;
+    }
+}
+
+
+table.exercises-checklist{
+    @extend .table;
+    @extend .table-sm;
+    @extend .table-striped;
+    font-size: $font-size-sm;
+    td.title{
+
+    }
+
+    td.slug{
+        font-weight: bold;
+    }
+
+    td.points{
+        .value{
+            font-family: $font-family-monospace;
+            font-weight: bold;
+        }
+        text-align: left;
+    }
+}
+
+
+.full-exercises{
+    .exercise{
+        section{
+            margin-bottom: 2.0rem;
+        }
+        .meta{
+            margin-bottom: 1.0rem;
+            padding-bottom: 1.0rem;
+            border-bottom: thin dotted #777;
+
+            .title{
+                @extend .h4;
+            }
+
+            .slug{
+                font-size: $font-size-h5;
+            }
+            .slug.pathname{
+                background: inherit;
+            }
+
+            .points{
+                .value{
+                    font-family: $font-family-monospace;
+                    font-weight: bold;
+                    color: green;
+                }
+            }
+        }
+
+        .takeaways{
+            font-size: $font-size-sm
+        }
+
+    }
+
+    .exercise-card{
+        margin-bottom: 4.5rem;
+        padding-top: 1.5rem;
+    }
+}
+
+// new stuff
+
+.exercise{
+    .section-title{
+        @extend .h6;
+    }
+    .meta{
+        .title{
+            @extend .h5;
+        }
+
+        .exercise-file.pathname{
+            @extend .h5;
+        }
+    }
+
+    .pathname{
+        font-weight: bold;
+    }
+
+
+    .expectations{
+        .preamble{
+            p{
+                margin-bottom: 0.5rem;
+            }
+            pre{
+                margin-top: 0.5rem;
+            }
+        }
+
+    }
+}

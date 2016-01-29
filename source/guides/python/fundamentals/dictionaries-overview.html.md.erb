@@ -1,0 +1,743 @@
+---
+title: Using dictionaries to store data as key-value pairs
+description: |
+  The dictionary stores objects as key-value pairs and can be used to represent complex real-world data.
+summary: |
+  The Python list stores a collection of objects in an _ordered_ sequence. In contrast, the __dictionary__ stores objects in an _unordered_ collection. However, dictionaries allow a program to access any member of the collection using a __key__ -- which can be a human-readable string. 
+
+  Both the dictionary and list are ubiquitous for representing real-world data.
+references:
+  - slug: python-docs-stdtypes-dict
+    title: Mapping Types — dict
+    publisher: Python documentation
+    url: https://docs.python.org/3/library/stdtypes.html#mapping-types-dict
+    description: |
+      A mapping object maps hashable values to arbitrary objects. Mappings are mutable objects. There is currently only one standard mapping type, the dictionary.
+  - slug: python-docs-tutorial-dictionaries
+    publisher: The Python Tutorial
+    title: Data Structures - Dictionaries
+    url: "https://docs.python.org/3/tutorial/datastructures.html#dictionaries"
+  - title: Chapter 5 - Dictionaries and Structuring Data
+    url: https://automatetheboringstuff.com/chapter5/
+    publisher: Automate the Boring Stuff
+    author: Al Sweigart
+    slug: automate-boring-dictionaries
+  - slug: w3c-personal-names
+    title: Personal names around the world
+    url: https://www.w3.org/International/questions/qa-personal-names
+    publisher: World Wide Web Consortium (W3C)
+    description: |
+      How do people's names differ around the world, and what are the implications of those differences on the design of forms, databases, ontologies, etc. for the Web?
+
+  - title: Instagram API get/users endpoint
+    url: https://www.instagram.com/developer/endpoints/users/#get_users
+    slug: instagram-api-get_users
+    publisher: Instagram
+---
+
+
+# What is a dictionary
+
+Dictionaries -- like lists -- are collections of objects. Unlike lists, dictionaries are _unordered_ collections. They are not indexed by sequential numbers, but by _keys_:
+
+~~~py
+>>> mydict = {"apples": 42, "oranges": 999}
+>>> mydict['oranges']
+999
+~~~
+
+## Dictonary syntax
+
+A dictionary -- which has a __type__ name of `dict` -- is denoted by __curly braces__: `{ }`. 
+
+An empty dictionary can be initialized by either using the `dict()` constructor function, or simply with a pair of curly braces:
+
+~~~py
+newdict = {}
+~~~
+
+__Commas__ are used to separate the members in a dictionary. But each member consists of a __key-value pair__. A __colon__ is used as a delimiter between a key and its corresponding value:
+
+~~~py
+{"a": 99, "hello": "world"}
+~~~
+
+Accessing a dictionary's values by index (i.e. its keys) uses the same square bracket notation as other sequence-type objects:
+
+~~~py
+>>> mydict = {"z": 92, "world": "hello"}
+>>> print(mydict['world'])
+hello
+>>> print(mydict["z"])
+~~~
+
+
+### Valid keys
+
+The __keys__ of a dictionary can be any kind of __immutable__ type, which includes: strings, numbers, and tuples:
+
+
+~~~py
+mydict = {"hello": "world", 
+          0: "a", 
+          1: "b", 
+          "2": "not a number"
+          (1, 2, 3): "a tuple!"}
+~~~
+
+However, for the most part, we'll find ourselves using _strings_ as keys when manually creating dictionary objects and converting real-world data into dictionary objects.
+
+Just like the __list__ object can contain a sequence of any kind of Python object, the __values__ stored in a dictionary -- and with which we use __keys__ to access -- can be any kind of Python object, such as lists or other dictionaries:
+
+~~~py
+>>> mydict = {"message": {"hello": 123456}}
+>>> print(mydict['message'])
+{'hello': 123456}
+>>> print(mydict['message']['hello'])
+123456
+~~~
+
+In fact, get _very_ acclimated to the concept of dictionaries within other dictionaries. If you <%=link_to "use Instagram's API to fetch data about Snoop Dogg's account", ref_url("instagram-api-get_users") %>, the API will return a text file (in __JSON__ format) that can be turned into a Python dictionary:
+
+~~~json
+{
+    "data": {
+        "id": "1574083",
+        "username": "snoopdogg",
+        "full_name": "Snoop Dogg",
+        "profile_picture": "http://distillery.s3.amazonaws.com/profiles/profile_1574083_75sq_1295469061.jpg",
+        "bio": "This is my bio",
+        "website": "http://snoopdogg.com",
+        "counts": {
+            "media": 1320,
+            "follows": 420,
+            "followed_by": 3410
+        }
+}
+~~~
+
+Note how the "outer" dictionary contains a single key, `"data"`, which points to a dictionary object with key-value pairs that correspond to information about Snoop Dogg's account. And that dictionary itself contains another dictionary via the key, `"counts"`.
+
+
+# Iterating through a dictionary
+
+Note: Unlike lists, iterating through a dictionary will not happen in a predictable order. I go more into detail in a [later section](#mark-dictionaries-lists).
+
+##  Iterating through the keys
+
+If we pass a `dict` object into a for-loop, by default, only the __key__ will be yielded:
+
+~~~py
+>>> mydict = {'a': 'hello', 'b': 'world'}
+>>> for x in mydict:
+...    print(x)
+b
+a
+~~~
+
+Sometimes we only need the keys. However, having the keys also let's us access each value by reference, including the ability to change the values that are referred to:
+
+~~~py
+>>> mydict = {'a': 'hello', 'b': 'world'}
+>>> for x in mydict:
+...    val = mydict[x]
+...    mydict[x] = val.upper()
+...    print('Changed what', x, 'points to: from', val, 'to', mydict[x])
+Changed what b points to: from world to WORLD
+Changed what a points to: from hello to HELLO
+~~~
+
+### Using the keys() method to get a sequence of keys
+
+If you intend to just iterate through a dictionary's key, I recommend _explicitly_ making that clear by calling the dictionary's `keys()` method:
+
+~~~py
+>>> for k in mydict.keys():
+...     print(k)
+b
+a
+~~~
+
+The `keys()` method returns a `dict_keys` object...which I don't really use directly. Instead, I'll convert it to a list object with the `list()` constructor:
+
+~~~py
+>>> mykeys = mydict.keys()
+>>> type(mykeys)
+dict_keys
+>>> mylist = list(mykeys)
+>>> type(mylist)
+list
+~~~
+
+## Iterating through the values
+
+If we want to iterate only through a dictionary's values, or to get a list of its values, we can call its `values()` method:
+
+~~~py
+>>> mydict = {'a': 'hello', 'b': 'world'}
+>>> for v in mydict.values():
+...     print(v)
+world
+hello
+
+>>> myvals = mydict.values()
+>>> type(myvals)
+dict_values
+>>> mylist = list(myvals)
+>>> type(mylist)
+list
+~~~
+
+Note that if we iterate through a dictionary's values with a loop, then _inside the loop_, we have no way to directly access the dictionary's keys or to be able to change what those keys point to. Sometimes, _that's just fine_ -- as loops get complicated, it's good to know exactly what kind of access and functionality the loops have.
+
+## Iterating through key-value pairs with items()
+
+Oftentimes, we'd like to have access to _both_ the key and the value for every key-value pair in a dictionary. We _could_ use the `keys()` method and then derive each key's value inside the loop:
+
+~~~py
+>>> mydict = {'a': 'hello', 'b': 'world'}
+>>> for key in mydict.keys():
+>>>     val = mydict[key]
+>>>     print("Key", key, 'points to', val)
+Key a points to hello
+Key b points to world
+~~~
+
+Or, we could just use the `items()` method. First, I'll show what `items()` returns, and then convert it to a list with `list()` 
+
+~~~py
+>>> myitems = mydict.items()
+>>> type(myitems)
+dict_items
+>>> mylist = list(myitems)
+>>> type(mylist)
+list
+~~~
+
+Note that the actual contents are the same, whether they're inside a `dict_items` collection or a `list` -- it's just that a list object allows us to access each item individually by numerical index, among other functionality:
+
+~~~py
+>>> print(mylist)
+[('a', 'hello'), ('b', 'world')]
+>>> print(mylist[0])
+('a', 'hello')
+>>> print(mylist[1])
+('b', 'world')
+~~~
+
+Basically, `items()` returns a sequence of __tuples__.
+
+So when we iterate through `mylist.items()` with a for-loop, we can take advantage of a feature referred to as __tuple unpacking__. Notice the change in the __for-loop__ statement:
+
+~~~py
+mydict = {'a': 'hello', 'b': 'world'}
+for key, val in mydict.items():
+    print("Key", key, 'points to', val)
+~~~
+
+We can learn the details of __tuple unpacking__ some other time. For now, we can think of it as just a really convenient way to assign more than one variable in a single line. We could have also done this:
+
+~~~py
+for x in mydict.items():
+    key = x[0]
+    val = x[1]
+    print("Key", key, 'points to', val)
+~~~
+
+But...why be verbose when we don't need to be?
+
+# Other dictionary methods
+
+Compared to the list, the dictionary object doesn't really have a ton of methods or attributes:
+
+~~~
+mydict.clear       mydict.get         mydict.pop         mydict.update
+mydict.copy        mydict.items       mydict.popitem     mydict.values
+mydict.fromkeys    mydict.keys        mydict.setdefault  
+~~~
+
+We've already covered `values()`, `keys()`, and `items()`. Of the remaining few, I personally just use `get()` and `update()` -- and occasionally, `setdefault()`
+
+## get()
+
+Similar to trying to access a list by too big of an index value, accessing a non-existent key of a dictionary will raise a `KeyError`:
+
+~~~py
+>>> mydict = {'z': 999}
+>>> x = mydict['a']
+KeyError: 'a'
+~~~
+
+
+The `get(k)` method provides a safe way to _test_ for a key, `k`. If the dictionary has key `k`, the `get(k)` method will return the _value_. If not, then a `NoneType` object is returned:
+
+~~~py
+>>> mydict = {'z': 999}
+>>> mydict.get('z')
+999
+>>> mydict.get('oooga boooga!!!')
+
+>>> type(mydict.get('heysadf'))
+NoneType
+~~~
+
+This is especially useful when looping through a _list_ of _dictionaries_, in which not all the dictionaries have all of the same _keys_:
+
+~~~py
+names = []
+names.append({'first': 'Dan', 'last': 'Nguyen', 'suffix': 'III'})
+names.append({'first': 'Jane'})
+
+for name in names:
+    x = name.get('first')
+    y = name.get('last')
+    z = name.get('suffix')
+    print(x, y, z)
+~~~
+
+The output:
+
+~~~
+Dan Nguyen III
+Jane None None
+~~~
+
+OK, that's not great, but at least the program didn't crash. We can modify the for-loop with some conditional branches to avoid those ugly `None` values, which is what Python will print to screen for `NoneType` objects:
+
+
+~~~py
+for name in names:
+    x = name.get('first')
+    y = name.get('last')
+    z = name.get('suffix')
+    if not x:
+        x = ""
+    if not y:
+        y = "Doe"
+    if not z:
+        z = ""
+    print(x, y, z)
+~~~
+
+The output:
+
+~~~
+Dan Nguyen III
+Jane Doe 
+~~~
+
+### Using `setdefault()` to provide a value instead of NoneType value
+
+So those conditional branches worked. But let's be honest: _nobody_ likes writing that kind of ugly forest of conditional-branches, especially for such a . There are ways to mitigate this, including using the `dict` object's `setdefault()` method, which allows us to specify a _fallback_ value, _other_ than `NoneType`, for missing keys:
+
+~~~py
+for name in names:
+    x = name.setdefault('first', "")
+    y = name.setdefault('last', "Doe")
+    z = name.setdefault('suffix', "")
+    print(x, y, z)
+~~~
+
+That's much nicer. The output is the same as before:
+
+~~~
+Dan Nguyen III
+Jane Doe
+~~~
+
+## Use update() to set several key-value pairs at once
+
+The `update(newdict)` method takes a dictionary, `newdict`, as an argument (it can take other sequences too, but let's keep it simple for now), and does an __in-place__ update of the calling dictionary.
+
+For keys in `newdict` that _also exist_ in the calling dictionary, the corresponding values in the calling dictionary are replaced. For keys that aren't already in the calling dictionary, new key-value pairs are added:
+
+~~~py
+>>> a = {'first': 'Dan', 'last': 'Nguyen'}
+>>> b = {'last': 'Smith', 'suffix': 'Jr.'}
+>>> a.update(b)
+>>> print(a)
+{'first': 'Dan', 'last': 'Smith', 'suffix': 'Jr.'}
+~~~
+
+
+<a id="mark-dictionaries-lists"></a>
+
+# Dictionaries and lists, compared
+
+## Insertion of elements
+
+In a __list__, members are added into memory sequentially:
+
+~~~py
+>>> mylist = []
+>>> mylist.append('a')
+>>> mylist.append('b')
+>>> mylist.append('c')
+~~~
+
+Python only allows us to set (i.e. _change_) the value at an _existing_ index:
+
+~~~py
+>>> mylist[0] = 'A' 
+~~~
+
+However, it will throw an error if we try to set a value to an index that the list has not yet reached:
+
+~~~py
+>>> mylist[999] = 'Hey'
+IndexError: list assignment index out of range
+~~~
+
+In contrast, because __dictionaries__ are _unordered_ collections of objects, we're allowed to set values with any key we like:
+
+~~~py
+>>> mydict = {}
+>>> mydict[99999999] = "hello"
+~~~
+
+
+
+
+### The consequences of being unordered
+
+A __list__ is considered _ordered_ because its members are arranged in the same order that they were inserted into the list. Every time we iterate through a list, sequentially, we can assume that its members will always be accessible in the same order that they were inserted.
+
+~~~py
+>>> mylist = []
+>>> mylist.append(0)
+>>> mylist.append(1)
+>>> mylist.append(2)
+>>> for n in mylist:
+...     print(n)
+0
+1
+2 
+~~~
+
+Among other operations, this allows us to _slice_ the list in sequential chunks:
+
+~~~py
+>>> mylist = [0, 1, 2, 3, 4]
+>>> mylist[2:4]
+[2, 3]
+~~~
+
+In contrast, the members of __dictionary__ are _not_ stored in any particular order. No matter what order you add key-value pairs into a dictionary, we have no idea what order they'll come out as when we iterate through the dictionary:
+
+~~~py
+>>> mydict = {}
+>>> mydict['a'] = 0
+>>> mydict['b'] = 1
+>>> mydict['c'] = 2
+>>> for k in mydict:
+...     print(k)
+b
+c
+a
+~~~
+
+This is not typically considered to be a huge drawback. For most use cases of a dictionary, we don't really care what order the key-value pairs are stored as.
+
+However, for the times that we demand order, Python has a __collections__ module with allows us to create an __OrderedDict__. I cover that in a [later section](#mark-ordereddict).
+
+
+
+## Versatility as a data format
+
+Anything that can be represented in a list can be represented as a dictionary, and vice versa. Why pick one over the other? It depends on what the programmer (or data provider) feels makes the most sense for representing data.
+
+For example, here's a __list__ of the components of [David Bowie's](https://en.wikipedia.org/wiki/David_Bowie) birth name, and how we would access each part of his name:
+
+~~~py
+>>> bowielist = ['David', 'Robert', 'Jones']
+>>> print(bowielist[0])
+David
+>>> print(bowielist[2])
+Jones
+~~~
+
+This is how we could represent it as a dictionary:
+
+~~~py
+>>> bowiedict = {
+...    'first': 'David',
+...    'middle': 'Robert',
+...    'last': 'Jones'
+... }
+>>> print(bowiedict['first'])
+David
+>>> print(bowiedict['last'])
+Jones
+~~~
+
+The dictionary seems so much more verbose, doesn't it? However, the dictionary's verbosity pays off for _humans_: it's easier to remember that `"last"` points to the last name component, rather than the index value of `2`, as in the case of the list.
+
+
+But the list implementation, as straightforward as it seems, is limited by its own simplicity, and is far more difficult to adapt to more complicated, real-world data. 
+
+For example, what if we wanted to add titles and suffixes to a name?
+
+~~~py
+>>> lelandlist = ['Mr.', 'Leland', 'Dewitt', 'Stanford', 'Jr.']
+~~~
+
+Now, anyone expecting that the `0` index points to the _first name_ is going to be surprised/confused.
+
+The dictionary implementation, however, can handle additions to the data definition with ease: 
+
+~~~py
+>>> lelandlist = {
+...   "first": "Leland",
+...   "middle": "Dewitt",
+...   "last": "Stanford",
+...   "suffix": "Jr.",
+...   "title": "Mr."
+... }
+~~~
+
+Anyone who access the `first` key can expect it to return the first name, the addition of the new keys -- `suffix` and `title` -- don't change how we work with the data. 
+
+The dictionary -- with the tradeoff for verbosity -- allows us to more intuitively represent things from the real-world. What if we wanted the data object to represent a person's identity beyond their name? Modifying the object that `lelanddict` points to, we can use a nested structure:
+
+~~~py
+lelanddict = {
+   "name": {
+     "first": "Leland",
+     "middle": "Dewitt",
+     "last": "Stanford",
+     "suffix": "Jr.",
+     "title": "Mr."
+  }
+   "birth": {
+      "date": 1868-05-14,
+      "place": {
+         "city": "Sacramento",
+         "state": "California",
+         "country": "United States"
+    },
+    "death": {
+      "date": "1884-03-13",
+      "place": {
+        "city": "Florence",
+        "country": "Italy"
+      }
+    }
+  }
+}
+~~~
+
+Yeah, that looks pretty complicated. But life is complicated.
+
+(Also, <%=link_to "names are _extremely_ complicated", ref_url("w3c-personal-names") %>, which underscores why using a simple list isn't enough to represent the components of someone's name)
+
+
+
+------------
+
+
+# Dictionaries in the wild
+
+Here are examples of how various real-world concepts and objects are modeled as dictionaries.
+
+## JSON as data
+
+I'll devote another guide to this, but dictionaries (and lists) can be represented as text files via the __JSON format__. For now, pretend we've done this serialization step and that each of the examples has been set to the variable, `datathing`:
+
+### Github status
+
+Github has a [Status API](https://status.github.com/api), of which it provides machine-readable messages, e.g. "is Github.com functioning?".
+
+Here's what the [live status looks like, as a JSON text file](https://status.github.com/api/status.json):
+
+~~~
+{
+  "status": "good",
+  "last_updated": "2012-12-07T18:11:55Z"
+}
+~~~
+
+Looks like a dictionary, right? Pretend that it's been assigned to the variable `datathing`. This is how we might use the object:
+
+~~~py
+datathing = {
+  "status": "good",
+  "last_updated": "2012-12-07T18:11:55Z"
+}
+
+if datathing['status'] == 'good':
+    print("Things are good")
+else: 
+    print("WTF!?!??!")
+~~~
+
+
+
+
+### Github messages
+
+Similar to the single status message, except that [this returns a __list__ of messages](https://status.github.com/api/messages.json), i.e. a list of dictionaries:
+
+
+~~~py
+datathing = [{
+    "status": "good",
+    "body": "Everything operating normally.",
+    "created_on": "2016-01-21T20:28:31Z"
+}, {
+    "status": "minor",
+    "body": "We're investigating issues serving GitHub pages.",
+    "created_on": "2016-01-21T20:25:03Z"
+}, {
+    "status": "good",
+    "body": "Everything operating normally.",
+    "created_on": "2016-01-20T22:56:57Z"
+}, {
+    "status": "minor",
+    "body": "We're investigating issues affecting a small number of repositories.",
+    "created_on": "2016-01-20T22:47:07Z"
+}]
+~~~
+
+To print out the date, body, and status level of each message:
+
+~~~py
+for d in datathing: # remember that datathing is a list
+  print(d['created_on'], '--',
+        d['status'] + ':')
+  print(d['body'])
+  print("")
+~~~
+
+The output:
+
+~~~
+2016-01-21T20:28:31Z -- good:
+Everything operating normally.
+
+2016-01-21T20:25:03Z -- minor:
+We're investigating issues serving GitHub pages.
+
+2016-01-20T22:56:57Z -- good:
+Everything operating normally.
+
+2016-01-20T22:47:07Z -- minor:
+We're investigating issues affecting a small number of repositories. 
+~~~
+
+
+
+### Instagram user
+
+The Instagram API allows us to look up an [individual user]((https://www.instagram.com/developer/endpoints/users/#get_users):
+
+~~~py
+datathing = {
+      "data": {
+          "id": "1574083",
+          "username": "snoopdogg",
+          "full_name": "Snoop Dogg",
+          "profile_picture": "http://distillery.s3.amazonaws.com/profiles/profile_1574083_75sq_1295469061.jpg",
+          "bio": "This is my bio",
+          "website": "http://snoopdogg.com",
+          "counts": {
+              "media": 1320,
+              "follows": 420,
+              "followed_by": 3410
+          }
+  }
+}
+~~~
+
+
+Here's how to access various values inside that nested dictionary:
+
+~~~py
+>>> user = datathing['data']
+>>> print("User name:", user['full_name'])
+Snoop Dogg
+>>> print("Bio:", user['bio'])
+This is my bio
+>>> counts = user['counts']
+>>> print("Number of posts:", counts['media'])
+1320
+>>> print("Number of users followed:", counts['follows'])
+420
+~~~
+
+
+## Beyoncé (on Spotify) as a dictionary
+
+
+Here's an excerpt of how Spotify's API (via the [get-artist](https://developer.spotify.com/web-api/get-artist/) endpoint) represents Beyoncé (see the [JSON file here](https://api.spotify.com/v1/artists/6vWDO969PvNqNYHIOW5v0m)):
+
+~~~py
+beyonce = {
+  "name" : "Beyoncé",
+  "popularity" : 86,
+  "type" : "artist",
+  "uri" : "spotify:artist:6vWDO969PvNqNYHIOW5v0m",
+  "external_urls" : {
+    "spotify" : "https://open.spotify.com/artist/6vWDO969PvNqNYHIOW5v0m"
+  },
+  "followers" : {
+    "href" : None,
+    "total" : 3841151
+  },
+  "genres" : [ "dance pop", "pop", "r&b", "urban contemporary" ],
+  "href" : "https://api.spotify.com/v1/artists/6vWDO969PvNqNYHIOW5v0m",
+  "id" : "6vWDO969PvNqNYHIOW5v0m",
+  "images" : [ {
+    "height" : 1000,
+    "url" : "https://i.scdn.co/image/a370c003642050eeaec0bc604409aa585ca92297",
+    "width" : 1000
+  }, {
+    "height" : 640,
+    "url" : "https://i.scdn.co/image/79e91d3cd4a7c15e0c219f4e6c941d282fe87a3d",
+    "width" : 640
+  } ]
+}
+~~~
+
+Note how the `external_urls` key points to a dictionary, which itself contains a single key named `spotify` that points to [Beyoncé's page on the Spotify website](https://open.spotify.com/artist/6vWDO969PvNqNYHIOW5v0m). The `genres` key points to a list of string objects, as Beyoncé's oeuvre can't be contained in a single genre. The `images` key points to a list of dictionaries, as Spotify serves up multiple sizes of an artist's image, and each image has multiple properties, e.g. `height`, `url`, and `width`.
+
+The `followers` key also points to a dictionary. To get Beyoncé's __number__ of Spotify followers -- which is associated with the `total` key, this is how we would access the nested value:
+
+(assume the variable, `beyonce`, points to the dictionary above)
+
+~~~py
+>>> print(beyonce['followers']['total'])
+3841151
+~~~
+
+To print the attributes of each version of the images associated with Beyoncé, we can use a nested for-loop:
+
+~~~py
+>>> for imgdict in beyonce['images']:
+...     print('-----')
+...     for key, val in imgdict.items():
+...         print(key + ':', val)
+-----
+height: 1000
+url: https://i.scdn.co/image/a370c003642050eeaec0bc604409aa585ca92297
+width: 1000
+-----
+height: 640
+url: https://i.scdn.co/image/79e91d3cd4a7c15e0c219f4e6c941d282fe87a3d
+width: 640
+~~~
+
+
+
+# Other kinds of dictionaries
+
+<a id-"mark-ordered-dict"></a>
+
+These can be found in [Python's `collections` module](https://docs.python.org/3/library/collections.html. I'll write about them later (TK)
+
+### OrderedDict
+
+TK
+
+### DefaultDict
+
+TK

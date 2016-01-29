@@ -1,0 +1,13 @@
+title: Deliberately cause an IndentationError
+description: |
+  Write a program that crashes because of an `IndentationError`
+
+points: 0.5
+expectations:
+  error:
+    type: IndentationError
+    line_number: 1
+    sample_message: "IndentationError: unexpected indent"
+
+takeaways:
+  - "We haven't really seen _why_ yet, but indentation is an extremely important feature in Python syntax. At the very least, it keeps lines of code properly left-justified."

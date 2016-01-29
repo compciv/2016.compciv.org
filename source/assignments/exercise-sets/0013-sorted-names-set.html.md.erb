@@ -1,0 +1,42 @@
+---
+title: "Sorting those Baby Names (DRAFT)"
+description: |
+  Read (again) and sort a file of comma-delimited baby name records from the Social Security Administration.
+summary: |
+    This exercise set uses the same dataset as __0012-get-babynames-2014__, but focuses on a different aspect of lists and sequences: how to sort them.
+
+    DRAFT TK: The exercises and answers are here, but not the hints and walkthrough, which will be added soon.
+
+
+due_date: 2016-02-02
+exercises_slug: 0013-sorted-names
+
+references:
+  - slug: python-docs-functions-sorted
+    url: https://docs.python.org/3/library/functions.html#sorted
+    title: "Built-in Functions: sorted"
+    publisher: Python documentation
+    description: |
+      Even though the list object has its own `sort()` method, I will heavily implore you to ignore it and instead, use the `sorted()` function, which sorts a list without mutating it.
+
+  - slug: python-docs-sorting-howto
+    url: https://docs.python.org/3/howto/sorting.html#sortinghowto
+    title: Sorting HOW TO
+    publisher: Python documentation
+    description: |
+      This tutorial describes several ways to sort sequences in Python. I highly recommend on just focusing on the `sorted()` examples.
+---
+
+
+
+
+## Learning to sort with sorted()
+
+In the first few exercises, we don't have to know how to sort the lists of lines in order to count and aggregate them. However we will be doing a _lot_ of sorting in subsequent exercises.
+
+In the lesson on lists and mutability, I recommended _not_ using the list method's method, `sort()`. I'll write a short brief on using the built-in `sorted()` function instead.
+
+But you can read the official Python docs here:
+
+- <%=link_to_reference 'python-docs-functions-sorted' %>
+- <%=link_to_reference 'python-docs-sorting-howto' %>

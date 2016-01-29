@@ -1,0 +1,32 @@
+title: Download the zip file of Shakespearean texts to the tempdata directory
+points: 0.5
+description: |
+  Write the Python commands to download the file from the following URL:
+
+  `http://stash.compciv.org/scrapespeare/matty.shakespeare.tar.gz`
+
+  And save it to:
+
+  `tempdata/matty.shakespeare.tar.gz`
+
+  You don't need to unzip it, just worry about downloading it and saving it to disk.
+
+hints: |
+    [This tutorial walks through the process.](/practicum/shakefiles/b-downloading-the-shakespeare-zip)
+
+
+expectations:
+  output: |
+    Downloading: http://stash.compciv.org/scrapespeare/matty.shakespeare.tar.gz
+    Writing file: tempdata/matty.shakespeare.tar.gz
+  effects:
+    remotes:
+      - "http://stash.compciv.org/scrapespeare/matty.shakespeare.tar.gz"
+    created_paths:
+      - tempdata/matty.shakespeare.tar.gz
+
+
+takeaways:
+  - "Downloading a file, then saving it to disk, is significantly more complicated than it is through the browser."
+  - |
+    This program is idempotent. If the file has already been downloaded, it will just be re-downloaded. Sometimes, that's a good thing. Later on, for truly massive files that just never change, we will probably introduce a conditional statement so that our programs download files only when needed.

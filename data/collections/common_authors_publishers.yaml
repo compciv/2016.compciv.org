@@ -1,0 +1,15 @@
+- publisher: Automate the Boring Stuff
+  author: Al Sweigart
+  slug: automate-boring
+
+- publisher: Python documentation
+  slug: python-docs
+
+
+- slug: python-docs-tutorial-dictionaries
+  publisher: The Python Tutorial
+
+
+- slug: dive-python3-files
+  author: Mark Pilgrim
+  publisher: Dive into Python 3

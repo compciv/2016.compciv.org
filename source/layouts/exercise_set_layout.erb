@@ -1,0 +1,105 @@
+
+<% wrap_layout :default_page_wrapper do %>
+
+  <% exercise_slug = current_page.data.exercises_slug %>
+  <% exercise_set = data.homework.exercises[exercise_slug] %>
+  <%
+    exercises = exercise_set.each_key.map do |k|
+        load_exercise(File.join(exercise_slug, k))
+    end
+  %>
+
+
+  <% content_for :more_meta do %>
+    <% content_card(nil, markdown: false) do%>
+      <section class="exercise-set-meta">
+        <div class="date lbl">
+          This <strong>assignment</strong> is due on <span class="value"><%=friendly_date current_page.data.due_date %></span>
+        </div>
+
+        <div class="count lbl">
+          <span class="value"><%=exercises.count %></span> exercises
+        </div>
+        <div class="points lbl">
+           <span class="value"><%=exercises.inject(0){|s, e| s += e.points } %></span>
+           possible points
+        </div>
+
+        <div>Create a subfolder named <strong><code><%=exercise_slug%></code></strong> inside your <code>compciv-2016/exercises</code> folder.</div>
+      </section>
+    <% end %>
+  <% end %>
+
+
+
+
+
+<article class="exercise-set">
+
+
+
+
+
+
+  <section class="exercises-checklist sec">
+    <h1>The Checklist</h1>
+    <p>
+      In your <strong>compciv-2016</strong> Git repository
+      create a subfolder and name it:
+
+      <pre><code class="pathname">     exercises/<%=exercise_slug%></code></pre>
+
+    </p>
+
+    <p>The folder structure will look like this (not including any subfolders such as `tempdata/`:</p>
+
+    <pre>
+        compciv-2016
+        └── exercises
+            └── <strong><%=exercise_slug%></strong>
+               <% exercises.each do |e| %>
+               ├── <%= e.slug_basename %>
+               <% end %>
+    </pre>
+
+    <table class="exercises-checklist">
+      <% exercises.each do |e| %>
+        <tr>
+          <td class="slug">
+            <code class="pathname"><%=link_to e.slug_basename, "##{e.slug_hashmark}" %></code>
+          </td>
+          <td class="points"><span class="value"><%=e.points%></span> points</td>
+
+          <td class="title"><%=link_to e.title, "##{e.slug_hashmark}" %></td>
+        </tr>
+      <% end %>
+    </table>
+  </section>
+
+
+  <section class="background sec">
+  <h1>Background information</h1>
+    <%= yield %>
+  </section>
+
+
+
+
+  <section class="full-exercises sec">
+    <h1>The Exercises</h1>
+
+    <% exercises.each do |e|%>
+      <% content_card(nil, markdown: false, :class => 'exercise-card') do %>
+        <h2 style="display:none; visibility: hidden;" data-tk="This is for TOC purposes">
+            <%=e.slug_filename %> &raquo; <%=e.title %>
+        </h2>
+        <%= partial '/layouts/coursework/partials/exercise',
+            :locals => {:exercise => e, :show_abstract => false } %>
+      <% end %>
+    <% end %>
+  </section>
+
+
+</article>
+
+<% end %>

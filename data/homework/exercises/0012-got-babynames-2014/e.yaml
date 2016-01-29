@@ -1,0 +1,14 @@
+title: Print the total number of babies in 2014 by gender
+points: 0.5
+description: |
+  Sum the count of babies and print the totals by gender.
+
+expectations:
+  output: |
+    F: 1768775
+    M: 1901376
+
+hints: |
+  Pretty much the same thing as exercise __b.py__
+
+

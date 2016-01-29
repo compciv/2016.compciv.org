@@ -1,0 +1,152 @@
+---
+title: "Reading and printing the first 5 lines of Shakespeare's Hamlet"
+description: |
+  How to read a text file, line by line.
+sequence: 
+  landing: /practicum/shakefiles/shakefiles-landing-page
+  previous: /practicum/shakefiles/c-unzipping-the-shakespeare-zip
+  next: /practicum/shakefiles/e-count-each-line-of-hamlet
+mymeta:
+  exercise_slug: '0004-shakefiles/d'
+summary: |
+  Reading a file is more complicated than you might think. But with complexity, we gain a little more control. At the programmatic level, we not only have the option of reading the file all at once -- which is how we normally think of opening and accessing a file's contents -- but we can also read it _line-by-line_. This is useful for when we need to do something for each line in a file, and/or when we only need to deal with the first few lines of a file. 
+---
+
+This lesson assumes that you've completed the [previous lesson](url_for_sequence_next) and your `tempdata` subfolder is full of Shakespeare prose and poetry.
+
+<!--associated_exercise-->
+
+# The problem
+<% exercise = load_exercise(page_mymeta.exercise_slug) %>
+
+Here's the problem we're trying to solve &ndash; if you're doing this as homework, see the <%=link_to "full info for this exercise", exercise.exercise_set_path %>:
+
+<% content_card do %>
+  <%= partial '/layouts/coursework/partials/exercise', 
+      :locals => {:exercise => exercise, :show_abstract => true } %>
+<% end %>
+<!--//associated_exercise-->
+
+
+# Opening and reading the Hamlet text file
+
+As [I've said in another lesson](/guides/python/fileio/open-and-read-text-files): opening a file and reading a file are two different actions.
+
+## Opening the Hamlet file
+
+I suggest jumping into __ipython__ and exploring this interactively before writing out the script.
+
+This should seem familiar [from the previous lesson](/practicum/shakefiles/c-unzipping-the-shakespeare-zip):
+
+~~~py
+>>> import os
+>>> fname = os.path.join('tempdata', 'tragedies', 'hamlet')
+>>> hamletfile = open(fname, 'r')
+~~~
+
+
+## Reading the first 5 lines of the Hamlet file
+
+`hamletfile` is a file object, which means it has a `read()` method. _However_, the `read()` method reads the entire file as one giant text string, which we don't want to do. We want to selectively print a few lines, i.e. the first and last 5 lines.
+
+To read a single line, we use the appropriately-named method, `readline()`. The first line contains the name of the play:
+
+~~~py
+>>> hamletfile.readline()
+'\tHAMLET\n'
+~~~
+
+Each time you call it, it reads the next line. The next two lines are just newline characters (i.e. "_blank_ lines"):
+
+~~~py
+>>> hamletfile.readline()
+'\n'
+>>> hamletfile.readline()
+'\n'
+~~~
+
+The fourth line basically says, "_This is the section in which we list the characters_".
+
+~~~py
+>>> hamletfile.readline()
+'\tDRAMATIS PERSONAE\n'
+~~~
+
+The fifth line is another blank line:
+
+~~~py
+>>> hamletfile.readline()
+'\n'
+~~~
+
+
+It's worth just opening the `tempdata/tragedies/hamlet` file in your text editor to confirm that we just read through its first 5 lines:
+
+![image hamlet-first-5-lines.png](/files/images/assignments/exercise-sets/0004-shakefiles/hamlet-first-5-lines.png)
+
+Before writing the part of the script that reads the _final 5 lines_, let's write out the script that achieves the __reading__ and __writing__ and __printing__ to screen of the first 5 lines.
+
+~~~py
+import os
+fname = os.path.join('tempdata', 'tragedies', 'hamlet')
+hamletfile = open(fname, 'r')
+print(hamletfile.readline())
+print(hamletfile.readline())
+print(hamletfile.readline())
+print(hamletfile.readline())
+print(hamletfile.readline())
+# more stuff to come...
+hamletfile.close()
+~~~
+
+## Practice your for-loops
+
+Sure, copy-pasting a command 5 times is easy enough. But you should get into the habit of using a for-loop whenever possible:
+
+~~~py
+import os
+fname = os.path.join('tempdata', 'tragedies', 'hamlet')
+hamletfile = open(fname, 'r')
+for x in range(5):
+    print(hamletfile.readline())
+hamletfile.close()
+~~~
+
+### Stripping newline characters with strip()
+
+If you run the script as is, the output to screen will look like this:
+
+~~~
+  HAMLET
+
+
+
+
+
+  DRAMATIS PERSONAE
+
+
+
+
+~~~
+
+__Ten__ lines are printed to screen. This is because the `print()` function always adds a newline character to the end. We can prevent this redundant newline output by calling the __strip()__ method (which belongs to all text string objects) on each line read from the file:
+
+~~~py
+import os
+fname = os.path.join('tempdata', 'tragedies', 'hamlet')
+hamletfile = open(fname, 'r')
+for x in range(5):
+    print(hamletfile.readline().strip())
+hamletfile.close()
+~~~
+
+
+And that's "all" it takes to read and print the __first__ _n_ lines of _Hamlet_. As we'll see in subsequent exercises, it's a bit more complicated to read from an arbitrary point in a file, e.g. "the __1,000th__ line" or  "the __5th__ from the last line".
+
+
+
+
+
+
+

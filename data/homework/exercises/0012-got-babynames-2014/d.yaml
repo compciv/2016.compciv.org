@@ -1,0 +1,40 @@
+title: Print the top 5 popular names for both baby boys and girls in 2014
+points: 1.0
+description: |
+  Print the top 5 names of girls in order of the count of babies named. Then do the same for boys.
+
+hints: |
+  Even though we haven't formally learned how to sort a basic Python list, nevermind a _list_ of lists, that won't be required for this exercise.
+
+  By default, the Social Security Administration lists the names in order of gender -- `"F"`, then `"M"`, and _then_ by their respective count, in descending order.
+
+  This means that the first 5 lines of the file happen to be the first 5 baby girl names with the most babies named. This also means when we iterate through all of the girl names, the first 5 baby boy names will be the 5 most popular baby boy names. So we can do this using an if-statement or two.
+
+  However, if you want to do it the _proper_ way, you can check out the Python documentation for the [built-in sorted function](https://docs.python.org/3/library/functions.html#sorted), including this [how-to guide](https://docs.python.org/3/howto/sorting.html#sortinghowto). In later exercises, this is how we will be sorting our sequences.
+
+expectations:
+  output: |
+    Top baby girl names
+    1. Emma 20799
+    2. Olivia 19674
+    3. Sophia 18490
+    4. Isabella 16950
+    5. Ava 15586
+
+    Top baby boy names
+    1. Noah 19144
+    2. Liam 18342
+    3. Mason 17092
+    4. Jacob 16712
+    5. William 16687
+
+# title: Calculate the percentage of babies born in 2014 with a top-1000 name.
+
+
+# description: |
+#   How homogenous are U.S. parents when it comes to naming their children?
+#   who were named one of the most popular 1,000 baby
+
+# expectations:
+#   output: |
+#     TK

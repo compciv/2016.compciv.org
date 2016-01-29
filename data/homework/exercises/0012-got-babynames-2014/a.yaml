@@ -1,0 +1,60 @@
+title: Download the 2014 text file of babynames and count the lines
+description: |
+
+    - Make a tempdata subdirectory inside your working directory, i.e.
+
+            0012-got-babynames-2014/tempdata
+
+    - Download the [list of Social Security babynames data for 2014](http://stash.compciv.org/ssa_baby_names/ssa-babynames-nationwide-2014.txt) and save it to your `tempdata` folder at this path:
+
+            0012-got-babynames-2014/tempdata/ssa-babynames-nationwide-2014.txt
+
+
+    - Count the lines in the file and print the number.
+
+    The file can be found here:
+
+    [http://stash.compciv.org/ssa_baby_names/ssa-babynames-nationwide-2014.txt](http://stash.compciv.org/ssa_baby_names/ssa-babynames-nationwide-2014.txt)
+
+hints: |
+
+  Go ahead and download the file the "old-fashioned" way by clicking on the [URL](http://stash.compciv.org/ssa_baby_names/ssa-babynames-nationwide-2014.txt), just to confirm that it is indeed a text file.
+
+  Notice how the actual filename, when you ignore the directories in its path, is the same for the URL as for where I'm telling you to save the file, i.e. `ssa-babynames-nationwide-2014.txt`
+
+  As you might have guessed, [there's a Python helper function to isolate the __base filename__  as a string](https://docs.python.org/3/library/os.path.html#os.path.basename), for your convenience. Use it if you think it saves you some typing (which, well, is generally one of the best reasons to learn new functions and syntax):
+
+  ~~~
+  >>> from os.path import basename
+  >>> basename("/hello/world/file.txt")
+  'file.txt'
+  >>> basename("http://www.example.com/whatev/file.txt")
+  'file.txt'
+  ~~~
+
+  If you want, you can write downloaded data to the destination path and close the file. Then re-open the file for reading and count the lines, all in the same script. It will happen so fast that you could do it a 100 times without noticable delay.
+
+  If you want to feel more graceful about it, you could store the text of the response in a variable:
+
+  ~~~
+  mytxt = resp.text
+  ~~~
+
+  Then write the contents of that `mytxt` variable into the destination file path, i.e. `tempdata/ssa-babynames-nationwide-2014.txt`...then call the `splitlines()` method of the `mytxt` string object,  which returns a __list__ of strings based on splitting on the newline character, and call `len()` on that list:
+
+  (on second thought, there's probably no need to assign a new variable, since the script is so short...)
+
+  ~~~
+  len(mytxt.splitlines())
+  ~~~
+
+
+
+  Whatever gets you excited about downloading and reading text files...
+
+
+  After this exercise, the other exercises in this set won't require you to bring in the `requests` nor the `makedirs` function. We only need to download the file once.
+
+points: 0.5
+expectations:
+    output: There are 33044 lines in tempdata/ssa-babynames-nationwide-2014.txt

@@ -1,0 +1,18 @@
+title: "Print the 10 most popular names in 2014, regardless of gender"
+description: |
+  The Social Security Administration's baby name data is ordered by gender,  then by baby count in descending order. Rearrange the list so that it is just sorted by baby count in descending order. Then print the first 10 rows.
+
+points: 0.5
+
+expectations:
+  output: |
+    1. Emma,F,20799
+    2. Olivia,F,19674
+    3. Noah,M,19144
+    4. Sophia,F,18490
+    5. Liam,M,18342
+    6. Mason,M,17092
+    7. Isabella,F,16950
+    8. Jacob,M,16712
+    9. William,M,16687
+    10. Ethan,M,15619

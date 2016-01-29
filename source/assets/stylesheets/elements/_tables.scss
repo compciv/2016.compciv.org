@@ -1,0 +1,27 @@
+
+
+.table-sql{
+  font-size: 0.9rem;
+  min-width: 50%;
+  width: auto;
+  font-family: $font-family-monospace;
+  @extend .table-sm;
+  @extend .table;
+  @extend .table-bordered;
+  tbody{
+    td{
+      border: thin dashed #555;
+    }
+  }
+
+  th{
+    background: #eee;
+  }
+
+  .hi{
+    color: red;
+    background: yellow;
+    padding: 3px;
+  }
+
+}

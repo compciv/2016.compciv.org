@@ -1,0 +1,202 @@
+---
+title: The Immutable Tuple
+description: Tuples are lists that never change.
+summary: |
+  The __tuple__ is a data structure very similar to a __list__, except for being __immutable__. The text of this lesson used to be part of the list lesson, but I've moved it here just to keep the wall of text manageable. 
+
+  There's not much to say specifically about tuples, since they are so similar to lists. But their one big difference from lists is useful for describing the concept of immutable Python objects.
+references:
+  - slug: /guides/python/fundamentals/lists-mutability
+    internal: true
+
+  - title: "Chapter 4: Lists"
+    url: https://automatetheboringstuff.com/chapter4/
+    slug: automate-boring-lists
+    publisher: Automate the Boring Stuff
+    author: Al Sweigart
+    description: |
+      A great, concise walkthrough of the list and its "cousin", the tuple.
+  
+  - title: Mutation in Python
+    slug: eecs-berkeley-mutation
+    url: http://www-inst.eecs.berkeley.edu/~selfpace/cs9honline/Q2/mutation.html
+    publisher: UC-Berkeley EECS Electronics Support Group
+    author: Ka-Ping Yee
+
+  - slug: stackoverflow-9755990
+    title: Why can tuples contain mutable items?
+    description: If a tuple is immutable then why can it contain mutable items?
+    publisher: Stack Overflow
+    url: http://stackoverflow.com/questions/9755990/why-can-tuples-contain-mutable-items
+
+---
+
+# What is immutability?
+
+Before we studied <%= link_to "lists", ref_url('/guides/python/fundamentals/lists-mutability') %>, most of the Python objects we've dealt with so far, including numbers and strings, have been __immutable__.
+
+The values of immutable objects do not change. That means for string objects, we can be sure that all of the methods that we call from a string, including `upper()` and `replace()` -- _do not affect the actual string value_. 
+
+## An example of not mutating a string
+
+Consider the Python code below, which you can run from your interactive Python shell. The `mytxt` variable is assigned to the string of `"Hello world"`. And the variables `a` and `b` point to the results of the `mytxt` string object calling the `upper()` and `replace()` methods, respectively:
+
+~~~py
+>>> mytxt = "Hello world"
+>>> a = mytxt.upper()
+>>> b = mytxt.replace("o", "X")
+~~~
+
+The strings that `a` and `b` point to are clearly different from `mytxt`. But the original string that `mytxt` was assigned to has not changed.
+
+~~~py
+>>> print(a)
+HELLO WORLD
+>>> print(b)
+HellX wXrld
+>>> print(mytxt)
+Hello world
+~~~
+
+The above examples don't prove that strings are __immutable__ -- their immutability is just a fact of Python. One consequence of strings being immutable, though, is that none of their methods will modify the calling string. Instead, string methods always return a __copy__ of the string.
+
+## An example of mutating a list
+
+It's easier to explain immutability by showing an example of _mutability_. Lists are mutable. They have __in-place__ methods which _do_ modify the lists that call them. One such list method is `pop()`, which removes the last member of a list:
+
+~~~py
+>>> mylist = [1, 2, 3]
+>>> mylist.pop()
+3
+>>> len(mylist)
+2
+>>> print(mylist)
+[1, 2]
+~~~
+
+
+That's mutability in a nutshell. The <%= link_to "lesson on lists", ref_url('/guides/python/fundamentals/lists-mutability') %>, has more examples of how to mutate a list object.
+
+
+
+# What is a tuple
+
+Tuples are lists that are immutable.
+
+
+I like Al Sweigart's <%=link_to "characterization of a tuple", ref_url("automate-boring-lists") %> as being the "cousin" of the list. The __tuple__ is so similar to the list that I am tempted to just skip covering it, especially since it's an object that other popular languages -- such as Ruby, Java, and JavaScript -- get by just fine without having. However, the tuple is an object that is frequently used in Python programming, so it's important to at least be able to recognize its usage, even if you don't use it much yourself.
+
+
+## Syntax for declaring a tuple
+
+Like a list, a tuple is a collection of other objects. The main _visual_ difference, in terms of syntax, is that instead of enclosing the values in __we use __parentheses__, not square brackets, to enclose the values of a tuple:
+
+|        List       |       Tuple       |
+|-------------------|-------------------|
+| `[1, 2, "hello"]` | `(1, 2, "hello")` |
+{:.table-sql}
+
+
+Otherwise, the process of iterating through a tuple, and using __square bracket__ notation to access or slice a tuple's contents is the same as it is for lists (and pretty much for every other Python __sequence__ object, such as __range__...but we'll gloss over that detail for now).
+
+
+
+### Parentheses overload?
+
+__Word of warning:__ if you're relatively new to programming and reading code, the use of __parentheses__ as delimiters might seem like a potential syntactic clusterf---, as parentheses are already used in various other contexts, such as function calls. What differentiates a tuple declaration, e.g.
+
+~~~py
+mytuple = ("hello", "world")
+~~~
+
+&ndash; from the parentheses-enclosed values of a function call, e.g.
+
+~~~py
+print("hello", "world")
+~~~
+
+Well, that's easy -- the latter set of parentheses-enclosed objects immediately follows a function name, i.e. `print`. The potential confusion from the similar notation isn't too terrible, in practice.
+
+One strange thing you might come across is this:
+
+~~~py
+>>> mytuple = ("hello", )
+>>> type(mytuple)
+tuple
+>>> len(mytuple)
+1
+~~~
+
+Having a __trailing comma__ is the only way to denote a tuple of length 1. _Without_ that trailing comma, `mytuple` would be pointing to a plain string object that happens to be enclosed in parentheses:
+
+~~~py
+>>> mytuple = ("hello")
+>>> type(mytuple)
+str
+~~~
+
+
+## Tuples are immutable
+
+Besides the different kind of brackets used to delimit them, the main difference between a tuple and a list is that the tuple object is __immutable__.  Once we've declared the contents of a tuple, we can't modify the contents of that tuple.
+
+For example, here's how we modify the __0th__ member of a __list__:
+
+~~~py
+>>> mylist = [1, 2, 3]
+>>> mylist[0] = 999
+print(mylist)
+[999, 2, 3]
+~~~
+
+That will _not_ work with a __tuple__:
+
+~~~py
+>>> mytuple = (1, 2, 3)
+>>> mytuple[0] = 999
+TypeError: 'tuple' object does not support item assignment
+~~~
+
+And while the __list__ object has several methods for _adding_ new members, the __tuple__ has no such methods.
+
+In other words, "__immutability__" == "never-changing".
+
+Similarly, when a program alters the contents of a _mutable_ object, it's often described as "_mutating_" that object.
+
+
+## Why tuples? Why immutability?
+
+As I said earlier, I'm not naturally inclined to focus a lot on tuples, as I had never used them before in other languages, and they're so similar in concept to lists. 
+
+So why do they exist? Because their presence in a program indicates that _this here is something that will never change_. If you're new to programming and haven't written any massively complicated programs yet, it will likely make no sense why anyone would want to impose this restriction upon their code, e.g. _what kind of harebrained idiot creates a data object that they don't want to change, but then accidentally change? Can't you just get your life together rather than create a whole new data type?_
+
+Ha ha, you'll see how easy it is to confuse yourself with your own code...but the precaution is not just to protect a programmer from messing up their own code, but for the situation in which you use someone else's code and want to be assured that a particular collection of objects _will not change_.
+
+There's also some performance optimizations that come from objects that are declared as immutable...but we're not doing anything at such a scale that we would benefit from such optimization. The optimization here is solely on the _human_ side -- i.e. your ability to read code and be confident about what it does and does not do.
+
+
+### When immutable tuples contain mutable objects
+
+So this is a bit of trivia. In fact, it's something I _constantly_ forget about: Tuples may be immutable, but like lists, they can contain sequences of any other kind of Python object, _including mutable objects_.
+
+So what's the big deal? Not much, practically speaking. It just means that we can _effectively_ "mutate" a tuple by changing (i.e. _mutating_) one of its mutable objects.
+
+In the following snippet, a tuple is declared with a __list__ as its second element. I then mutate the second element _of that list_, effectively changing the contents of the tuple:
+
+~~~py
+>>> mytuple = (0, ["hello", "world"], 999)
+>>> print(mytuple[1])
+['hello', 'world']
+>>> mytuple[1][1] = "NINJA TURTLE"        # << this is naughty
+>>> print(mytuple[1])
+['hello', 'NINJA TURTLE']
+~~~
+
+What does this have to do with _anything_? Not much, in terms of our day-to-day practical programming. You have to actually go out of your way to do this, as in, you want to prove a point. But generally, there is never a reason to create a tuple that includes a __list__ among its members, nevermind then futzing about with that list and changing its contents.
+
+But if you're curious about the seeming contradiction, here's a good explanation: <%=link_to_reference 'stackoverflow-9755990'%>
+
+Whew! That was a lot of information about a topic that frankly, I'm going to try to avoid ever dealing with explicitly. In fact, for the purposes of this guide and its exercises, you may not have to worry about all the nuances. However, it's because I'm trying to design the exercises in such a way as to _avoid_ the implications of "immutable vs. mutable". Sometimes my attempts at avoidance results in somewhat convoluted algorithms, so I'm hoping that at least _knowing_ about this concept will help you understand some of my recommended design decisions.
+
+If you came here from the <%= link_to "lesson on lists", ref_url('/guides/python/fundamentals/lists-mutability') %>, now you know a bit about immutability and can go back to learning about lists and how they are mutable.
+

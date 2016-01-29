@@ -1,0 +1,18 @@
+---
+title: Download the Sunlight Foundation's CSV of Congress legislators
+description: |
+
+  - Make a tempdata subdirectory inside this working directory.
+  - Download the [Sunlight legislators CSV file](http://stash.compciv.org/congress/2016-01/sunlight-legislators.csv)
+  - Count the lines and print the number
+
+  The file can be found here:
+
+  [http://stash.compciv.org/congress/2016-01/sunlight-legislators.csv](http://stash.compciv.org/congress/2016-01/sunlight-legislators.csv)
+
+
+points: 0.5
+expectations:
+    output: There are 898 lines in tempdata/sunlight-legislators.csv
+
+---

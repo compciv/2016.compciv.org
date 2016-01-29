@@ -1,0 +1,130 @@
+---
+title: Conventions for depicting system shell and Python commands
+description: |
+  A reference for the conventions I use to differentiate between system shell commands, Python code, and the interactive Python prompt.
+---
+
+Here's a quick list of the conventions I use throughout this guide:
+
+# The system shell prompt
+
+~~~sh
+$ echo hello world
+hello world
+~~~
+
+That __dollar sign__ means: we're in the __system shell__, i.e the program that you're put into as soon as you open the Terminal app. The __dollar sign__ is often the symbol used to signify where you can begin typing in commands (you should see a blinking cursor there).
+
+When following my examples, __do not copy the dollar sign__.
+
+This is __not__ where you can run Python code. However, you will be running various system commands, such as:
+
+- `$ cd ~/Desktop/compciv-2016` __change directory__, in this case, to your `compciv-2016` folder if you happen to put it on your __Desktop__
+- `$ git add --all` -- add changes to your Git repo
+- `$ git status` -- find out the current state of your Git repo  
+
+## Executing Python code with the command-line Python interpreter
+
+In order to complete the assignments, you must write your code and save it as a Python script file, e.g. `a.py`.
+
+When I say something to the effect of: "execute your script via the Python command-line interpreter", I mean this:
+
+~~~sh
+$ python a.py
+~~~
+
+It's important to understand the nuance here: that `$` means that you're supposed to be in your __system shell__. But your shell has access to a command named __python__. And one way to run your _Python script_, i.e. `a.py`, is to pass it into the __python__ command as an argument. When the script finishes running, you are back at your __system shell__.
+
+Pretend `a.py` contains this code:
+
+~~~py
+print("hello")
+print("world")
+~~~
+
+This is how I would depict the process of executing that script and seeing its output:
+
+~~~sh
+$ python a.py
+hello
+world
+~~~
+
+The lack of the `$` in front of the lines for `hello` and `world` signify that they are the __output__ of the script, _not_ commands that you actually run.
+
+
+# Writing Python code into a text file
+
+Generally, when I describe Python code to be written into a file and saved, it will look like this:
+
+~~~py
+print("hello")
+for x in range(10):
+    print("world!")
+print("all done")
+~~~
+
+Note that there is no __prompt symbol__. This is just plaintext, suitable for copy-pasting into your own file which you can then execute from your command-line (though you should always type out the examples to actually _learn_ them).
+
+
+
+# Writing Python code at the interactive Python shell
+
+However, running Python by creating a script and executing it from the command-line can be a slow way to learn new techniques and syntax, at first. So frequently, I will suggest that you "try this code out in your __interactive Python shell__".
+
+This means, first of all, that you must run the __ipython__ program from your __system shell__:
+
+~~~sh
+$ ipython
+~~~
+
+Here's where things get confusing...
+
+__ipython__ is itself a __shell__, except unlike your __system shell__, it can only understand __Python code__. You can't run `git status`, for example, because that's a command that only your __system shell__ can understand.
+
+Otherwise, you can run Python code by typing it into the prompt and hitting Enter. The point of using the interactive Python shell is that it is, well, interactive, and it's much easier to try things out.
+
+This is the syntax convention I use to indicate that code is meant to be typed into the __interactive Python shell__; note that I use the __triple right-angle brackets__ -- `>>>` -- to indicate the prompt:
+
+~~~py
+>>> print("hello world")
+hello world
+>>> 500 + 500
+1000
+~~~
+
+For indented code blocks, such as for __for-loops__ and __conditional branches__, I use the convention of __triple dots__ to indicate that the corresponding line is part of a block. In other words, hitting Enter will _not produce a response_ -- because the interactive shell is waiting for you to finish writing your block of code:
+
+
+~~~py
+>>> for n in range(5):
+...     print("hello world", n)
+hello world 0
+hello world 1
+hello world 2
+hello world 3
+hello world 4
+~~~
+
+
+
+One more thing: if you want to exit out of __ipython__ and back into your __system shell__, just type __exit__:
+
+~~~py
+>>> exit
+~~~
+
+
+# Comments
+
+In _both_ the Python shell and the system shell, I occasionally use the __pound__ sign -- `#` -- to indicate a _comment_ that is meant to document a particular line. Comments have no effect on the code. Everything after the `#` is not read by the shell program, nor is it meant for you to actually type out:
+
+~~~sh
+$ git status   #  run this for fun!
+~~~
+
+
+~~~py
+>>> print("hello world")     # this prints something!
+hello world
+~~~

@@ -1,0 +1,48 @@
+title: FizzBuzz Numberwang Edition
+description: |
+
+    This exercise is more or less the same thing as the exercise described in the [FizzBuzz Challenge lesson](/guides/python/fundamentals/fizzbuzz-challenge). See if you can do it without copy-pasting directly from that lesson.
+
+    Here are the requirements:
+
+    - Print a list of numbers from 1 to 30, including 30
+    - For numbers divisible by 2, print `"Numbe"` instead of the actual number
+    - For numbers divisible by 7, print `"rwang" instead of the actual number
+    - For numbers divisible by both 2 and 7, print `"Numberwang!"` instead of the actual number
+
+
+    FYI, [this is Numberwang](https://www.youtube.com/watch?v=qjOZtWZ56lc).
+
+points: 1.5
+expectations:
+    output: |
+        1
+        Numbe
+        3
+        Numbe
+        5
+        Numbe
+        rwang
+        Numbe
+        9
+        Numbe
+        11
+        Numbe
+        13
+        Numberwang!
+        15
+        Numbe
+        17
+        Numbe
+        19
+        Numbe
+        rwang
+        Numbe
+        23
+        Numbe
+        25
+        Numbe
+        27
+        Numberwang!
+        29
+        Numbe

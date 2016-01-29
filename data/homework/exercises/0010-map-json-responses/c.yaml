@@ -1,0 +1,9 @@
+title: "Print the formatted address of every result returned in the Google Maps geocoder's JSON response"
+description: |
+  The response object has a `results` key, which is a __list__ of result objects. For each object, print to screen the `formatted_address` value.
+points: 0.5
+expectations:
+  output: "Stanford, CA, USA"
+hints: |
+  If you eyeball our specific Google Maps geocoder's JSON response, you'll notice that the response's `results` list actually only contains one item. Even so, you should write your program _as if_ there _could_ be more than 1 result (or even _none_ at all), because when you actually use an API, you won't be taking the time to manually eyeball the dense JSON text it returns.
+

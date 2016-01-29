@@ -1,0 +1,50 @@
+title: Download and save the JSON files; print the count of lines and characters
+description: |
+  Same routine as in past exercises:
+
+  ###### 1. Create a `tempdata` directory
+
+  ###### 2. Download the two files at the given source URLs and save them at the specific corresponding paths in your working directory:
+
+  - Source: [http://www.compciv.org/files/datadumps/apis/googlemaps/geocode-stanford.json](http://www.compciv.org/files/datadumps/apis/googlemaps/geocode-stanford.json)
+  - Save as: `tempdata/googlemaps/stanford.json`
+
+
+  - Source: [http://www.compciv.org/files/datadumps/apis/mapzen/search-stanford.json](http://www.compciv.org/files/datadumps/apis/mapzen/search-stanford.json)
+  - Save as: `tempdata/mapzen/stanford.json`
+
+  ###### 3. Print the number of lines and characters found in each files text content.
+
+hints: |
+  You should _not_ have to import the __json__ module for this, as we are _not_ converting the text into data. The `len()` is all you need.
+
+  The string object has a `splitlines()` function which should make it easier to convert a text string into a list of strings (just in case you wanted to, you know, count the number of lines with `len()`)
+
+  Please take notice of where exactly the files are being saved to -- i.e. in subdirectories of `tempdata`, not just in `tempdata`. And notice how the filenames are different than what they are from the website.
+
+  There's no specific technical reason except that that's the requirement for the exercise. Although the bigger picture is to prep you for the reality of a big data project, in which sometimes you have to name files whatever you feel like naming them, and it has nothing to do with the URL that they came from.
+
+takeaways:
+  - |
+    JSON text files, when opened and read, are just _string_ objects. It's not until we use the `json.loads()` method that anything special happens.
+
+
+points: 0.5
+expectations:
+  output: |
+    ---
+    Downloading from: http://www.compciv.org/files/datadumps/apis/googlemaps/geocode-stanford.json
+    Writing to: tempdata/googlemaps/stanford.json
+    Wrote 59 lines and 1751 characters
+    ---
+    Downloading from: http://www.compciv.org/files/datadumps/apis/mapzen/search-stanford.json
+    Writing to: tempdata/mapzen/stanford.json
+    Wrote 273 lines and 6826 characters
+  effects:
+    created_paths:
+      - tempdata/googlemaps/stanford.json
+      - tempdata/mapzen/stanford.json
+    remotes:
+      - "http://www.compciv.org/files/datadumps/apis/googlemaps/geocode-stanford.json"
+      - "http://www.compciv.org/files/datadumps/apis/mapzen/search-stanford.json"
+

@@ -1,0 +1,15 @@
+<!-- bare minimum with just footer -->
+<% wrap_layout :layout do %>
+  <div class="page-class-home">
+  <section class="banner banner-home">
+    <h1 class="title"><%=page_title %></h1>
+  </section>
+
+  <div class="container sec" id="the-page-content">
+    <%= yield %>
+  </div>
+
+    <%= partial "/layouts/site/partials/footer" %>
+  </div>
+
+<% end %>

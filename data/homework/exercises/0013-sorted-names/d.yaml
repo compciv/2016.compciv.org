@@ -1,0 +1,20 @@
+title: Print the 5 most popular female and male names in 2014 that contain at least one "x"
+points: 1.0
+description: |
+  Iterate through the list of names in 2014 and print the 5 most popular names that contain at least one `"x"`, for both females and males.
+
+
+expectations:
+  output: |
+    Female
+    1. Alexa             4227
+    2. Alexis            4188
+    3. Alexandra         3288
+    4. Ximena            2323
+    5. Alexandria        1589
+    Male
+    1. Alexander        15293
+    2. Jaxon             7635
+    3. Jaxson            4900
+    4. Xavier            4726
+    5. Maxwell           3703

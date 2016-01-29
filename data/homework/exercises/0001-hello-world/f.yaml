@@ -1,0 +1,15 @@
+title: Crash a program with a SyntaxError
+description: |
+  Write a program that crashes due to a SyntaxError due to missing parentheses in a function call.
+points: 0.5
+expectations:
+  error:
+    type: SyntaxError
+    sample_message: "SyntaxError: invalid syntax"
+takeaways:
+  - |
+    In order to call a function, such as `print` and `len`, you must include parentheses after the function's name.
+
+
+
+

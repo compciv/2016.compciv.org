@@ -1,0 +1,14 @@
+title: "Read through and count each line in the Hamlet text, then print the total number of lines"
+points: 0.5
+description: |
+  Re-open the `tempdata/tragedies/hamlet` file as before, but read through the entire file, line-by-line, and print the total count of the number of lines in the file.
+
+hints: |
+    [This tutorial walks through the process.](/practicum/shakefiles/e-count-each-line-of-hamlet)
+
+
+expectations:
+  output: "tempdata/tragedies/hamlet has 6045 lines"
+takeaways:
+  - |
+    Opening and reading files via programming is so cumbersome at first. But it's worth doing, over-and-over, until it becomes routine and reflex, as there is a lot of nuance that can come into play. Think about how Excel, or even your plain text editor, will bring your system down to a halt when you have it open a massive file. You don't want that happening in your scripts.

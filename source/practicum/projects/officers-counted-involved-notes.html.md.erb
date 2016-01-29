@@ -1,0 +1,154 @@
+---
+title: Notes about Officer Involved Replica
+---
+
+
+[Officer Involved](https://theintercept.co/officer-involved/) is from The Intercept and was created by [data artist Josh Begley](https://joshbegley.com/), who has also created [profiling.is - The visual vernacular of NYPD surveillance](http://profiling.is/) ([more info](http://www.villagevoice.com/news/this-is-what-the-nypds-failed-muslim-surveillance-program-actually-looked-like-6663782)) and [Prison Map](http://prisonmap.com/)
+
+
+[Here's the site](https://theintercept.co/officer-involved/):
+
+> In row after row, we see photographs of corners, streets, suburbs, towns, all in daylight, almost all free of human presence. All these images—in spite of the mysterious lyric beauty of some of them—were captured indiscriminately by the all-seeing eye of Google, either with a bird’s eye view or at street level. They were then selected and set into an array by Begley. In one sense, they are the same as any other stills randomly pulled from Google Maps. But when we look at these photographs in particular, we are also seeing the last thing that some other human being saw. It is an immersion in the environment of someone’s last moments.
+
+(emphasis added)
+
+> **If it is true, as our ancestors always suspected, that the dead continue to exert some influence on the places where they lived and died, then Begley’s photographic project makes that insight manifest.**
+
+
+# The components
+
+## The shooting data
+
+Data from [The Guardian's The Counted project](http://www.theguardian.com/us-news/ng-interactive/2015/jun/01/about-the-counted) -- the zip file can be found here: 
+
+- [https://interactive.guim.co.uk/2015/the-counted/thecounted-data.zip](https://interactive.guim.co.uk/2015/the-counted/thecounted-data.zip)
+- The data is a cleaned up, curated/filtered version of the [Fatal Encounters crowdsourced project](http://fatalencounters.org/)
+- Another example of a project that is a subset of what FE purports to record can be found at the [Washington Post](https://www.washingtonpost.com/graphics/national/police-shootings/)
+
+Here [it is as a spreadsheet](https://docs.google.com/spreadsheets/d/1ROmm-bY7fTFj2rcYwiPcPCWK3jqs1w_kp9iK4V-tZ84/edit#gid=1604433985).
+
+## The imagery
+
+### Google Street View 
+
+
+[Google Street View Image API Introduction](https://developers.google.com/maps/documentation/streetview/intro)
+
+[Google Street fancy promo page](https://www.google.com/maps/streetview/understand/)
+
+
++ [Stanford, CA](https://maps.googleapis.com/maps/api/streetview?size=400x400&location=Stanford,CA) 
++ [Stanford, CA, but looking in the other direction](https://maps.googleapis.com/maps/api/streetview?size=400x400&heading=270&location=Stanford,CA)
++ [Main Quad Stanford CA](https://maps.googleapis.com/maps/api/streetview?size=400x400&location=Main+Quad+Stanford+CA)
++ [Memorial Church Stanford University](https://maps.googleapis.com/maps/api/streetview?size=400x400&location=Memorial+Church+Stanford+University)
++ [The Dish, Stanford, CA](https://maps.googleapis.com/maps/api/streetview?size=400x400&location=The%20Dish,Stanford,CA)
+
+###### What direction does the camera normally look at?
+
+> `heading` - indicates the compass heading of the camera. Accepted values are from 0 to 360 (both values indicating North, with 90 indicating East, and 180 South). If no heading is specified, a value will be calculated that directs the camera towards the specified location, from the point at which the closest photograph was taken.
+
+
+
+### Google Static Maps 
+
+[Google Static Maps Image API Introduction](https://developers.google.com/maps/documentation/static-maps/intro?hl=en)
+
+##### Basic URL
+
+- Endpoint: `https://maps.googleapis.com/maps/api/staticmap`
+- Requires only a `size` paramenter: `size=400x400`
+- [https://maps.googleapis.com/maps/api/staticmap?size=400x400](https://maps.googleapis.com/maps/api/staticmap?size=400x400)  
+
+##### Adding a focus with `center`
+
+- `center`, e.g. `center=Stanford,CA`
+
+
+Note that it's called `center`, not `location` -- nnaming things consistently is _hard_, even within the same organization. But it's a reflection of the purpose of the API, too: the Street View can only inherently show one location at a time. A static map can show several points at once
+
+
+[https://maps.googleapis.com/maps/api/staticmap?size=400x400&center=Stanford,CA](https://maps.googleapis.com/maps/api/staticmap?size=400x400&center=Stanford,CA)
+  
+##### Changing the maptype and view
+
+- `maptype`: can be `hybrid`, `satellite`, `roadmap`, `terrain`
+- `zoom` can be [`1` through `20`](https://developers.google.com/maps/documentation/static-maps/intro?hl=en#Zoomlevels):
+  - 1: [World](https://maps.googleapis.com/maps/api/streetview?size=400x400&location=Stanford,CA&maptype=hybrid&zoom=1)
+  - 5: [Landmass/continent](https://maps.googleapis.com/maps/api/streetview?size=400x400&location=Stanford,CA&maptype=hybrid&zoom=5)
+  - 10: [City](https://maps.googleapis.com/maps/api/streetview?size=400x400&location=Stanford,CA&maptype=hybrid&zoom=10)
+  - 15: [Streets](https://maps.googleapis.com/maps/api/streetview?size=400x400&location=Stanford,CA&maptype=hybrid&zoom=15)
+  - 20: [Buildings](https://maps.googleapis.com/maps/api/streetview?size=400x400&location=Stanford,CA&maptype=hybrid&zoom=20)
+
+
+##### Examples
+
++ [Stanford, CA](https://maps.googleapis.com/maps/api/staticmap?size=400x400&markers=Stanford,CA&center=Stanford,CA)
+  * [Terrain](https://maps.googleapis.com/maps/api/staticmap?size=400x400&maptype=terrain&markers=Stanford,CA&center=Stanford,CA)
+  * [Satellite](https://maps.googleapis.com/maps/api/staticmap?size=400x400&maptype=satellite&markers=Stanford,CA&center=Stanford,CA)
+  * [Hybrid](https://maps.googleapis.com/maps/api/staticmap?size=400x400&maptype=hybrid&markers=Stanford,CA&center=Stanford,CA)
++ [Stanford, CA zoomed in at 17](https://maps.googleapis.com/maps/api/staticmap?size=400x400&maptype=hybrid&zoom=17&markers=Stanford,CA&center=Stanford,CA)
++ [Stanford,CA marked with Berkeley,CA at the center](https://maps.googleapis.com/maps/api/staticmap?size=400x400&maptype=hybrid&markers=Stanford,CA&center=Berkeley,CA)
++ [Stanford,CA and Berkeley, CA marked](https://maps.googleapis.com/maps/api/staticmap?size=400x400&maptype=hybrid&markers=Stanford,CA&markers=color:yellow%7CBerkeley,CA)
++ [The Dish, Stanford, CA](https://maps.googleapis.com/maps/api/staticmap?size=400x400&maptype=hybrid&markers=The%20Dish,Stanford,CA)
+
+
+
+###### Region code?
+
+> __region__ (optional) defines the appropriate borders to display, based on geo-political sensitivities. Accepts a region code specified as a two-character ccTLD ('top-level domain') value.
+
+[Country-level domains can be found here](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains)
+
+Here's the default view with a `center` around `Vietnam`:
+
+[http://maps.googleapis.com/maps/api/staticmap?&size=600x600&zoom=5&center=Vietnam](http://maps.googleapis.com/maps/api/staticmap?&size=600x600&zoom=4&center=Vietnam)
+
+
+- Here it is with a [`region` of `jp`](http://maps.googleapis.com/maps/api/staticmap?&size=600x600&zoom=4&center=Vietnam&region=jp)
+- Here it is with a [`region` of `cn`](http://maps.googleapis.com/maps/api/staticmap?&size=600x600&zoom=4&center=Vietnam&region=cn)
+
+[Notice anything different](https://en.wikipedia.org/wiki/Nine-dash_line)?
+
+Another example: [India](http://maps.googleapis.com/maps/api/staticmap?&size=600x600&zoom=4&center=India)
+
+- [region=eu](http://maps.googleapis.com/maps/api/staticmap?&size=600x600&zoom=4&center=India&region=in)
+- [region=ru](http://maps.googleapis.com/maps/api/staticmap?&size=600x600&zoom=4&center=India&region=in)
+- [region=cn](http://maps.googleapis.com/maps/api/staticmap?&size=600x600&zoom=4&center=India&region=in)
+- [region=pk](http://maps.googleapis.com/maps/api/staticmap?&size=600x600&zoom=4&center=India&region=in)
+- [region=in](http://maps.googleapis.com/maps/api/staticmap?&size=600x600&zoom=4&center=India&region=in)
+
+
+
+# Steps for creation
+
+
+### 1. Get the shootings data
+
+- Download `the-counted.zip`
+- Save it to disk in `tempdata/the-counted.zip`
+- Unzip it
+
+### 2. Parse the shootings data for locations
+
+- Open the the-counted.csv
+- Parse it into a __list__ of __dictionaries__ using csv.DictReader
+- Iterate through each row
+- Generate a location line
+
+
+### 3. Download and save map imagery
+
+- Given a location strings
+- Generate a street view URL
+
+### 4. Create the webpage
+
+- Create the header and footer
+- Create a method that creates what you need for each img element
+
+---------------------------------
+
+
+
+
+

@@ -1,0 +1,28 @@
+title: Print a string literal that itself contains both kinds of quotation marks
+description: |
+  Inevitably, the string literal we want to print contains both kinds of quotation marks. Use the __escape character__ -- i.e. the __backslash__ `\` -- to construct a proper string.
+
+  Here's an example you can try in ipython:
+
+  ~~~
+  >>> print("He says \"Yo\" to your dad")
+  He says "Yo" to your dad
+  ~~~
+
+
+  Now write a program that prints this:
+
+  ```
+  Susan's water buffalo looked at me and said, "Goodbye!"
+  ```
+
+points: 0.5
+expectations:
+  output: |
+    Susan's water buffalo looked at me and said, "Goodbye!"
+takeaways:
+  - |
+    The backslash character is one of our first encounters with a __metacharacter__, a character that represents something more than just a text character.
+  - A backslash affects the character that immediately follows it.
+  - |
+    Referring to the backslash as an __escape character__ (aka an __escape sequence__), can be thought of as: the presence of a backslash before an otherwise _special character_ -- e.g. a quotation mark -- let's that character "escape" into a more ordinary meaning, i.e. a quotation mark no longer delimits string literals -- it is just a literal text character itself.

@@ -1,0 +1,413 @@
+---
+title: Tackling the FizzBuzz test
+description: |
+  Solve this infamously difficult programming interview question with for-loops and conditional branching
+references: 
+  - slug: /guides/python/fundamentals/for-loops
+    internal: true
+  - slug: /guides/python/fundamentals/conditional-branching
+    internal: true
+---
+
+# What is FizzBuzz?
+
+The word _FizzBuzz_ doesn't mean anything. It's just a nonsensical word used in a [seemingly nonsensical programming challenge](http://c2.com/cgi/wiki?FizzBuzzTest):
+
+> Write a program that prints the numbers from 1 to 100. But for multiples of three print “Fizz” instead of the number and for the multiples of five print “Buzz”. For numbers which are multiples of both three and five print “FizzBuzz”
+
+Why do programmers care about this innocuous, seemingly pointless problem? Because [it apparently is a very effective litmus test](http://imranontech.com/2007/01/24/using-fizzbuzz-to-find-developers-who-grok-coding/) for the weeding out of people who have studied computer science and yet cannot program:
+
+> Most good programmers should be able to write out on paper a program which does this in a under a couple of minutes.
+>
+> Want to know something scary ? – the majority of comp sci graduates can’t. I’ve also seen self-proclaimed senior programmers take more than 10-15 minutes to write a solution.
+
+
+         ¯\_(ツ)_/¯
+
+I'm not convinced that it's _the_ litmus test, or that programmers who fail it are completely and irredeemably hapless. Perhaps the wording of the problem sparks confusion? I think it definitely sounds simpler than it is, but I think _most_ programming problems are significantly more complicated than they sound on the surface, for various _human_reasons. 
+
+Bottom-line: if you're new to programming and FizzBuzz confuses you: no big deal, _lots_ of purportedly educated programmers have problems with it. 
+
+However, once you do understand it, the good news is that as dumb as this problem seems on the surface, its core pattern &ndash; _loop through a bunch of things, do something based on a condition_ &ndash; is essentially the core pattern of many interesting real-world programs, especially in data-gathering and data journalism.
+
+
+In any case, if you know how to write a [for-loop](/guides/python/fundamentals/for-loops) and an [if/elif/else-statement](/guides/python/fundamentals/conditional-branching), then this infamously difficult programming problem is within your ability to solve.
+
+Because of the use of for-loops and conditional-branching, this is not a problem that can efficiently be done in the interactive interpreter.
+I recommend creating a file named `fizzbuzz.py`, writing the code in that file, then executing it with the command-line Python interpreter, i.e.:
+
+~~~
+$ python fizzbuzz.py
+~~~
+
+
+Now, re-read the original problem definition -- we'll break it down, sentence by sentence. This is not just a test of programming syntax, but the ability to break a bigger problem down into simple steps:
+
+- Write a program that prints the numbers from 1 to 100. 
+- But for multiples of three print “Fizz” instead of the number. 
+- For the multiples of five print “Buzz”. 
+- For numbers which are multiples of both three and five print “FizzBuzz”
+
+
+
+## Step 1: Write a program that prints the numbers from 1 to 100
+
+Easy enough with a `for`-loop and the `range()` function/object:
+
+~~~py
+for num in range(1, 101):
+    print(num)
+~~~
+
+You can also do this as a `while`-loop, by manually setting a variable that is incremented:
+
+~~~py
+num = 1
+while num < 101:
+    print(num)
+    num += 1
+~~~
+
+
+I'll assume that you go for the `for-loop` variation, as it is substantially easier to read...However, I recommend changing the limit of the range from `101` to `21` for now -- no reason in printing 100 lines of output if we can't even get the first 20 correct:
+
+~~~py
+for num in range(1, 21):
+    print(num)
+~~~
+
+
+## Step 2: But for multiples of three print “Fizz” instead of the number
+
+It's worth breaking this step down into 3 separate substeps:
+
+1. How to find if a number is a multiple of 3
+2. How to print "Fizz" if a number is a multiple of 3
+3. How to print "Fizz" _instead of the number_ if the number is a multiple of 3
+
+### Step 2A: ...for multiples of three...
+
+How do you know if a number is a multiple of 3? This requires thinking back to grade-school arithmetic -- a number is a multiple of 3 if you can divide that number by 3 without getting a remainder or fractional number. Thus, `9` and `99` are multiples, because dividing them by `3` yields a __remainder__ of `0`. But `7` nor `11` are not considered multiples of 3.
+
+In Python, the percent sign -- `%` -- [is used to calculate the __modulo__ between two numbers](https://docs.python.org/3/reference/expressions.html#binary-arithmetic-operations), i.e. the __remainder__ when you divide the first number by the second number. Try it out in interactive Python:
+
+~~~
+>>> 9 % 3
+0
+>>> 11 % 3
+2
+>>> 9 % 3 is 0
+True
+>>> 11 % 3 is 0
+False
+~~~
+
+
+### Step 2B: ...for multiples of three print “Fizz”...
+
+Returning to our original for-loop, this is how we can implement the "Fizz" requirement:
+
+
+~~~py
+for num in range(1, 21):
+    if num % 3 is 0:
+        print("Fizz")
+    print(num)
+~~~
+
+The first few lines of output:
+
+~~~
+1
+2
+Fizz
+3
+4
+5
+Fizz
+6
+7
+8
+Fizz
+9
+~~~
+
+This seems to work...before each multiple of 3 -- `3`, `6`, and `9` -- the string `"Fizz"` is printed.
+
+
+### Step 2C: ...print “Fizz” instead of the number...
+
+However, the instructions say _not_ to print __Fizz__ when the number is divisible by `3`. So we need to include an `else` branch:
+
+~~~py
+for num in range(1, 21):
+    if num % 3 is 0:
+        print("Fizz")
+    else:
+        print(num)
+~~~
+
+The output:
+
+~~~
+1
+2
+Fizz
+4
+5
+Fizz
+7
+8
+Fizz
+10
+11
+Fizz
+13
+14
+Fizz
+16
+17
+Fizz
+19
+20
+~~~
+
+That's better.
+
+
+## Step 3: For the multiples of five print “Buzz”
+
+This is similar enough to Step 2 that there's no need to break it down into the same small steps. However, it may be helpful to pretend as if we're working from the original for-loop, i.e. as if we skipped Step 2. Here's what the code would look like:
+
+
+~~~py
+for num in range(1, 21):
+    if num % 5 is 0:
+        print("Buzz")
+    else:
+        print(num)
+~~~
+
+
+And the output:
+
+~~~
+1
+2
+3
+4
+Buzz
+6
+7
+8
+9
+Buzz
+11
+12
+13
+14
+Buzz
+16
+17
+18
+19
+Buzz
+~~~
+
+
+But of course, we want both `"Fizz"` and `"Buzz"` to show up. This means we need an `elif` branch:
+
+
+~~~py
+for num in range(1, 21):
+    if num % 3 is 0:
+        print("Fizz")
+    elif num % 5 is 0:
+        print("Buzz")
+    else:
+        print(num)
+~~~
+
+And the output:
+
+~~~
+1
+2
+Fizz
+4
+Buzz
+Fizz
+7
+8
+Fizz
+Buzz
+11
+Fizz
+13
+14
+Fizz
+16
+17
+Fizz
+19
+Buzz
+~~~
+
+
+
+## Step 4: For numbers which are multiples of both three and five print “FizzBuzz”
+
+OK, so this should _seem_ exactly the same as the previous 2 steps. Let's approach it as we did Step 3, in which we pretend to not care about the other conditions. Here's one way to implement this requirement, using the `and` logical keyword to join two conditions together:
+
+
+~~~py
+for num in range(1, 21):
+    if num % 3 is 0 and num % 5 is 0:
+        print("FizzBuzz")
+    else:
+        print(num)
+~~~
+
+Or, if you'd rather demonstrate your mastery of arithmetic, you can use the elegant property that says that any number divisible by `3` and `5` must also be divisible by `15`:
+
+~~~py
+for num in range(1, 21):
+    if num % 15 is 0:
+        print("FizzBuzz")
+    else:
+        print(num)
+~~~
+
+OK, so now all it is is just another `elif` branch, right?
+
+~~~py
+for num in range(1, 21):
+    if num % 3 is 0:
+        print("Fizz")
+    elif num % 5 is 0:
+        print("Buzz")
+    elif num % 15 is 0:
+        print("FizzBuzz")
+    else:
+        print(num)
+~~~
+
+The output (emphasis added in the `What the???`):
+
+
+~~~
+1
+2
+Fizz
+4
+Buzz
+Fizz
+7
+8
+Fizz
+Buzz
+11
+Fizz
+13
+14
+Fizz     ### What the???
+16
+17
+Fizz
+19
+Buzz
+~~~
+
+Hey, why isn't `15` showing up as `FizzBuzz`? To answer that question, ask yourself: _Under what condition is a number replaced by "Fizz"?_
+
+Here's a hint: rearrange the _order of the branches_ that print `"Fizz"` and `"Buzz"`:
+
+~~~py
+for num in range(1, 21):
+    if num % 5 is 0:
+        print("Buzz")
+    elif num % 3 is 0:
+        print("Fizz")
+    elif num % 15 is 0:
+        print("FizzBuzz")
+    else:
+        print(num)
+~~~
+
+Then re-run the program and note the slight change to the output:
+
+~~~
+1
+2
+Fizz
+4
+Buzz
+Fizz
+7
+8
+Fizz
+Buzz
+11
+Fizz
+13
+14
+Buzz
+16
+17
+Fizz
+19
+Buzz
+~~~
+
+In other words, the _order_ of the branches matters. This is a subtlety about conditional branching that's hard to explain until you mess it up in production: `"FizzBuzz"` is never printed because, by definition, any number that is eligible to be `"FizzBuzz"`'ed -- divisible by `3` _and_ `5` -- is _also eligible to be either_ `"Fizz"` or `"Buzz"` -- divisible by either `3` _or_ `5`.
+
+In an `if/elif/else` construct, the interpreter will stop at the first branch that evaluates to `True`. So the trick is to arrange the conditional branches so that the `FizzBuzz` branch takes priority over the other two.
+
+
+Think it out, experiment with your code, then look at my answer below:
+
+~~~py
+for num in range(1, 21):
+    if num % 15 is 0:
+        print("FizzBuzz")
+    elif num % 3 is 0:
+        print("Fizz")
+    elif num % 5 is 0:
+        print("Buzz")
+    else:
+        print(num)
+~~~
+
+And finally, to meet the requirements of the actual problem (list the numbers from 1 to 100), just change the endpoint of the range from `21` -- which we had changed to make it easier to test things out -- back to `100`:
+
+
+~~~py
+for num in range(1, 101):
+    if num % 15 is 0:
+        print("FizzBuzz")
+    elif num % 3 is 0:
+        print("Fizz")
+    elif num % 5 is 0:
+        print("Buzz")
+    else:
+        print(num)
+~~~
+
+
+
+
+
+
+# What's so hard about FizzBuzz?
+
+So there's my Python solution for FizzBuzz. There might be more elegant ways to write it out, but this script solves the actual problem. More notably, it deals with the subtle logic error that is truly only realized when you attempt to solve the problem with a program. I think the challenge is exacerbated by how "easy" the problem is, and additionally, how silly its domain.
+
+But logic errors in conditional branching are no trivial matter. [Here's an infamous one in Apple's iOS code from a couple years back](https://blog.codecentric.de/en/2014/02/curly-braces/) -- just a single, short line, apparently accidentally repeated -- resulted in a massive security flaw in all of Apple's devices. It's not the same class of branching logic error as the kind that you might have fallen for in __FizzBuzz__, but it is equally as subtle. And it's an error made by a programmer/programmers with much more on the line than you.
+
+For our purposes, as beginning programmers, it's enough just to use FizzBuzz as a test of whether or not you can do a for-loop and conditional branching. If you think you understand the answer, tomorrow morning, try it write it out by memory. If you can't, re-read the code, re-type it out. Try again from memory the next morning.
+
+As frustrating as the silly problem is, most of our programming projects will actually be _less_ trickier than it, while having the same kind of structure and technique.
+
+
+
+

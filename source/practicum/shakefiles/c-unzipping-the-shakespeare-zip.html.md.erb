@@ -1,0 +1,294 @@
+---
+title: Unzipping the Shakespeare zipfile with the shutil module
+description: |
+  Unpacking archives exactly where we want with the shutil.unpack_archive() function
+references: 
+  - url: https://docs.python.org/3/library/shutil.html
+    slug: python-docs-shutil
+    title: "shutil - High-level file operations"
+    publisher: Python documentation
+    description: |
+      The shutil module offers a number of high-level operations on files and collections of files. In particular, functions are provided which support file copying and removal. For operations on individual files, see also the os module.
+  - url: https://docs.python.org/3/library/shutil.html#shutil.unpack_archive
+    slug: python-docs-unpack_archive
+    title: shutil.unpack_archive
+    publisher: Python documentation
+    description: |
+      Unpack an archive, including .zip and .gz files.
+
+sequence:
+  landing: /practicum/shakefiles/shakefiles-landing-page
+  next: /practicum/shakefiles/d-print-first-5-lines-of-hamlet
+  previous: /practicum/shakefiles/b-downloading-the-shakespeare-zip
+mymeta:
+  exercise_slug: '0004-shakefiles/c'
+summary: |
+  Python's [__shutil__ module contains "high level" functions and utilities](https://docs.python.org/3/library/shutil.html) that are ubiquitous across major operating systems, including copying and removing files. We actually won't be using many of its functions beyond [`unpack_archive()`](https://docs.python.org/3/library/shutil.html#shutil.unpack_archive), but it's another example of how Python provides a convenient wrapper for system operations so that the same Python code can run across Windows, OS X, and Linux.
+
+---
+
+<!--associated_exercise-->
+
+# The problem
+<% exercise = load_exercise(page_mymeta.exercise_slug) %>
+
+Here's the problem we're trying to solve &ndash; if you're doing this as homework, see the <%=link_to "full info for this exercise", exercise.exercise_set_path %>:
+
+<% content_card do %>
+  <%= partial '/layouts/coursework/partials/exercise', 
+      :locals => {:exercise => exercise, :show_abstract => true } %>
+<% end %>
+<!--//associated_exercise-->
+
+
+# The unpack_archive() function
+
+The __shutil__ function that we care about right now is [`unpack_archive()`]((https://docs.python.org/3/library/shutil.html), which unpacks all kinds of archived file formats, include __gz__ and __zip__ files.
+
+
+Assuming you have a archive file named `example.zip`, here's the code to unzip it with `shutil`:
+
+~~~py
+>>> import shutil
+>>> shutil.unpack_archive("example.zip")
+~~~
+
+Wherever you are running your code -- or wherever you started __ipython__, it will dump the contents of `example.zip` there.
+
+Pretend `foo.py` has the unzipping code, as shown in the previous snippet.
+
+Pretend your file directory looks like this:
+
+    Desktop
+    ├── somepath   ##  <== YOU ARE HERE
+        ├── foo.py
+        ├── tempdata
+            ├── example.zip
+
+If you are in the `Desktop/somepath` directory, and then try to run `foo.py` like so:
+
+~~~sh
+$ python foo.py
+~~~
+
+
+Then you can expect the _contents_ of `example.zip` to be unpacked where `foo.py` exists. The same result will happen if you run `shutil.unpack_archive("example.zip")` after starting `ipython` in the `Desktop/somepath` directory.
+
+
+    Desktop
+    ├── somepath   ##  <== YOU ARE HERE
+        ├── foo.py
+        ├── example.contents  ## <== what just got unpacked
+        ├── tempdata
+            ├── example.zip
+
+It doesn't matter that `example.zip` is inside `tempdata`. Its contents are by default unzipped wherever the unzipping program was called from, i.e. the `somepath` directory.
+
+To underscore the point, pretend you are actually in `Desktop`, and you run your script like this (it's possible to run a script without being in the same directory by specifying all the subdirectories to get to the script):
+
+~~~sh
+$ python somepath/foo.py
+~~~
+
+Guess where the files end up?
+
+    Desktop               ##  <== YOU ARE HERE
+    ├── example.contents  ##  <== what just got unpacked
+    ├── somepath   
+        ├── foo.py
+        ├── tempdata
+            ├── example.zip
+
+We need a way to tell `unpack_archive()` to dump its work in a specific directory, i.e. `Desktop/somepath/tempdata/`
+
+
+## How to specify the exact path to extract an archive's contents into
+
+Frequently, unzipping a file's contents into your current working directory leaves a mess. This is why we have that `tempdata` subdirectory for our homework assignments. The `unpack_archive()` function takes a second named argument, `extract_dir`, in which we can specify a directory to unzip the files into:
+
+(this assumes `tempdata` is a subdirectory relative to wherever you started the interactive prompt from):
+
+~~~py
+>>> shutil.unpack_archive("example.zip", extract_dir="tempdata")
+~~~
+
+
+# Shakespeare zip, all together
+
+Before moving on, this lesson assumes you've completed the previous two lessons:
+
+- <%= link_to_content_resource '/practicum/shakefiles/a-creating-a-directory-idempotently' %> - the result of this exercise is that you have a subdirectory named `tempdata`
+- <%= link_to_content_resource '/practicum/shakefiles/b-downloading-the-shakespeare-zip' %> - the result of this exercise is that you have downloaded a file into `tempdata` named `matty.shakepeare.tar.gz`
+
+
+Assuming you're reading this guide because you're trying to finish the Shakespeare zip-file homework, here are all the steps, from creating a new subdirectory named `tempdata`, downloading the Shakespeare zip file into it, and then unpacking it to `tempdata`.
+
+(Note that in the homework assignment, all of these steps are actually their own mini-scripts. That's to emphasize how discrete each operation is.)
+
+Remember that you have to be _inside_ the particular exercise's directory if you intend for `tempdata` and the subsequent files to be inside of that directory:
+
+    Desktop
+    └── compciv-2016
+        └── exercises
+            └── 0004-shakefiles   ##  <== YOU ARE HERE
+                ├── a.py
+                ├── b.py
+                ├── c.py
+
+
+
+
+## Importing the libraries
+
+We need three libraries/modules:
+
+~~~py
+import os
+import requests
+import shutil
+~~~
+
+## Creating the tempdata subdirectory
+
+The `makedirs()` function is part of the `os` module:
+
+~~~py
+os.makedirs("tempdata", exist_ok=True)
+~~~
+
+
+## Downloading the zip file
+
+By the time this code runs, it assumes `tempdata` subdirectory has been created and the `requests` library has been imported.
+
+We use `requests.get()` to download the URL. Then we store the `content` of the response in the `zipdata` variable.
+
+~~~py
+zipurl = 'http://stash.compciv.org/scrapespeare/matty.shakespeare.tar.gz'
+resp = requests.get(zipurl)
+zipdata = resp.content
+~~~
+
+## Saving the zip file
+
+Before we can unzip the file, we need to save -- i.e. __write__ it to disk. 
+
+### Programatically generate the file path
+
+On Linux/OSX, the file path that we want to save to is:
+
+      tempdata/matty.shakespeare.tar.gz
+
+Let's use `os.path.join()` to generate that path (yes, even as simple as that path is):
+
+~~~py
+zname = os.path.join("tempdata", "matty.shakespeare.tar.gz")
+~~~
+
+
+No special libraries are needed as this just requires the `open()` function, and the the file's `write()` function. We assume that the `zipdata` variable contains the __bytes__ of a downloaded zip file:
+
+~~~py
+zfile = open(zname, "wb")
+zfile.write(zipdata)  # i.e. resp.content
+zfile.close()
+~~~
+
+## Unzipping the zip file
+
+The `unpack_archive()` function comes to us via the `shutil` module. Remember that we have to provide the named argument, `extract_dir`. Even though the zip file is inside the `tempdata` subdirectory, i.e. `"tempdata/matty.shakespeare.tar.gz"`, the Python interpreter assumes we want to unzip it from _where our Python script is being executed_, i.e. _outside of_ (one level above) `tempdata`.
+
+We __do not__ want that. So that's why we provide the `extract_dir` argument.
+
+Assuming the `zname` variable holds the saved zip file:
+
+~~~py
+shutil.unpack_archive(zname, extract_dir='tempdata')
+~~~
+
+If you are following the compciv-2016 exercise set, [0004-shakefiles](/assignments/exercise-sets/0004-shakefiles-set), then switch to your Desktop operating system and see if the files successfully unpacked inside your `compciv-2016/exercises` directory, e.g. `~/Desktop/compciv-2016/exercises/0004-shakefiles`:
+
+![image tempdata-structure-zip.png](/files/images/assignments/exercise-sets/0004-shakefiles/tempdata-structure-zip.png)
+
+Or, if you prefer seeing it as a plaintext tree. Take special note how everything is inside `tempdata`:
+
+
+    Desktop
+    └── compciv-2016
+        └── exercises
+            └── 0004-shakefiles   ##  <== YOU ARE HERE
+                ├── a.py
+                ├── b.py
+                ├── c.py
+                ├── d.py
+                ├── e.py
+                ├── f.py
+                ├── g.py
+                ├── h.py
+                ├── i.py
+                └── tempdata       
+                    ├── README
+                    ├── comedies
+                    │   ├── allswellthatendswell
+                    │   ├── asyoulikeit
+                    │   ├── comedyoferrors
+                    │   ├── cymbeline
+                    │   ├── loveslabourslost
+                    │   ├── measureforemeasure
+                    │   ├── merchantofvenice
+                    │   ├── merrywivesofwindsor
+                    │   ├── midsummersnightsdream
+                    │   ├── muchadoaboutnothing
+                    │   ├── periclesprinceoftyre
+                    │   ├── tamingoftheshrew
+                    │   ├── tempest
+                    │   ├── troilusandcressida
+                    │   ├── twelfthnight
+                    │   ├── twogentlemenofverona
+                    │   └── winterstale
+                    ├── glossary
+                    ├── histories
+                    │   ├── 1kinghenryiv
+                    │   ├── 1kinghenryvi
+                    │   ├── 2kinghenryiv
+                    │   ├── 2kinghenryvi
+                    │   ├── 3kinghenryvi
+                    │   ├── kinghenryv
+                    │   ├── kinghenryviii
+                    │   ├── kingjohn
+                    │   ├── kingrichardii
+                    │   └── kingrichardiii
+                    ├── matty.shakespeare.tar.gz
+                    ├── poetry
+                    │   ├── loverscomplaint
+                    │   ├── rapeoflucrece
+                    │   ├── sonnets
+                    │   ├── various
+                    │   └── venusandadonis
+                    └── tragedies
+                        ├── antonyandcleopatra
+                        ├── coriolanus
+                        ├── hamlet
+                        ├── juliuscaesar
+                        ├── kinglear
+                        ├── macbeth
+                        ├── othello
+                        ├── romeoandjuliet
+                        ├── timonofathens
+                        └── titusandronicus
+
+
+As one more test to make sure things are in the right place, try running this (inside the exercise set's directory, i.e. `0004-shakefiles`) -- the output to screen should be the first 25 lines of the Hamlet text:
+
+~~~py
+import os
+fname = os.path.join("tempdata", "tragedies", "hamlet")
+f = open(fname, 'r')
+for x in range(25):
+    print(f.readline().strip())
+f.close()
+~~~
+
+
+
+If you've gotten this far, then you're ready to move on to the next exercises that involve actually reading and processing the Shakespeare texts.

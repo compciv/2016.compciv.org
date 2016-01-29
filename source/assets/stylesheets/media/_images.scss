@@ -1,0 +1,39 @@
+@mixin img-wrap($display: block) {
+  /* modification of img-fluid from bootstrap */
+  display: $display;
+  max-width: 100%; // Part 1: Set a maximum relative to the parent
+  height: auto; // Part 2: Scale the height according to the width, otherwise you get stretching
+  margin: auto auto;
+}
+
+
+.image_wrap{
+
+  &.bordered{
+    img{
+      border: thin solid $border-color;
+    }
+  }
+
+  img, .caption{
+    @include img-wrap(); // TODO: remove this after image_wrap() helper is fixed
+  }
+
+  .caption, .caption p{
+    color: $body-color-lighter;
+    font-size: 0.9rem;
+    font-family: $font-family-sans-serif;
+    margin-top: 0.8rem;
+    text-align: center;
+
+    a:link{
+      text-decoration: underline;
+    }
+
+    .source-line{
+      display: block;
+      font-style: italic;
+    }
+  }
+
+}

@@ -1,0 +1,1102 @@
+{
+  "response": {
+    "meta": {
+      "hits": 229189,
+      "time": 113,
+      "offset": 0
+    },
+    "docs": [
+      {
+        "web_url": "http://www.nytimes.com/2015/12/07/opinion/hillary-clinton-how-id-rein-in-wall-street.html",
+        "snippet": "We need to go beyond Dodd-Frank to increase oversight of all big financial institutions, make executives accountable and make regulators independent.",
+        "lead_paragraph": "We need to go beyond Dodd-Frank to increase oversight of all big financial institutions, make executives accountable and make regulators independent.",
+        "abstract": "Op-Ed article by Democratic presidential candidate Hillary Rodham Clinton accuses Republicans of stripping away measures put in place to protect ordinary citizens after 2008 financial crisis; details series of significant reforms to United States financial industry she would seek if elected.",
+        "print_page": "23",
+        "blog": [],
+        "source": "The New York Times",
+        "multimedia": [
+          {
+            "width": 190,
+            "url": "images/2015/12/07/opinion/sunday/07clinton/07clinton-thumbWide.jpg",
+            "height": 126,
+            "subtype": "wide",
+            "legacy": {
+              "wide": "images/2015/12/07/opinion/sunday/07clinton/07clinton-thumbWide.jpg",
+              "wideheight": "126",
+              "widewidth": "190"
+            },
+            "type": "image"
+          },
+          {
+            "width": 600,
+            "url": "images/2015/12/07/opinion/sunday/07clinton/07clinton-articleLarge.jpg",
+            "height": 398,
+            "subtype": "xlarge",
+            "legacy": {
+              "xlargewidth": "600",
+              "xlarge": "images/2015/12/07/opinion/sunday/07clinton/07clinton-articleLarge.jpg",
+              "xlargeheight": "398"
+            },
+            "type": "image"
+          },
+          {
+            "width": 75,
+            "url": "images/2015/12/07/opinion/sunday/07clinton/07clinton-thumbStandard.jpg",
+            "height": 75,
+            "subtype": "thumbnail",
+            "legacy": {
+              "thumbnailheight": "75",
+              "thumbnail": "images/2015/12/07/opinion/sunday/07clinton/07clinton-thumbStandard.jpg",
+              "thumbnailwidth": "75"
+            },
+            "type": "image"
+          }
+        ],
+        "headline": {
+          "main": "Hillary Clinton: How I’d Rein In Wall Street",
+          "content_kicker": "Op-Ed Contributor",
+          "kicker": "Op-Ed Contributor",
+          "print_headline": "How to Rein In Wall Street"
+        },
+        "keywords": [
+          {
+            "rank": "1",
+            "is_major": "Y",
+            "name": "subject",
+            "value": "Presidential Election of 2016"
+          },
+          {
+            "rank": "11",
+            "is_major": "N",
+            "name": "organizations",
+            "value": "Democratic Party"
+          },
+          {
+            "rank": "12",
+            "is_major": "N",
+            "name": "persons",
+            "value": "Obama, Barack"
+          },
+          {
+            "rank": "2",
+            "is_major": "Y",
+            "name": "subject",
+            "value": "Banking and Financial Institutions"
+          },
+          {
+            "rank": "3",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Dodd-Frank Wall Street Reform and Consumer Protection Act (2010)"
+          },
+          {
+            "rank": "4",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Regulation and Deregulation of Industry"
+          },
+          {
+            "rank": "5",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Fines (Penalties)"
+          },
+          {
+            "rank": "6",
+            "is_major": "N",
+            "name": "subject",
+            "value": "United States Economy"
+          },
+          {
+            "rank": "7",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Conflicts of Interest"
+          },
+          {
+            "rank": "8",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Consumer Protection"
+          },
+          {
+            "rank": "9",
+            "is_major": "N",
+            "name": "subject",
+            "value": "United States Politics and Government"
+          },
+          {
+            "rank": "10",
+            "is_major": "N",
+            "name": "organizations",
+            "value": "Republican Party"
+          }
+        ],
+        "pub_date": "2015-12-07T00:00:00Z",
+        "document_type": "article",
+        "news_desk": "OpEd",
+        "section_name": "Opinion",
+        "subsection_name": null,
+        "byline": {
+          "person": [
+            {
+              "organization": "",
+              "role": "reported",
+              "firstname": "Hillary",
+              "rank": 1,
+              "lastname": "CLINTON"
+            }
+          ],
+          "original": "By HILLARY CLINTON"
+        },
+        "type_of_material": "Op-Ed",
+        "_id": "5665414838f0d829ad7c2c56",
+        "word_count": "899",
+        "slideshow_credits": null
+      },
+      {
+        "web_url": "http://www.nytimes.com/2016/01/17/nyregion/when-prisoners-had-ski-jumps.html",
+        "snippet": "For about 40 years, inmates could use a run at Clinton Correctional Facility in Dannemora, N.Y., that would launch them airborne for about 50 feet.",
+        "lead_paragraph": "For about 40 years, inmates could use a run at Clinton Correctional Facility in Dannemora, N.Y., that would launch them airborne for about 50 feet.",
+        "abstract": null,
+        "print_page": "4",
+        "blog": [],
+        "source": "The New York Times",
+        "multimedia": [
+          {
+            "width": 190,
+            "url": "images/2016/01/17/nyregion/17FYI/17FYI-thumbWide-v2.jpg",
+            "height": 126,
+            "subtype": "wide",
+            "legacy": {
+              "wide": "images/2016/01/17/nyregion/17FYI/17FYI-thumbWide-v2.jpg",
+              "wideheight": "126",
+              "widewidth": "190"
+            },
+            "type": "image"
+          },
+          {
+            "width": 600,
+            "url": "images/2016/01/17/nyregion/17FYI/17FYI-articleLarge.jpg",
+            "height": 916,
+            "subtype": "xlarge",
+            "legacy": {
+              "xlargewidth": "600",
+              "xlarge": "images/2016/01/17/nyregion/17FYI/17FYI-articleLarge.jpg",
+              "xlargeheight": "916"
+            },
+            "type": "image"
+          },
+          {
+            "width": 75,
+            "url": "images/2016/01/17/nyregion/17FYI/17FYI-thumbStandard.jpg",
+            "height": 75,
+            "subtype": "thumbnail",
+            "legacy": {
+              "thumbnailheight": "75",
+              "thumbnail": "images/2016/01/17/nyregion/17FYI/17FYI-thumbStandard.jpg",
+              "thumbnailwidth": "75"
+            },
+            "type": "image"
+          }
+        ],
+        "headline": {
+          "main": "When Prisoners Had Ski Jumps",
+          "content_kicker": "F.Y.I.",
+          "kicker": "F.Y.I.",
+          "print_headline": "When Prisoners Had Ski Jumps"
+        },
+        "keywords": [
+          {
+            "rank": "1",
+            "is_major": "Y",
+            "name": "organizations",
+            "value": "Clinton Correctional Facility"
+          },
+          {
+            "rank": "2",
+            "is_major": "Y",
+            "name": "subject",
+            "value": "Ski Jumping"
+          },
+          {
+            "rank": "3",
+            "is_major": "N",
+            "name": "glocations",
+            "value": "Dannemora (NY)"
+          }
+        ],
+        "pub_date": "2016-01-17T00:00:00Z",
+        "document_type": "article",
+        "news_desk": "Metropolitan",
+        "section_name": "N.Y. / Region",
+        "subsection_name": null,
+        "byline": {
+          "contributor": "",
+          "person": [
+            {
+              "organization": "",
+              "role": "reported",
+              "firstname": "Michael",
+              "rank": 1,
+              "lastname": "POLLAK"
+            }
+          ],
+          "original": "By MICHAEL POLLAK"
+        },
+        "type_of_material": "Question",
+        "_id": "56993d0638f0d86a572ebfdf",
+        "word_count": "578",
+        "slideshow_credits": null
+      },
+      {
+        "web_url": "http://www.nytimes.com/2015/12/22/insider/prison-brutality-at-clinton-correctional-getting-the-story.html",
+        "snippet": "Reporters Michael Winerip and Michael Schwirtz provide an inside look at the reporting behind the story of inmate Leonard Strickland’s death.",
+        "lead_paragraph": "Reporters Michael Winerip and Michael Schwirtz provide an inside look at the reporting behind the story of inmate Leonard Strickland’s death.",
+        "abstract": null,
+        "print_page": null,
+        "blog": [],
+        "source": "The New York Times",
+        "multimedia": [
+          {
+            "width": 190,
+            "url": "images/2015/12/11/nyregion/PRISONgrab2/PRISONgrab2-thumbWide.jpg",
+            "height": 126,
+            "subtype": "wide",
+            "legacy": {
+              "wide": "images/2015/12/11/nyregion/PRISONgrab2/PRISONgrab2-thumbWide.jpg",
+              "wideheight": "126",
+              "widewidth": "190"
+            },
+            "type": "image"
+          },
+          {
+            "width": 600,
+            "url": "images/2015/12/11/nyregion/PRISONgrab2/PRISONgrab2-articleLarge.jpg",
+            "height": 458,
+            "subtype": "xlarge",
+            "legacy": {
+              "xlargewidth": "600",
+              "xlarge": "images/2015/12/11/nyregion/PRISONgrab2/PRISONgrab2-articleLarge.jpg",
+              "xlargeheight": "458"
+            },
+            "type": "image"
+          },
+          {
+            "width": 75,
+            "url": "images/2015/12/11/nyregion/PRISONgrab2/PRISONgrab2-thumbStandard.jpg",
+            "height": 75,
+            "subtype": "thumbnail",
+            "legacy": {
+              "thumbnailheight": "75",
+              "thumbnail": "images/2015/12/11/nyregion/PRISONgrab2/PRISONgrab2-thumbStandard.jpg",
+              "thumbnailwidth": "75"
+            },
+            "type": "image"
+          }
+        ],
+        "headline": {
+          "main": "Prison Brutality at Clinton Correctional: Getting the Story"
+        },
+        "keywords": [
+          {
+            "rank": "1",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Prisons and Prisoners"
+          },
+          {
+            "rank": "2",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Suits and Litigation (Civil)"
+          },
+          {
+            "rank": "3",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Video Recordings, Downloads and Streaming"
+          },
+          {
+            "rank": "4",
+            "is_major": "N",
+            "name": "organizations",
+            "value": "Clinton Correctional Facility"
+          },
+          {
+            "rank": "5",
+            "is_major": "N",
+            "name": "organizations",
+            "value": "Great Meadow Correctional Facility"
+          },
+          {
+            "rank": "6",
+            "is_major": "N",
+            "name": "organizations",
+            "value": "Rikers Island Prison Complex"
+          },
+          {
+            "rank": "7",
+            "is_major": "N",
+            "name": "persons",
+            "value": "Strickland, Leonard (1966-2010)"
+          },
+          {
+            "rank": "8",
+            "is_major": "N",
+            "name": "glocations",
+            "value": "Clinton (NY)"
+          },
+          {
+            "rank": "9",
+            "is_major": "N",
+            "name": "glocations",
+            "value": "Dannemora (NY)"
+          }
+        ],
+        "pub_date": "2015-12-22T00:00:00Z",
+        "document_type": "article",
+        "news_desk": "Insider",
+        "section_name": "Times Insider",
+        "subsection_name": null,
+        "byline": {
+          "person": [
+            {
+              "organization": "",
+              "role": "reported",
+              "firstname": "Michael",
+              "rank": 1,
+              "lastname": "WINERIP"
+            },
+            {
+              "organization": "",
+              "role": "reported",
+              "firstname": "Michael",
+              "rank": 2,
+              "lastname": "SCHWIRTZ"
+            }
+          ],
+          "original": "By MICHAEL WINERIP and MICHAEL SCHWIRTZ"
+        },
+        "type_of_material": "News",
+        "_id": "567997b238f0d87fff9c63a2",
+        "word_count": "1494",
+        "slideshow_credits": null
+      },
+      {
+        "web_url": "http://www.nytimes.com/video/nyregion/100000004085887/full-prison-video-inmate-death-clinton-correctional-facility.html",
+        "snippet": "This 44-minute video begins as Leonard Strickland, an inmate with schizophrenia, is being assessed for medical treatment at Clinton Correctional Facility and after his initial altercation with the prison’s guards.",
+        "lead_paragraph": "This 44-minute video begins as Leonard Strickland, an inmate with schizophrenia, is being assessed for medical treatment at Clinton Correctional Facility and after his initial altercation with the prison’s guards.",
+        "abstract": null,
+        "print_page": null,
+        "blog": [],
+        "source": null,
+        "multimedia": [
+          {
+            "width": 190,
+            "url": "images/2015/12/09/multimedia/nyc-clinton-strickland2/nyc-clinton-strickland2-thumbWide.jpg",
+            "height": 126,
+            "subtype": "wide",
+            "legacy": {
+              "wide": "images/2015/12/09/multimedia/nyc-clinton-strickland2/nyc-clinton-strickland2-thumbWide.jpg",
+              "wideheight": "126",
+              "widewidth": "190"
+            },
+            "type": "image"
+          },
+          {
+            "width": 600,
+            "url": "images/2015/12/09/multimedia/nyc-clinton-strickland2/nyc-clinton-strickland2-articleLarge.jpg",
+            "height": 408,
+            "subtype": "xlarge",
+            "legacy": {
+              "xlargewidth": "600",
+              "xlarge": "images/2015/12/09/multimedia/nyc-clinton-strickland2/nyc-clinton-strickland2-articleLarge.jpg",
+              "xlargeheight": "408"
+            },
+            "type": "image"
+          },
+          {
+            "width": 75,
+            "url": "images/2015/12/09/multimedia/nyc-clinton-strickland2/nyc-clinton-strickland2-thumbStandard.jpg",
+            "height": 75,
+            "subtype": "thumbnail",
+            "legacy": {
+              "thumbnailheight": "75",
+              "thumbnail": "images/2015/12/09/multimedia/nyc-clinton-strickland2/nyc-clinton-strickland2-thumbStandard.jpg",
+              "thumbnailwidth": "75"
+            },
+            "type": "image"
+          }
+        ],
+        "headline": {
+          "main": "Watch: The Full Leonard Strickland Video"
+        },
+        "keywords": [
+          {
+            "rank": "1",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Prison Guards and Corrections Officers"
+          },
+          {
+            "rank": "2",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Police Brutality, Misconduct and Shootings"
+          },
+          {
+            "rank": "3",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Video Recordings, Downloads and Streaming"
+          },
+          {
+            "rank": "4",
+            "is_major": "N",
+            "name": "glocations",
+            "value": "Clinton (NY)"
+          },
+          {
+            "rank": "5",
+            "is_major": "N",
+            "name": "glocations",
+            "value": "Dannemora (NY)"
+          },
+          {
+            "rank": "6",
+            "is_major": "N",
+            "name": "organizations",
+            "value": "Clinton Correctional Facility"
+          }
+        ],
+        "pub_date": "2015-12-13T07:56:35Z",
+        "document_type": "multimedia",
+        "news_desk": "N.Y. / Region",
+        "section_name": "N.Y. / Region",
+        "subsection_name": null,
+        "byline": {
+          "person": [
+            {
+              "organization": "",
+              "role": "reported",
+              "firstname": "Nys",
+              "rank": 1,
+              "lastname": "DEPT"
+            }
+          ],
+          "original": "By NYS DEPT. of CORRECTIONS"
+        },
+        "type_of_material": "Video",
+        "_id": "566d6b2038f0d82b1b4d749c",
+        "word_count": "30",
+        "slideshow_credits": null
+      },
+      {
+        "web_url": "http://www.nytimes.com/video/nyregion/100000004090391/inmate-death-at-clinton-correctional-facility.html",
+        "snippet": "Inmates at Clinton Correctional Facility in Dannemora, N.Y., accuse guards of horrible treatment. This video shows one case. It includes some graphic scenes of violence.",
+        "lead_paragraph": "Inmates at Clinton Correctional Facility in Dannemora, N.Y., accuse guards of horrible treatment. This video shows one case. It includes some graphic scenes of violence.",
+        "abstract": null,
+        "print_page": null,
+        "blog": [],
+        "source": "The New York Times",
+        "multimedia": [
+          {
+            "width": 190,
+            "url": "images/2015/12/10/nyregion/nyc-clinton-strickland/nyc-clinton-strickland-thumbWide.jpg",
+            "height": 126,
+            "subtype": "wide",
+            "legacy": {
+              "wide": "images/2015/12/10/nyregion/nyc-clinton-strickland/nyc-clinton-strickland-thumbWide.jpg",
+              "wideheight": "126",
+              "widewidth": "190"
+            },
+            "type": "image"
+          },
+          {
+            "width": 600,
+            "url": "images/2015/12/10/nyregion/nyc-clinton-strickland/nyc-clinton-strickland-articleLarge.jpg",
+            "height": 338,
+            "subtype": "xlarge",
+            "legacy": {
+              "xlargewidth": "600",
+              "xlarge": "images/2015/12/10/nyregion/nyc-clinton-strickland/nyc-clinton-strickland-articleLarge.jpg",
+              "xlargeheight": "338"
+            },
+            "type": "image"
+          },
+          {
+            "width": 75,
+            "url": "images/2015/12/10/nyregion/nyc-clinton-strickland/nyc-clinton-strickland-thumbStandard.jpg",
+            "height": 75,
+            "subtype": "thumbnail",
+            "legacy": {
+              "thumbnailheight": "75",
+              "thumbnail": "images/2015/12/10/nyregion/nyc-clinton-strickland/nyc-clinton-strickland-thumbStandard.jpg",
+              "thumbnailwidth": "75"
+            },
+            "type": "image"
+          }
+        ],
+        "headline": {
+          "main": "Death at Clinton Prison"
+        },
+        "keywords": [
+          {
+            "rank": "1",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Prisons and Prisoners"
+          },
+          {
+            "rank": "2",
+            "is_major": "N",
+            "name": "organizations",
+            "value": "Clinton Correctional Facility"
+          },
+          {
+            "rank": "3",
+            "is_major": "N",
+            "name": "persons",
+            "value": "Hager, Emily B"
+          },
+          {
+            "rank": "4",
+            "is_major": "N",
+            "name": "glocations",
+            "value": "Dannemora (NY)"
+          },
+          {
+            "rank": "5",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Prison Guards and Corrections Officers"
+          },
+          {
+            "rank": "6",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Police Brutality, Misconduct and Shootings"
+          }
+        ],
+        "pub_date": "2015-12-13T07:49:33Z",
+        "document_type": "multimedia",
+        "news_desk": "N.Y. / Region",
+        "section_name": "N.Y. / Region",
+        "subsection_name": null,
+        "byline": {
+          "person": [
+            {
+              "organization": "",
+              "role": "reported",
+              "firstname": "Emily",
+              "rank": 1
+            }
+          ],
+          "original": "By EMILY B. HAGER and JESSICA NAUDZIUNAS"
+        },
+        "type_of_material": "Video",
+        "_id": "566d697238f0d82b1b4d7499",
+        "word_count": "25",
+        "slideshow_credits": null
+      },
+      {
+        "web_url": "http://www.nytimes.com/2015/12/06/arts/dance/pepper-fajans-makes-brooklyn-studios-for-dance-a-blessed-refuge.html",
+        "snippet": "This dancer-puppeteer-choreographer-carpenter has brought many of his skills to creating a home for performance and study in Clinton Hill.",
+        "lead_paragraph": "This dancer-puppeteer-choreographer-carpenter has brought many of his skills to creating a home for performance and study in Clinton Hill.",
+        "abstract": "Dancer and choreographer Pepper Fajans opens Brooklyn Studios for Dance, space for teaching and performing dance, in Cadman Congregational Church in Brooklyn Heights; made arrangement with church to work as custodian in exchange for free long term access to its gymnasium. ",
+        "print_page": "9",
+        "blog": [],
+        "source": "The New York Times",
+        "multimedia": [
+          {
+            "width": 190,
+            "url": "images/2015/12/06/arts/06PEPPER1/06PEPPER1-thumbWide.jpg",
+            "height": 126,
+            "subtype": "wide",
+            "legacy": {
+              "wide": "images/2015/12/06/arts/06PEPPER1/06PEPPER1-thumbWide.jpg",
+              "wideheight": "126",
+              "widewidth": "190"
+            },
+            "type": "image"
+          },
+          {
+            "width": 600,
+            "url": "images/2015/12/06/arts/06PEPPER1/06PEPPER1-articleLarge.jpg",
+            "height": 400,
+            "subtype": "xlarge",
+            "legacy": {
+              "xlargewidth": "600",
+              "xlarge": "images/2015/12/06/arts/06PEPPER1/06PEPPER1-articleLarge.jpg",
+              "xlargeheight": "400"
+            },
+            "type": "image"
+          },
+          {
+            "width": 75,
+            "url": "images/2015/12/06/arts/06PEPPER1/06PEPPER1-thumbStandard.jpg",
+            "height": 75,
+            "subtype": "thumbnail",
+            "legacy": {
+              "thumbnailheight": "75",
+              "thumbnail": "images/2015/12/06/arts/06PEPPER1/06PEPPER1-thumbStandard.jpg",
+              "thumbnailwidth": "75"
+            },
+            "type": "image"
+          }
+        ],
+        "headline": {
+          "main": "Pepper Fajans Makes Brooklyn Studios for Dance a Blessed Refuge",
+          "print_headline": "Blessing a Refuge for Movement  "
+        },
+        "keywords": [
+          {
+            "rank": "1",
+            "is_major": "Y",
+            "name": "subject",
+            "value": "Dancing"
+          },
+          {
+            "rank": "2",
+            "is_major": "Y",
+            "name": "organizations",
+            "value": "Brooklyn Studios for Dance (Brooklyn, NY)"
+          },
+          {
+            "rank": "3",
+            "is_major": "Y",
+            "name": "persons",
+            "value": "Fajans, Pepper (1985- )"
+          },
+          {
+            "rank": "4",
+            "is_major": "N",
+            "name": "persons",
+            "value": "Cunningham, Merce"
+          },
+          {
+            "rank": "5",
+            "is_major": "N",
+            "name": "glocations",
+            "value": "Clinton Hill (Brooklyn, NY)"
+          }
+        ],
+        "pub_date": "2015-12-06T00:00:00Z",
+        "document_type": "article",
+        "news_desk": "Arts&Leisure",
+        "section_name": "Arts",
+        "subsection_name": "Dance",
+        "byline": {
+          "person": [
+            {
+              "organization": "",
+              "role": "reported",
+              "firstname": "Gia",
+              "rank": 1,
+              "lastname": "KOURLAS"
+            }
+          ],
+          "original": "By GIA KOURLAS"
+        },
+        "type_of_material": "News",
+        "_id": "565f186c38f0d8640ffa0bfb",
+        "word_count": "1157",
+        "slideshow_credits": null
+      },
+      {
+        "web_url": "http://www.nytimes.com/2015/12/06/realestate/clinton-hill-brooklyn-a-neighborhood-in-transition.html",
+        "snippet": "The centerpiece of the Brooklyn neighborhood is Pratt Institute — its greensward campus’s brick pathways braiding through a sculpture garden.",
+        "lead_paragraph": "The centerpiece of the Brooklyn neighborhood is Pratt Institute — its greensward campus’s brick pathways braiding through a sculpture garden.",
+        "abstract": "Living In column on Clinton Hill, Brooklyn.",
+        "print_page": "8",
+        "blog": [],
+        "source": "The New York Times",
+        "multimedia": [
+          {
+            "width": 190,
+            "url": "images/2015/12/06/realestate/06GAZ1/06GAZ1-thumbWide.jpg",
+            "height": 126,
+            "subtype": "wide",
+            "legacy": {
+              "wide": "images/2015/12/06/realestate/06GAZ1/06GAZ1-thumbWide.jpg",
+              "wideheight": "126",
+              "widewidth": "190"
+            },
+            "type": "image"
+          },
+          {
+            "width": 600,
+            "url": "images/2015/12/06/realestate/06GAZ1/06GAZ1-articleLarge.jpg",
+            "height": 400,
+            "subtype": "xlarge",
+            "legacy": {
+              "xlargewidth": "600",
+              "xlarge": "images/2015/12/06/realestate/06GAZ1/06GAZ1-articleLarge.jpg",
+              "xlargeheight": "400"
+            },
+            "type": "image"
+          },
+          {
+            "width": 75,
+            "url": "images/2015/12/06/realestate/06GAZ1/06GAZ1-thumbStandard.jpg",
+            "height": 75,
+            "subtype": "thumbnail",
+            "legacy": {
+              "thumbnailheight": "75",
+              "thumbnail": "images/2015/12/06/realestate/06GAZ1/06GAZ1-thumbStandard.jpg",
+              "thumbnailwidth": "75"
+            },
+            "type": "image"
+          }
+        ],
+        "headline": {
+          "main": "Clinton Hill, Brooklyn, a Neighborhood in Transition",
+          "content_kicker": "Living In",
+          "kicker": "Living In",
+          "print_headline": "A Neighborhood in Transition "
+        },
+        "keywords": [
+          {
+            "rank": "1",
+            "is_major": "Y",
+            "name": "subject",
+            "value": "Real Estate and Housing (Residential)"
+          },
+          {
+            "rank": "2",
+            "is_major": "Y",
+            "name": "glocations",
+            "value": "Clinton Hill (Brooklyn, NY)"
+          }
+        ],
+        "pub_date": "2015-12-06T00:00:00Z",
+        "document_type": "article",
+        "news_desk": "RealEstate",
+        "section_name": "Real Estate",
+        "subsection_name": null,
+        "byline": {
+          "contributor": "",
+          "person": [
+            {
+              "organization": "",
+              "role": "reported",
+              "firstname": "Julie",
+              "rank": 1,
+              "lastname": "BESONEN"
+            }
+          ],
+          "original": "By JULIE BESONEN"
+        },
+        "type_of_material": "News",
+        "_id": "565ec15238f0d8640ffa0adc",
+        "word_count": "1254",
+        "slideshow_credits": null
+      },
+      {
+        "web_url": "http://www.nytimes.com/slideshow/2015/12/06/realestate/living-in-clinton-hill.html",
+        "snippet": "Rich with historic residential architecture, the north-central Brooklyn neighborhood is growing in popularity, and home prices show it.",
+        "lead_paragraph": "Rich with historic residential architecture, the north-central Brooklyn neighborhood is growing in popularity, and home prices show it.",
+        "abstract": null,
+        "print_page": null,
+        "blog": [],
+        "source": "The New York Times",
+        "multimedia": [
+          {
+            "width": 190,
+            "url": "images/2015/12/06/realestate/06LIVING-slide-LZ3T/06LIVING-slide-LZ3T-thumbWide.jpg",
+            "height": 126,
+            "subtype": "wide",
+            "legacy": {
+              "wide": "images/2015/12/06/realestate/06LIVING-slide-LZ3T/06LIVING-slide-LZ3T-thumbWide.jpg",
+              "wideheight": "126",
+              "widewidth": "190"
+            },
+            "type": "image"
+          },
+          {
+            "width": 600,
+            "url": "images/2015/12/06/realestate/06LIVING-slide-LZ3T/06LIVING-slide-LZ3T-articleLarge.jpg",
+            "height": 400,
+            "subtype": "xlarge",
+            "legacy": {
+              "xlargewidth": "600",
+              "xlarge": "images/2015/12/06/realestate/06LIVING-slide-LZ3T/06LIVING-slide-LZ3T-articleLarge.jpg",
+              "xlargeheight": "400"
+            },
+            "type": "image"
+          },
+          {
+            "width": 75,
+            "url": "images/2015/12/06/realestate/06LIVING-slide-LZ3T/06LIVING-slide-LZ3T-thumbStandard-v2.jpg",
+            "height": 75,
+            "subtype": "thumbnail",
+            "legacy": {
+              "thumbnailheight": "75",
+              "thumbnail": "images/2015/12/06/realestate/06LIVING-slide-LZ3T/06LIVING-slide-LZ3T-thumbStandard-v2.jpg",
+              "thumbnailwidth": "75"
+            },
+            "type": "image"
+          }
+        ],
+        "headline": {
+          "main": "Living in Clinton Hill"
+        },
+        "keywords": [
+          {
+            "rank": "1",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Real Estate and Housing (Residential)"
+          },
+          {
+            "rank": "2",
+            "is_major": "N",
+            "name": "glocations",
+            "value": "Clinton Hill (Brooklyn, NY)"
+          }
+        ],
+        "pub_date": "2015-12-06T00:00:00Z",
+        "document_type": "multimedia",
+        "news_desk": "Real Estate",
+        "section_name": "Real Estate",
+        "subsection_name": null,
+        "byline": [],
+        "type_of_material": "Slideshow",
+        "_id": "565ec15138f0d8640ffa0adb",
+        "word_count": "18",
+        "slideshow_credits": "Christopher Lee for The New York Times"
+      },
+      {
+        "web_url": "http://www.nytimes.com/2015/12/14/nyregion/clinton-correctional-facility-inmate-brutality.html",
+        "snippet": "The 2010 death of Leonard Strickland would have probably been forgotten by all but the officers and inmates at Clinton Correctional Facility. Then a breakout brought attention to the prison’s secrets.",
+        "lead_paragraph": "The 2010 death of Leonard Strickland would have probably been forgotten by all but the officers and inmates at Clinton Correctional Facility. Then a breakout brought attention to the prison’s secrets.",
+        "abstract": "Review of internal reports, log books and video from Clinton Correctional Facility in Dannemora, NY, as well as witness accounts, offer insight into 2010 death of inmate Leonard Strickland; Strickland's death is often cited by prisoners as example of savage beatings guards sometimes inflict on prisoners; circumstances surrounding his death would likely have remained unknown had it not been for attention paid to prison in wake of June escape by two murderers.",
+        "print_page": "1",
+        "blog": [],
+        "source": "The New York Times",
+        "multimedia": [
+          {
+            "width": 190,
+            "url": "images/2015/12/12/nyregion/15PRISONS7/15PRISONS7-thumbWide.jpg",
+            "height": 126,
+            "subtype": "wide",
+            "legacy": {
+              "wide": "images/2015/12/12/nyregion/15PRISONS7/15PRISONS7-thumbWide.jpg",
+              "wideheight": "126",
+              "widewidth": "190"
+            },
+            "type": "image"
+          },
+          {
+            "width": 600,
+            "url": "images/2015/12/12/nyregion/15PRISONS7/15PRISONS7-articleLarge-v2.jpg",
+            "height": 726,
+            "subtype": "xlarge",
+            "legacy": {
+              "xlargewidth": "600",
+              "xlarge": "images/2015/12/12/nyregion/15PRISONS7/15PRISONS7-articleLarge-v2.jpg",
+              "xlargeheight": "726"
+            },
+            "type": "image"
+          },
+          {
+            "width": 75,
+            "url": "images/2015/12/12/nyregion/15PRISONS7/15PRISONS7-thumbStandard-v2.jpg",
+            "height": 75,
+            "subtype": "thumbnail",
+            "legacy": {
+              "thumbnailheight": "75",
+              "thumbnail": "images/2015/12/12/nyregion/15PRISONS7/15PRISONS7-thumbStandard-v2.jpg",
+              "thumbnailwidth": "75"
+            },
+            "type": "image"
+          }
+        ],
+        "headline": {
+          "main": "An Inmate Dies, and No One Is Punished",
+          "print_headline": "A New York Inmate Dies, and No One Is Punished"
+        },
+        "keywords": [
+          {
+            "rank": "1",
+            "is_major": "Y",
+            "name": "persons",
+            "value": "Strickland, Leonard (1966-2010)"
+          },
+          {
+            "rank": "2",
+            "is_major": "Y",
+            "name": "subject",
+            "value": "Prison Guards and Corrections Officers"
+          },
+          {
+            "rank": "3",
+            "is_major": "Y",
+            "name": "organizations",
+            "value": "Clinton Correctional Facility"
+          },
+          {
+            "rank": "4",
+            "is_major": "N",
+            "name": "glocations",
+            "value": "Dannemora (NY)"
+          }
+        ],
+        "pub_date": "2015-12-14T00:00:00Z",
+        "document_type": "article",
+        "news_desk": "Metro",
+        "section_name": "N.Y. / Region",
+        "subsection_name": null,
+        "byline": {
+          "contributor": "Susan C. Beachy contributed research.",
+          "person": [
+            {
+              "organization": "",
+              "role": "reported",
+              "firstname": "Michael",
+              "rank": 1,
+              "lastname": "WINERIP"
+            },
+            {
+              "organization": "",
+              "role": "reported",
+              "firstname": "Michael",
+              "rank": 2,
+              "lastname": "SCHWIRTZ"
+            }
+          ],
+          "original": "By MICHAEL WINERIP and MICHAEL SCHWIRTZ"
+        },
+        "type_of_material": "News",
+        "_id": "566d6c5938f0d82b1b4d749e",
+        "word_count": "4233",
+        "slideshow_credits": null
+      },
+      {
+        "web_url": "http://www.nytimes.com/2015/11/19/us/politics/reviews-reveal-divisions-within-the-clinton-health-initiative-starting-at-the-top.html",
+        "snippet": "Ira C. Magaziner, the chief executive of the Clinton Health Access Initiative, has long alienated co-workers, but a recent performance review reveals board members are also unhappy with him.",
+        "lead_paragraph": "Ira C. Magaziner, the chief executive of the Clinton Health Access Initiative, has long alienated co-workers, but a recent performance review reveals board members are also unhappy with him.",
+        "abstract": "Two performance reviews coming from Clinton Foundation concerning Ira C Magaziner, chief executive of foundation's health initiative, offer window into politics and tensions within organization, and in particular role Chelsea Clinton plays as board member.",
+        "print_page": "22",
+        "blog": [],
+        "source": "The New York Times",
+        "multimedia": [
+          {
+            "width": 190,
+            "url": "images/2015/11/19/us/19CLINTON/19CLINTON-thumbWide.jpg",
+            "height": 126,
+            "subtype": "wide",
+            "legacy": {
+              "wide": "images/2015/11/19/us/19CLINTON/19CLINTON-thumbWide.jpg",
+              "wideheight": "126",
+              "widewidth": "190"
+            },
+            "type": "image"
+          },
+          {
+            "width": 600,
+            "url": "images/2015/11/19/us/19CLINTON/19CLINTON-articleLarge.jpg",
+            "height": 400,
+            "subtype": "xlarge",
+            "legacy": {
+              "xlargewidth": "600",
+              "xlarge": "images/2015/11/19/us/19CLINTON/19CLINTON-articleLarge.jpg",
+              "xlargeheight": "400"
+            },
+            "type": "image"
+          },
+          {
+            "width": 75,
+            "url": "images/2015/11/19/us/19CLINTON/19CLINTON-thumbStandard.jpg",
+            "height": 75,
+            "subtype": "thumbnail",
+            "legacy": {
+              "thumbnailheight": "75",
+              "thumbnail": "images/2015/11/19/us/19CLINTON/19CLINTON-thumbStandard.jpg",
+              "thumbnailwidth": "75"
+            },
+            "type": "image"
+          }
+        ],
+        "headline": {
+          "main": "Reviews Reveal Divisions Within the Clinton Health Initiative, Starting at the Top",
+          "print_headline": "Reviews Reveal Divisions Within the Clinton Health Initiative, Starting at the Top"
+        },
+        "keywords": [
+          {
+            "rank": "1",
+            "is_major": "Y",
+            "name": "organizations",
+            "value": "Clinton Foundation"
+          },
+          {
+            "rank": "2",
+            "is_major": "Y",
+            "name": "persons",
+            "value": "Magaziner, Ira C"
+          },
+          {
+            "rank": "3",
+            "is_major": "Y",
+            "name": "persons",
+            "value": "Clinton, Chelsea"
+          },
+          {
+            "rank": "4",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Philanthropy"
+          },
+          {
+            "rank": "5",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Boards of Directors"
+          },
+          {
+            "rank": "6",
+            "is_major": "N",
+            "name": "persons",
+            "value": "Clinton, Bill"
+          },
+          {
+            "rank": "7",
+            "is_major": "N",
+            "name": "subject",
+            "value": "Presidential Election of 2016"
+          },
+          {
+            "rank": "8",
+            "is_major": "N",
+            "name": "persons",
+            "value": "Clinton, Hillary Rodham"
+          }
+        ],
+        "pub_date": "2015-11-19T00:00:00Z",
+        "document_type": "article",
+        "news_desk": "National",
+        "section_name": "U.S.",
+        "subsection_name": "Politics",
+        "byline": {
+          "person": [
+            {
+              "organization": "",
+              "role": "reported",
+              "firstname": "Maggie",
+              "rank": 1,
+              "lastname": "HABERMAN"
+            }
+          ],
+          "original": "By MAGGIE HABERMAN"
+        },
+        "type_of_material": "News",
+        "_id": "564d3d2d38f0d81eb3ced0ca",
+        "word_count": "1169",
+        "slideshow_credits": null
+      }
+    ]
+  },
+  "status": "OK",
+  "copyright": "Copyright (c) 2013 The New York Times Company.  All Rights Reserved."
+}

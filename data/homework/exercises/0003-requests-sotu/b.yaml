@@ -1,0 +1,14 @@
+title: Cause a ConnectionError
+description: |
+  Write a program that prints out the name of a URL that you want to get.
+
+  Then, that program should crash due to a runtime error of type ConnectionError, which will happen if you try to connect to a non-existent web server. Or, if your own Internet connection is down (obviously, the former is easier to specify in your script).
+points: 0.5
+expectations:
+  output: |
+    #[the URL you attempt to GET should be printed here]
+  error:
+    type: ConnectionError
+takeaways:
+  - |
+    Ideally, programs that we write are reproducible and deterministic. But one of the tricky things about programming against online data -- or any kind of external resource -- is that you can never be sure that when your script runs that the external resource is actually available. The web server, or your Internet connection, might have gone down since you last ran the script.

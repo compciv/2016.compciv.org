@@ -1,0 +1,267 @@
+---
+title: Visualizing Geopolitical Sensitivities with the Google Static Maps API
+description: APIs are complicated because geopolitical disputes are complicated
+image_url: /files/images/practicum/google-maps/google-maps-4-world-views.jpg
+banner:
+  image:
+    url: /files/images/practicum/google-maps/google-maps-4-world-views.jpg
+    source_name: Google Static Maps API
+    source_url: "http://maps.googleapis.com/maps/api/staticmap?&size=400x600&maptype=terrain&zoom=5&center=Punjab"
+    caption: "Can You Guess Whose Geopolitical Worldview This Is?"
+
+summary: |
+  A quick walkthrough of one of Google's geo-related APIs, and how its many configuration options are both a reflection of the complicated world we live in, and an example of how programming can be used to simplify the drudgery of creating useful visualizations.
+
+  While there are many ways we can use programming to make mapping visualizations, the one proposed here involves simple HTML coding, as well as old-fashioned reading of Google's technical documentation, and consulting your world politics text books for the data gathering.
+
+  __Note: Still being drafted, with more notes and Python code to come__
+---
+
+
+
+
+# Background
+
+
+Like all useful APIs, the [Google Static Maps API](https://developers.google.com/maps/documentation/static-maps/intro?hl=en) has a lot more complexity than you might think for something that "just" generates a map of the world at a given location.
+
+## Basic usage of the API
+
+Check [out the intro guide on Google's documentation site](https://developers.google.com/maps/documentation/static-maps/intro?hl=en) for an overview of the specs. 
+
+Here's the URL for a 650x400 pixel map centered around "Vietnam":
+
+[http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam](http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam)
+
+That URL actually points to an __image file__, which we can embed on any webpage with this HTML code (i.e. a standard `<img>` tag:
+
+~~~html
+  <img src="http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam">
+~~~
+
+
+And here it is, embedded in _this_ page:
+
+<a href="http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam"><img src="http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam"></a>
+
+
+## The "region" parameter
+
+OK, seems simple enough. But [the documentation lists many more ways to](https://developers.google.com/maps/documentation/static-maps/intro?hl=en) customize the rendered image, including changing the zoom level, the satellite imagery, adding custom markers, and specifying the language of the labels. 
+
+But one curiously named parameter, `region`, has this description:
+
+> __region__ (optional) defines the appropriate borders to display, based on geo-political sensitivities. Accepts a region code specified as a two-character ccTLD ('top-level domain') value.
+
+What does "geo-political sensitivities" mean? Let's take the example URL above and see what it looks like when the `region` is the _United States_ -- as we really don't know what Google has chosen by default (or whether it changes depending on which country you're viewing this webpage from). The United States has a top-level domain code of `us`, [which you can find from this list](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains).
+
+Here's the URL; in the printout here, I've omitted the first part of the URL since it is always the same: 
+
+[/staticmap?size=650x400&center=Vietnam&region=us](http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=us){:.url}
+
+<a href="http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=us"><img src="http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=us"></a>
+
+_Maybe_ that's the same as the one above? Kind of hard to eyeball it exactly, if we have to scroll up and down to compare them. If only there was a way to alleviate that inconvenience...Oh well, let's just assume it's the same and see what the map of the Vietnam region looks like from _Vietnam's_ political perspective:
+
+[/staticmap?size=650x400&center=Vietnam&region=vn](http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=vn){:.url}
+
+<a href="http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=vn"><img src="http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=vn"></a>
+
+Looks about the same. How about __Japan__?
+
+
+[/staticmap?size=650x400&center=Vietnam&region=jp](http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=jp){:.url}
+
+<a href="http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=jp"><img src="http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=jp"></a>
+
+Looks like everyone is in agreeance so far...Let's check __China__ _just_ to make sure...
+
+[/staticmap?size=650x400&center=Vietnam&region=cn](http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=cn){:.url}
+
+<a href="http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=cn"><img src="http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=cn"></a>
+
+A quick glance seems to reveal a few minor differences: a text label seems to be missing, a few [dash marks are added in the water](https://en.wikipedia.org/wiki/Nine-dash_line)...but the land masses look the same...?
+
+
+
+## Different countries, different borders
+
+As it turns out, China has particular [laws and regulations about geographic data](https://en.wikipedia.org/wiki/Restrictions_on_geographic_data_in_China), so Google has to ["partner with a Chinese digital map provider in order to legally show China map data"](https://en.wikipedia.org/wiki/Google_Maps#Google_Maps_in_China). Among one of the most visible differences:
+
+> Within China, the State Council mandates that all maps of China use the GCJ-02 coordinate system, which is offset from the WGS-84 system used in most of the world.
+
+Of course, [China isn't the only country with geopolitical opinions](https://en.wikipedia.org/wiki/List_of_territorial_disputes). Let's see how to use a little programming to get a fuller view of the world's border disputes.
+
+
+
+# Simple visualization
+
+In the section above, I noted how annoying it was to have to scroll the webpage, up and down, to detect differences between the maps. One obvious way to fix this is to put the images physically nearer to each other. Don't underestimate the power of such an easy-to-explain-*and*-implement solution. 
+
+The simple act of making two facts _physically_ (i.e. _visually_) easier to compare, is the __very purpose and function of data visualization__. It doesn't have to be bar charts; here's a visualization I made that's simply the combination of 12 Google Static Maps, aligned in 4 rows by 3 columns, with red dots drawn where M3.0+ earthquakes have taken place, [according to USGS data](http://earthquake.usgs.gov/earthquakes/):
+
+![https://raw.githubusercontent.com/dannguyen/ok-earthquakes-RNotebook/master/images/multi-year-OK-google-map.jpg](https://raw.githubusercontent.com/dannguyen/ok-earthquakes-RNotebook/master/images/multi-year-OK-google-map.jpg)
+
+
+
+
+But even just two images, side by side, can be compelling. Think of the effectiveness of all those before-and-after ads about weight-loss and aging:
+
+[West 29th Street, New York, 2009 vs 2014, via Google Street View](https://www.google.com/maps/@40.7517967,-74.0022865,3a,75y,90.62h,96.29t/data=!3m7!1e1!3m5!1sl4w_abFbSsFmXwFDVpP0rw!2e0!5s20141001T000000!7i13312!8i6656!6m1!1e1)
+
+![google-street-view-2009-2014.jpg](/files/images/practicum/google-maps/google-street-view-2009-2014.jpg)
+
+
+
+## The Photoshop approach
+
+How to put two images side-by-side? Nothing wrong with going the old-fashioned way: __copying__ and pasting both images into Photoshop, adding appropriate labels, and saving as a new file, then uploading the file online. Here's an example:
+
+![/files/images/practicum/google-maps/google-maps-cn-us-vietnam.jpg](/files/images/practicum/google-maps/google-maps-cn-us-vietnam.jpg)
+
+Of course, what's wrong with that is that it's incredibly tedious. If you decide you want to change the zoom level, or other visual characteristic, or change up the label, expect to go through what is at least a 5 minute hand-editing job.
+
+## Good ol' HTML tables
+
+Sometimes images needed to be combined via image software. But one of the huge advantages of building for the web is that we can just write _text_
+ that describes what images we want, and where to put them.
+
+Here's some code that puts two image elements, side by side, in a HTML table row. There's even some caption text. Even if you don't know HTML, you can recognize the pattern:
+
+~~~html
+<table>
+  <tr>
+    <td>
+      <img src="http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=cn">
+      <p>China</p>
+    </td>
+    <td>
+      <img src="http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=us">
+      <p>United States</p>
+    </td>
+  </tr>
+</table>  
+~~~
+
+
+<table>
+  <tr>
+    <td>
+      <img src="http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=cn">
+      <p>China</p>
+    </td>
+    <td>
+      <img src="http://maps.googleapis.com/maps/api/staticmap?size=650x400&center=Vietnam&region=us">
+      <p>United States</p>
+    </td>
+  </tr>
+</table>  
+
+
+
+
+While the Static Maps API is pretty simple for trying out a few parameters at a time, it's a bit tedious to hand-fix those parameters, over and over.
+
+This is where a little programming can help.
+
+
+
+
+# The algorithm
+
+(more TK)
+
+## Data gathering
+
+We don't need to go to a spreadsheet for this, this is something you might be able to think off the top of your head. What are the obvious hot spots in the world? And which countries have different -- and strong opinions about them? 
+
+- Make a list of locations around the world that [have disputed territories and boundaries](https://en.wikipedia.org/wiki/List_of_territorial_disputes).
+- Make a list of countries and their corresponding [top-level domain 2-letter codes](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains).
+
+## Map image files
+
+We only need one API: The [Google Static Maps API](https://developers.google.com/maps/documentation/static-maps/intro?hl=en)
+
+The specifications of which are:
+
+- Endpoint: https://maps.googleapis.com/maps/api/staticmap
+- Parameters:
+    + __size__ (required): width by height, in pixels, e.g. `400x400`
+    + __center__: where the center of the map should be at. It does _not_ have to be latitude/longitude; we can specify a human-readable name, such as, `India`
+    + __maptype__: e.g. `hybrid`, `satellite`, `roadmap`, `terrain`
+    + __zoom__: e.g. `1` for worldwide, `15` for street-level resolution, up to `20`
+    + __region__: the [2-letter top-level-domain](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains) of the country for which we want to see the geo-political sensitivities. 
+
+Here's an example: To get a __500x500__ pixel __roadmap__ (the default design), that is zoomed in at slightly closer than a continent level, focused on __Stanford, California__, according to the geopolitical opinions of __Kyrgyzstan__:
+
+|   key   |    value     |
+|---------|--------------|
+| size    | 500x500      |
+| center  | Stanford, CA |
+| maptype | roadmap      |
+| zoom    | 6            |
+| region  | kg           |
+{:.table-sql}
+
+
+To download that file via __Requests__ and save it to our computer:
+
+~~~py
+import requests
+ENDPOINT_URL = 'https://maps.googleapis.com/maps/api/staticmap'
+my_params = {
+  'size': '500x500',
+  'center': 'Stanford, CA',
+  'maptype': 'roadmap',
+  'zoom': 7,
+  'region': 'kg'
+}
+
+resp = requests.get(ENDPOINT_URL, params=my_params)
+# to get the URL, call `resp`'s `url` attribute:
+print(resp.url)
+# https://maps.googleapis.com/maps/api/staticmap?zoom=7&region=kg&center=Stanford%2C+CA&size=500x500&maptype=roadmap
+
+# And if you want to save a copy on your computer:
+f = open("stanford-kg.png", "wb")
+f.write(resp.content)
+f.close()
+~~~
+
+
+Of course, you don't have to save it on your computer if you don't want to. Part of the deal with Google's API is that it [generates a URL that you can directly visit](https://maps.googleapis.com/maps/api/staticmap?zoom=7&region=kg&center=Stanford%2C+CA&size=500x500&maptype=roadmap):
+
+[https://maps.googleapis.com/maps/api/staticmap?zoom=7&region=kg&center=Stanford%2C+CA&size=500x500&maptype=roadmap
+](https://maps.googleapis.com/maps/api/staticmap?zoom=7&region=kg&center=Stanford%2C+CA&size=500x500&maptype=roadmap
+)
+
+So why even save the file in the first place? We don't have to if we don't want to. But we _do_ want to take advantage of the way the Requests library _serializes_ (i.e. turns a Python dictionary into a proper URL query string) the key-values for us. 
+
+### Using requests.PreparedRequest to generate a URL
+
+There's a way to use that feature without actually _executing_ a request (via `requests.get()`) -- it's to use the `PreparedRequest` type, which is part of the `requests` library...and easier to just see in action than to explain all the details:
+
+~~~py
+import requests
+ENDPOINT_URL = 'https://maps.googleapis.com/maps/api/staticmap'
+my_params = {
+  'size': '500x500',
+  'center': 'Stanford, CA',
+  'maptype': 'roadmap',
+  'zoom': 7,
+  'region': 'kg'
+}
+
+pr = requests.PreparedRequest()
+pr.prepare_url(ENDPOINT_URL, params=my_params)
+print(pr.url)
+~~~
+
+Basically,  when we _do_ an actual `requests.get()` method call, the Requests library contains code that does all of the setup, including the construction the actual URL string to be called. Most of the time we don't care about that intermediary step, so the `get()` method just goes right ahead and downloads from that URL.
+
+But in this case, we don't need to download the URL. We just want to _get_ the URL. Because that's all we need to fill out HTML tags for our simple webpages.
+
+
+------------
+
+More to come...

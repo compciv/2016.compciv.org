@@ -1,0 +1,58 @@
+title: |
+  Count up the times "Applause" is used in all of the webpages for Obama's States of the Union
+points: 2
+description: |
+  Similar to the previous exercises, except repeated for all of the States of the Union during Obama's presidency (technically, 2009's was _not_ a SOTU address, but we'll count it anyway).
+
+  Here are the URLs:
+
+  - https://www.whitehouse.gov/the-press-office/remarks-president-barack-obama-address-joint-session-congress
+  - https://www.whitehouse.gov/the-press-office/remarks-president-state-union-address
+  - https://www.whitehouse.gov/the-press-office/2011/01/25/remarks-president-state-union-addressehouse.gov/the-press-office/2012/01/24/remarks-president-state-union-address
+  - https://www.whitehouse.gov/the-press-office/2013/02/12/remarks-president-state-union-address
+  - https://www.whitehouse.gov/the-press-office/2014/01/28/president-barack-obamas-state-union-address
+  - https://www.whitehouse.gov/the-press-office/2015/01/20/remarks-president-state-union-address-january-20-2015
+  - https://www.whitehouse.gov/the-press-office/2016/01/12/remarks-president-barack-obama-%E2%80%93-prepared-delivery-state-union-address
+
+  For each URL, print out:
+
+  1. The URL of the response
+  2. The number of characters in the text of each response
+  3. The number of times "Applause" appears in the text of each response, __case-insensitive__
+
+
+hints: |
+  - If you already know how to do a [for-loop and how to iterate across a collection of objects in Python](https://automatetheboringstuff.com/chapter2/#calibre_link-2088), you should do that. If you don't, there's nothing wrong with repeating the same code, over and over, for each URL. It should feel really annoying, though, so keep that in mind when we discuss loops and collections and other slightly more complicated data objects.
+
+expectations:
+  output: |
+    https://www.whitehouse.gov/the-press-office/remarks-president-barack-obama-address-joint-session-congress
+    146186   # approximately
+    0
+    https://www.whitehouse.gov/the-press-office/remarks-president-state-union-address
+    157621   # approximately
+    116
+    https://www.whitehouse.gov/the-press-office/2011/01/25/remarks-president-state-union-address
+    155070   # approximately
+    80
+    https://www.whitehouse.gov/the-press-office/2012/01/24/remarks-president-state-union-address
+    157847   # approximately
+    87
+    https://www.whitehouse.gov/the-press-office/2013/02/12/remarks-president-state-union-address
+    156855   # approximately
+    87
+    https://www.whitehouse.gov/the-press-office/2014/01/28/president-barack-obamas-state-union-address
+    152266   # approximately
+    0
+    https://www.whitehouse.gov/the-press-office/2015/01/20/remarks-president-state-union-address-january-20-2015
+    156269   # approximately
+    86
+    https://www.whitehouse.gov/the-press-office/2016/01/12/remarks-president-barack-obama-%E2%80%93-prepared-delivery-state-union-address
+    147766   # approximately
+    89
+
+takeaways:
+  - |
+    What happened in [2009](https://www.whitehouse.gov/the-press-office/remarks-president-barack-obama-address-joint-session-congress) and [2014](https://www.whitehouse.gov/the-press-office/2014/01/28/president-barack-obamas-state-union-address)? Did Obama just bomb those speeches? Or is it a result of inconsistent transcription, just one of many "dirty/inconsistent data" issues we'll run into?
+
+

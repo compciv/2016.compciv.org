@@ -1,0 +1,71 @@
+---
+summary: |
+  One of the more confusing things about learning to program is: how/where do we actually "write" the code and then, how do we run it? The brief answer is: it's all just text, so type it in wherever you can enter text. But then there are different ways of _running_ the code.   
+
+  This guide assumes you at least know how to get to your system shell via the Terminal app (on OSX) or Windows Command Prompt.
+---
+
+
+
+Here's a quick list of the conventions I use throughout this guide:
+
+# The system shell prompt
+
+~~~sh
+$ echo hello world
+hello world
+~~~
+
+That __dollar sign__ means: we're in the __system shell__, i.e the program that you're put into as soon as you open the Terminal app. The __dollar sign__ is often the symbol used to signify where you can begin typing in commands (you should see a blinking cursor there).
+
+When following my examples, __do not copy the dollar sign__.
+
+This is __not__ where you can run Python code. However, you will be running various system commands, such as:
+
+- `$ cd ~/Desktop/compciv-2016` __change directory__, in this case, to your `compciv-2016` folder if you happen to put it on your __Desktop__
+- `$ git add --all` -- add changes to your Git repo
+- `$ git status` -- find out the current state of your Git repo  
+- `$ python foo.py` -- run the __Python interpreter__ and feed it a script file named `foo.py`.
+
+
+
+
+
+
+
+
+
+
+# The system shell
+
+The __system shell__ is the program you're in (think of it as a "mode") as soon as you launch your __Terminal__ app:
+
+![image the-terminal-shell-prompt.png](/files/images/guides/devwork/using-ipython/the-terminal-shell-prompt.png)
+
+
+
+
+
+
+When I state, __"try this in your interactive Python prompt (or shell)"__, I mean that you should run __ipython__ from your system shell (i.e. the prompt that comes up when you open Terminal). Note how I use the __dollar sign__ `$` as a way of indicating the __system shell's prompt__ (and if you haven't figured it out by now, you're not supposed to type that dollar sign in when you run the command yourself):
+
+<pre class="highlight shell"><span class="o">$</span> ipython</pre>
+
+In my Terminal, it looks like this (your prompt may look a little different):
+
+![image entering-ipython-prompt.png](/files/images/guides/devwork/using-ipython/ipython-from-bash.png)
+
+When you execute the `ipython` command and enter the __interactive Python shell__, the "welcome" screen should look like this (note that the darkened area of the screen represents when the Terminal was in the __system shell__):
+
+![image entering-ipython-prompt.png](/files/images/guides/devwork/using-ipython/entering-ipython-prompt.png)
+
+Notice how the __prompt__ for the __interactive Python shell__ is different than the system shell:
+
+![image focusing-on-ipython-prompt.png](/files/images/guides/devwork/using-ipython/focusing-on-ipython-prompt.png)
+
+The prompt is the line where you should see a __blinking cursor__. See that __dollar sign__? That's the __prompt__. The shell is waiting for you to type in a command and then hit __Enter__.
+
+I'm going to run the `pwd` command (the [Windows equivalent](http://stackoverflow.com/questions/921741/windows-equivalent-to-unix-pwd) is `echo %cd%`), which stands for __print working directory__, i.e. show me where I am in my file system:
+
+
+

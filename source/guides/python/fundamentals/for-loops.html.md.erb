@@ -1,0 +1,514 @@
+---
+title: For-loop fundamentals
+description: |
+  How to repeatedly execute code, over and over, for a specified number of times.
+summary: |
+  Learning loops is key to understanding why anyone would ever want to go through the hassle of learning programming in the first place. When you can write a loop, you can turn impossibly tedious tasks (i.e. work that is thought to be "impossible" because no human could ever sit through it) into trivial work for a computer.
+
+  Although there are several kinds of loops, we focus on the most common variation in Python: the __for-loop__.
+references:
+  - title: "Programming with Python: Repeating Actions with Loops"
+    slug: swcarpentry-python-loops
+    url: http://swcarpentry.github.io/python-novice-inflammation/02-loop.html
+    publisher: Software Carpentry
+  - title: "Chapter 2: Flow Control -- for Loops and the range() Function"
+    url: https://automatetheboringstuff.com/chapter2#calibre_link-2088
+    description: |
+        Sweigart's lessons come not only with video demonstrations, but really useful diagrams that explain how a program behaves within a loop.
+    publisher: Automate the Boring Stuff
+    author: Al Sweigart
+    slug: automate-boring-for-loops
+---
+
+Note: I plan to expand this section a little bit, but you could also just read the excellent lesson here: <%=link_to_reference 'automate-boring-for-loops' %>
+
+
+# Why loop?
+
+A __loop__ is a programming construct in which we define a block of code that we want the computer to execute repeatedly, as well as how many times the computer should execute that block of code.
+
+By "block of code", I mean, _any_ code. For example, here's the Python code to print `"hello world"`:
+
+~~~py
+print("hello world")
+~~~
+
+And here's the script that repeats that "block of code" 5 times:
+
+~~~py
+print("hello world")
+print("hello world")
+print("hello world")
+print("hello world")
+print("hello world")
+~~~
+
+That's simple enough. But what if I wanted to run that block of code 50 times. Or 5,000,000 times? Copy-and-paste can only get us so far.
+
+But with a __loop__, we can command the computer to execute that block of code as many times as we want, _without physically writing that code_, over and over.
+
+Here's what the previous print-hello-world-5-times script looks like, as a basic __for-loop__ in Python:
+
+~~~py
+for x in range(5):
+    print("hello world")
+~~~
+
+
+
+
+# Anatomy of a very boring for-loop
+
+Believe it or not, there's a lot to understand in that boring two-line snippet. Here are the highlights, which I'll elaborate on throughout this lesson. 
+
+1. That __range()__ function takes creates one of Python's data types. It's harder to accurately and completely explain than it is to just intuit: the __range()__ function takes one argument and produces a sequence of numbers from `0` up until that argument. The __range()__ function _itself_ is _not_ a fundamental part of the __for-loop -- I just use it in _this_ basic example as it's the easiest way in Python to say: _hey, iterate 5 times_. 
+2. _However_, what the `range()` _represents_ -- a boundary condition -- is fundamental to the for-loop: it specifies the number of times the loop should execute.
+3. The keyword __for__ is one of Python's few special keywords, i.e. you can't name a variable `for`, and in a text-editor, it should be highlighted.
+4. The keyword __in__ is also another special reserved keyword.
+5. That `x` is _not_ a keyword. It's a variable name. And one that is superfluous since it's not actually used as anything right now but a placeholder.
+6. That __colon__ at the end of the __for__ statement is __required__. It basically tells the Python interpreter: everything after this line is the _block of code to be executed_
+7. The block of code to be executed, e.g. that `print()` statement, is indented 4 spaces. This is a __requirement__ by Python, not just an aesthetic thing.
+
+## Execute a boring for-loop in interactive Python
+
+Before we get bogged down in the details, type out and execute the above code in the __interactive Pythong interpreter__ (i.e. __ipython__). A few nuances will come up even in the execution of those two lines.
+
+Note: if you are using __ipython__ -- which you _should be doing_ -- as soon as you hit __Enter__ to go to the next line, the interpreter will automatically add an __indentation__ for you. If you are using the regular __python__interpreter, you will have to do this _manually_, either by hitting __Tab__ once, or the __Spacebar__ 4 times.
+
+__Another note:__ When you type in the `print("hello world")` line and then hit __Enter__ -- _nothing will happen_. That is, the Python interpreter will prompt you for another line of code to execute as a block instead of printing out, `"hello world"`. Just hit __Enter__ one more time.
+
+Here's what the code looks like when you type it out in __ipython__ -- note how __ellipses__ are used to indicate the continuation of the code block inside the for-loop:
+
+![image](/files/images/guides/python/fundamentals/for-loop-hello-world-ipython.png)
+
+## Variations on a very boring for-loop
+
+So that's a very boring __for-loop__. Luckily, the construction of a __for-loop__ doesn't get more complicated than what I've outlined above. However, it is _critical_ that you understand the basic elements of a for-loop before moving on -- i.e. the use of the keywords `for` and `in`, the `colon` at the end of the statement, and how the block of code to be executed is indented.
+
+Before moving on, try these variations:
+
+1. Replace `x` with `whatever_variable_name_I_feel_like` (or some other equally obnoxious but valid variable name) to confirm that the _literal_ `x` character is of no importance.
+2. Replace the `5` inside the `range()` function with `5000` or even `5000000`. Don't worry, this _shouldn't_ break your computer. Though it may take a few minutes to finish. Hit __Ctrl-C__ to break execution if you get bored.
+3. Add a second line -- e.g. `print("goodbye world")` in the indented block of code.
+
+
+
+# Anatomy of a slightly less boring for-loop
+
+Loops get a bit more exciting when you can create a task that _varies_ upon each iteration. Remember that unused `x` variable in the first boring example? Let's include it in the `print()` statement to see what it contains:
+
+~~~py
+for x in range(0, 5):
+    print("hello world", x)
+~~~
+
+The output:
+
+~~~
+hello world 0
+hello world 1
+hello world 2
+hello world 3
+hello world 4        
+~~~
+
+Instead of printing just the same `"hello world"`, over and over, we've managed to tell the computer to print something different with each iteration. Note that we haven't increased the complexity of the __for__ statement at all. Though, to be honest, we haven't increased the complexity of the program's real world value by much either.
+
+But let's have a brief segue and imagine how even just incrementing by one could be very useful in the real world. What if there were a collection of files or webpages that all were related or very similar, except for a single digit in the URL?
+
+For example, Wikipedia has pages for a lot of things, including numerals. Here's the page for the number [1](https://en.wikipedia.org/wiki/1). Actually, it's the page for the __year 1 A.D.__ -- if you want the _number_ __1__, you want this URL: [https://en.wikipedia.org/wiki/1_(number)](https://en.wikipedia.org/wiki/1_(number)){:.url}
+
+OK, what if we wanted to print the URLs for the Wikipedia pages for the first 10 years (A.D.), starting with year __1 A.D.__? The code and its output would look like this, if you try it at the interactive Python shell:
+
+(note that the `range()` function can take a second argument, which creates a sequence of numbers from the first to the second argument)
+
+(also note that we have to convert the number represented by the `yr` variable into a string literal in order to "add" it to the base URL)
+
+~~~py
+>>> for yr in range(1, 11):
+    ...: print("https://en.wikipedia.org/wiki/" + str(yr))
+    ...:     
+https://en.wikipedia.org/wiki/1
+https://en.wikipedia.org/wiki/2
+https://en.wikipedia.org/wiki/3
+https://en.wikipedia.org/wiki/4
+https://en.wikipedia.org/wiki/5
+https://en.wikipedia.org/wiki/6
+https://en.wikipedia.org/wiki/7
+https://en.wikipedia.org/wiki/8
+https://en.wikipedia.org/wiki/9
+https://en.wikipedia.org/wiki/10
+~~~
+
+What if you wanted the URLs for the Wikipedia pages that are about the __numbers__ 1 through 10? Just modify the base URL a bit:
+
+~~~py
+>>> for whatev in range(1, 11):
+    ...: print("https://en.wikipedia.org/wiki/" + str(whatev) + "_(number)")
+    ...:     
+https://en.wikipedia.org/wiki/1_(number)
+https://en.wikipedia.org/wiki/2_(number)
+https://en.wikipedia.org/wiki/3_(number)
+https://en.wikipedia.org/wiki/4_(number)
+https://en.wikipedia.org/wiki/5_(number)
+https://en.wikipedia.org/wiki/6_(number)
+https://en.wikipedia.org/wiki/7_(number)
+https://en.wikipedia.org/wiki/8_(number)
+https://en.wikipedia.org/wiki/9_(number)
+https://en.wikipedia.org/wiki/10_(number)
+~~~
+
+And what if we wanted to do something more interesting than just print out the URLs onto the screen? Such as download the pages? Or check to see if they exist? Or do this for another set of webpages?
+
+Well, you can define that indented block of code to do whatever you want:
+
+~~~py
+base_url = 'https://www.whitehouse.gov/briefing-room/statements-and-releases?page='
+for x in range(1, 11):
+    url = base_url + str(x)
+    print(url)
+    foo_bar_dosomethin(url)
+~~~
+
+
+# Thinking and programming non-linearly with loops
+
+Assuming you're reading this lesson before you've read the lesson on [conditional branching](/guides/python/fundamentals/conditional-branching), the __for-loop__ statement will be the first time that you've explicitly written code that did not execute in the top-to-bottom order in which you wrote it.
+
+Consider this example:
+
+~~~py
+for z in range(3):
+    print("hello world")
+print("I'm done saying hello")
+~~~
+
+When I mean that the code executes _non-linearly_, I mean that even though this is the 3rd (and final) line of the script:
+
+~~~py
+print("I'm done saying hello")
+~~~
+
+&ndash; it's not the third command to be executed. Instead, the 2nd line, the indented code block &ndash;
+
+~~~py
+    print("hello world")
+~~~
+
+&ndash; has to run its course. This is a much different paradigm than writing a script in which one line is executed after another.
+
+In fact, to get the full effect of this lesson, implement the above snippet in two different ways:
+
+###### 1. Type it out in your interactive Python shell
+
+Again, note how the indented code _does not execute_ until you've hit __Enter__ twice, consecutively, to signify the end of the indented code block.
+
+![image](/files/images/guides/python/fundamentals/for-loop-hello-world-ipython-nonlinear.png)
+
+###### 2. Type it out and save as a standalone script
+
+Now open up your text editor, write the code in a text file and save it. Then execute that file with the command-line Python interpreter:
+
+~~~
+$ python mytestscript.py
+hello world
+hello world
+hello world
+I'm done saying hello
+~~~
+
+## How to interactively test a for-loop
+
+One takeaway is that it can be a massive pain to write and execute even a basic for-loop inside the interactive Python shell, because the shell kind of stops being _interactive_ when you indent a block, i.e. hitting __Enter__ does not return a response.
+
+So as you write more loops and other constructs that require indented blocks of code, I recommend that you just do it in the text editor with Python syntax highlighting, _then_ paste it into the shell.
+
+In fact, if you're using __ipython__ (which, again, you should be using as your interactive shell), you can type in the special command `%paste` -- which will paste in whatever is currently copied to your clipboard.
+
+However, the _proper_ way to test out a loop is to just run one iteration, and assign a value to the placeholder variable. Pretend that this is your complete script:
+
+~~~py
+for xval in range(100):
+    url_part_a = "https://en.wikipedia.org/wiki/" 
+    url_part_b = "_(number)"
+    full_url = url_part_a + str(xval) + url_part_b 
+    print("Downloading", full_url)
+~~~
+
+To test it interactively, simply assign `xval` as a normal variable. Then type out the rest of the indented block as if it existed as a standalone script, without that for-loop construct:
+
+~~~
+>>> xval = 42
+>>> url_part_a = "https://en.wikipedia.org/wiki/" 
+>>> url_part_b = "_(number)"
+>>> full_url = url_part_a + str(xval) + url_part_b 
+>>> print("Downloading", full_url)
+Downloading https://en.wikipedia.org/wiki/42_(number)
+~~~
+
+One way to think if of this process is to pretend that you are inside the loop, and your only job is to execute the code block that occurs when `xval` is `42`. You don't care that it's actually part of a loop, nor do you care that `xval` was previously `41`, or that it will be `43`. You just want to know what happens in one standalone execution of the indented code.
+
+Because if it works for `42`, or for any number between `1` and `100` -- then you can be relatively assured that it will work for all those other numbers.
+
+
+
+# Sequences and other iterable objects
+
+To keep things simple, I've used the `range()` function/object as the _thing to be looped through_, i.e. the _sequence_, i.e. the [__iterable__](https://docs.python.org/3/glossary.html#term-iterable). 
+
+There are many other sequences and iterable-type objects that can be used in a __for__-loop. I'll list the common ones below, but it is by no means an exhaustive list. For the most part, you learn what is iterable/loopable through experience:
+
+## Characters in a string
+
+When a string literal is passed into the `for` statement, the code block will be executed for _each character:_
+
+~~~py
+>>> for letter in "hello":
+...     print(letter.upper())
+H
+E
+L
+L
+O
+~~~
+
+
+This is not actually something you see a lot in the wild. But it does work as a nice simple example a for-loop and iterable object...
+
+
+## A list or tuple
+
+The __list__ object is probably the most frequent iterable object you'll come across in Python:
+
+~~~py
+numbers = [4, 5, 6]
+for x in numbers:
+    print(x)
+~~~
+
+Tuples (which are basically simplified lists) work in a similar fashion:
+
+~~~py
+numbers = (6, 7, 8)
+for x in numbers:
+    print(x)
+~~~
+
+
+## Reading a file, line by line
+
+A file object in Python is a specific kind of iterable object, in which a stream of data is represented. When this is passed into the for-loop construct, [the loop executes for every line in the file](https://docs.python.org/3/tutorial/inputoutput.html#methods-of-file-objects).
+
+Pretend you have a file on your hard drive named __example.txt__, and its contents look like this:
+
+~~~
+hello world
+and
+goodbye
+~~~
+
+To open it, then loop through it line-by-line (with the code block simply printing out an upper-case version of each line):
+
+~~~py
+>>> myfile = open("example.txt")
+>>> for x in myfile:
+...     print(x.upper())
+HELLO WORLD
+
+AND
+
+GOODBYE
+
+~~~
+
+Note: Why is there a blank line after each actual line of text? It's because in a text-file, each line of text has a __newline__ character at the end of each line. And the `print()` function adds a newline character of its own...But explaining the nature of files requires its own guide...It's enough for now to see this as a real-life example of a for-loop.
+
+
+
+# Variations on loops
+
+Understanding the __for__-loop construct is enough, as it is by far the most common kind of loop you will see in Python. However, it's worth pointing out the other variations and scenarios that you might see in the wild.
+
+## While loops
+
+Just like `for`, the keyword `while` is reserved in Python. And similarly, `while` is also used to denote a block of code to be looped:
+
+~~~py
+x = 0
+while x < 3:
+    print("hello world", x)
+    x += 1 
+~~~
+
+With the `for`-loop, you specify a collection of items to be iterated across. With a `while`-loop, you specify a _condition_ that, _if_ `True`, means that the code block should be executed. In the above snippet, the variable `x` is incremented with each iteration of the loop. When `x` represents the value `3`, the condition becomes `False`, and the loop stops.
+
+Think about what the equivalent __for__-loop would look like, then try to write it down. Here's my answer (note that there are literally infinite number of ways to represent this loop, because math and etc.):
+
+~~~py
+for z in range(0, 3):
+    print("hello world", z)
+~~~
+
+### Infinite loops
+
+What if a condition is _always_ `True`? Then, that loop will run _forever_, _theoretically_, as long as the laws of logic don't change. Practically speaking, of course, it will probably end when your computer runs out of power or the universe reaches heat-death.
+
+Here's an example of an infinite `while` loop:
+
+~~~py
+while 2 > 1:
+    print("hello world")
+~~~
+
+Or to be more succinct:
+
+~~~py
+while True:
+    print("hello world")
+~~~
+
+And sometimes, you might accidentally write a loop that you don't realize will be infinite:
+
+~~~py
+x = 0
+while x < 3:
+    print("hello world", x)
+    x + 1
+~~~
+
+Since the value represented by `x` never changes (i.e. `x` is never reassigned the result of `x + 1`), the value of `x` is forever at `0`, i.e. _less than_ `3`. 
+
+
+### Non-looping loops
+
+What if a `while` loop condition is _always_ `False`? Then the code inside the loop will never run:
+
+~~~py
+while 2 < 1:
+    print("hello world")
+~~~
+
+~~~py
+while False:
+    print("hello world")
+~~~
+
+It's pretty easy to create a `for`-loop version of the non-executing loop:
+
+~~~py
+for x in range(0):
+    print("hello world")
+
+for x in [ ]:
+    print("hello world")
+~~~
+
+While there are real-world reasons to have infinitely-running loops -- usually you don't intend to write a loop that never actually loops.
+
+
+## Loops within loops
+
+A code block within a loop is just like any other code you might write. It can be multi-line, for example. Or it could include other code blocks, including another separate loop:
+
+~~~py
+for x in range(10):
+    for y in range(5):
+        for z in range(3):
+            print(x, y, z)
+~~~
+
+Can you guess how many lines of output the above script (which is as pointless as it seems)? Don't worry, in real-world scripts, loops-within-loops will _usually_ make more sense, e.g. it won't involve just going through a range of arbitrary numbers. However, loops-inside-of-loops can get confusing very quickly. If your program is as confusing as [triple-Inception](https://www.youtube.com/watch?v=66TuSJo4dZM), there is most likely a more elegant way to tackle the problem.
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/66TuSJo4dZM" frameborder="0" allowfullscreen></iframe>
+
+
+
+
+# Teasers and exercises
+
+The following exercises involve examining relatively simple for-loops. The purpose is to make sure you can confidently recognize what a for-loop looks like, even if the code block to be executed seems pointless or pointlessly complicated.
+
+
+###### Fix these scripts
+
+These simple for-loop examples all contain syntax errors. See if you can spot them:
+
+~~~py
+for x in range(5):
+print("hello world")
+~~~
+
+
+~~~py
+for number_in range(5):
+    print("hello world")
+~~~
+
+
+~~~py
+for really_big_number in really_embiggened_range_of_nuumbers
+    print("hello world")
+~~~
+
+
+###### Try to predict the output of these scripts
+
+
+This is more of a test to see if you understand variable assignment
+
+~~~py
+a = "whatever"
+for x in range(42):
+    a = x
+print(a)
+~~~
+
+
+You can do anything in a loop. Even math:
+
+~~~py
+a = 0
+for x in range(3):
+    a = a + x * 10
+print(a)
+~~~
+
+
+What happens if we've defined a loop to run exactly 0 times:
+
+~~~py
+a = 100
+for number in range(0):
+    a = a + number
+print(a)
+~~~
+
+This is actually just another test of understanding variable assignment:
+
+~~~py
+a = 100
+b = 200
+for number in range(3):
+    b - a - number
+    for number in range(100):
+        a + b * number
+print(a)
+print(b)
+~~~
+
+Just in case you're confused by the syntax -- or more likely, the real-world purpose of the script above -- first of all, programming doesn't need to have a "real-world" purpose, as far as the interpreter is concerned. As long as the syntax is fine, the computer will run the program, no matter how meaningless it is to the real world.
+
+Second, what you are meant to recognize is that whether it's in a single `for-loop` or a loop-inside-a-loop -- the statement, `a + b` does just exactly that: it adds the contents of `a` and `b` together. That there is no effect at the end is a consequence of no _variable assignment_ being done: i.e. the values of `a` and `b` are never reassigned. Hence, the boring output at the end.
+
+For the purposes of this curriculum, I will never have you intentionally write a program this pointless. But that's not the point -- you may _accidentally_ write a pointless program. Not being able to see the logic error inside the for-loop is sometimes a result of not being comfortable with the for-loop syntax in the first place.
+
+
+Were those exercises too simple? I've deliberately made them easy. It's only important that you understand and recognize the syntax of a for-loop statement. That's not meant to be the complicated part. But when you write complicated programs that involve for-loops, you do not want the basic syntax and operation of a for-loop to be a source of confusion for you.
+
+
+### Moving on
+
+Read the [lesson on conditional-branching (i.e. `if/elif/else` statements)](/guides/python/fundamentals/conditional-branching).
+
+Then see if [you can complete the infamous FizzBuzz test](/guides/python/fundamentals/conditional-branching).

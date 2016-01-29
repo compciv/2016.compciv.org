@@ -1,0 +1,105 @@
+.site-articles{
+  .articles-section{
+
+    .meta{
+      border-bottom: thin solid #999;
+      padding-bottom: 1.0rem;
+      margin-bottom: 1.0rem;
+
+      > .title{
+        text-align: left;
+      }
+
+      > .description{
+        text-align: left;
+        font-size: $font-size-h5;
+      }
+
+    }
+  }
+
+}
+
+
+.site-assignments{
+  table.assignments{
+    @extend .table;
+    @extend .table-bordered;
+    @extend .table-striped;
+    @extend .table-responsive;
+    width: initial;
+    table-layout: fixed;
+    display: table;
+    th.frontmatter,th.due_date{
+      text-align: left;
+    }
+    th.points{
+      text-align: right;
+    }
+  }
+  .assignments{
+    .assignment{
+      .kind{
+        font-weight: bold;
+      }
+      .description{
+        font-size: $font-size-sm;
+      }
+    }
+
+
+    tr.assignment{
+      td{
+        vertical-align: top;
+      }
+      td.frontmatter{
+        width: 65%;
+
+        .pathname{
+          font-size: $font-size-sm;
+          background-color: inherit;
+        }
+      }
+
+      td.points{
+        width: 5%;
+        text-align: right;
+        font-weight: bold;
+        font-family: $font-family-monospace;
+      }
+      td.due_date{
+        width: 30%;
+        text-align: left;
+        .day{
+          font-size: $font-size-sm;
+          font-weight: bold;
+        }
+      }
+    }
+
+
+    tr.assignment.past-due{
+      td{
+        opacity: 0.70;
+        background-color: #F1F1F1;
+      }
+
+      td.due_date{
+          color: #977;
+
+      }
+    }
+
+    tr.assignment.current{
+      td{
+        background: #E8FFE2;
+      }
+      td.due_date{
+        color: #040;
+        .date{
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

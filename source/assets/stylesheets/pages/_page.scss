@@ -1,0 +1,119 @@
+#the-page-content{
+  display: relative;
+
+  img{
+    max-width: 100%;
+  }
+
+
+  p {
+    a:link, a:visited{
+      text-decoration: underline;
+    }
+  }
+
+  h1{
+    margin-top: 3.5rem;
+  }
+
+  h2{
+    margin-top: 2.2rem;
+  }
+
+}
+
+
+#the-page-meta{
+  margin-bottom: 2.0rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+
+  .page-description{
+    font-size: $font-size-h5;
+    color: #434;
+  }
+
+  section{
+    margin-top: 2.0rem;
+  }
+
+  .page-title{
+    @extend .h1;
+    color: #434;
+    font-size: 1.05 * $font-size-h1;
+  }
+
+}
+
+
+
+#the-page-footcontent{
+  // border-top: thin solid #CCC;
+  margin-top: 3.0rem;
+  padding-top: 1.5rem;
+
+  .references{
+    @extend .uniform-content-resource-listing;
+  }
+}
+
+.page-sequence{
+  @extend .content-card-minimal;
+
+
+  .next, .previous{
+    @extend .row;
+  }
+
+  .landing{
+    margin-bottom: 2.0em;
+    .title{
+      font-weight: bold;
+    }
+  }
+
+  .lbl{
+    @extend .col-xs-2;
+    font-weight: bold;
+  }
+
+  .item{
+    @extend .col-xs-10;
+    margin-bottom: 1.5em;
+  }
+
+}
+
+
+
+.uniform-content-resource-listing{
+  .uniform-content-resource{
+    margin-bottom: 1.5rem;
+    .title{
+      font-weight: bold;
+    }
+  }
+
+  .sub-listing{
+      .uniform-content-resource{
+        title{
+          font-weight: bold;
+        }
+        padding-left: 3.0rem;
+        margin-bottom: 1.0rem;
+        font-size: 0.9 * $font-size-base;
+      }
+  }
+}
+
+
+
+.reference.via{
+  .via-meta{
+    a.reference{ font-weight: bold; }
+  }
+  .body{
+    @extend .blockquote;
+    font-size: $font-size-sm;
+  }
+}

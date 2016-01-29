@@ -1,0 +1,27 @@
+title: Print the number of characters in the Gettysburg Address
+description: |
+  You're well acquainted with the `print()` function by now. Let's throw in the `len()` function, which similarly takes in a literal string as an _argument_ and _returns_ its number of characters:
+
+  ~~~
+  >>> len("Hey")
+  3
+  ~~~
+
+  Note: there is a difference between a function _returning_ a value and _printing_ something to screen. Try saving the above code to a script, executing, and seeing the output. It's not yet time to ditch `print()` just yet...
+
+
+  Apparently there are more than one version of Abe's famous speech; use the version found at [ourdocuments.gov](http://www.ourdocuments.gov/doc.php?flash=true&doc=36&page=transcript). Copy everything from `"Four score"` to `"perish from the earth."` (including the closing __period__ mark). The text that you copy should also have line breaks/newline characters between the paragraphs.
+expectations:
+  output: "1308"
+  requirements:
+    - "The program must call the `len()` function at least once."
+points: 0.5
+takeaways:
+  - Newline characters count as text characters
+  - Python strings can be multi-line as long as they are properly delimited by quotation marks. Good thing President Lincoln didn't use such marks in the text.
+  - |
+      It is possible to call a function on the result of another function, e.g.
+
+      ```
+      print(len("hello world"))
+      ```

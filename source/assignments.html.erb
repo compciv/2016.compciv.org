@@ -1,0 +1,57 @@
+---
+title: Assignments
+hide_toc: true
+description: What to do for class
+summary: |
+  I'll be adding assignments that are due in the current week, as well as upcoming tasks, including readings and "Hey, please sign up for this/configure your system in this way/etc"
+
+
+  The list of guides and tutorials can be found at: [/articles](/articles)
+
+---
+
+<article class="site-assignments">
+  <table class="assignments">
+    <thead>
+      <tr>
+        <th class="frontmatter">Title</th>
+        <th class="due_date">Due Date</th>
+        <th class="points">Points</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% assignment_resources.each do |r| %>
+        <tr class="assignment <%=past_date?(r.due_date) ? "past-due" : "current" %> <%=r.kind%>">
+          <td class="frontmatter">
+            <div class="title-label">
+              <span class="kind"><%=r.kind%>: </span>
+              <span class="title">
+                <% if r.stub? %>
+                  <span id="<%= r.slug%>"><%= r.title %></span>
+                <% else %>
+                  <%=link_to r.title, r.url %>
+                <% end %>
+              </span>
+
+            </div>
+
+            <% if r.exercise_set? %>
+              <div><code class="pathname"><%=r.exercises_slug%></code></div>
+            <% end %>
+
+            <div class="description"><%= markdownify r.description %></div>
+
+          </td>
+          <td class="due_date">
+            <span class="date"><%=r.due_date %></span>
+            <span class="day">[<%=day_of_week r.due_date %>]</span>
+          </td>
+          <td class="points"><%=r.points %></td>
+
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
+
+</article>

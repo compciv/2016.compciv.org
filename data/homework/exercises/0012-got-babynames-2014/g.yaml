@@ -1,0 +1,109 @@
+title: "Print a human-readable list of baby counts in 2014, by gender and by last character of their given names"
+points: 1.0
+description: |
+  Nearly the same as the previous exercise, except that the count-by-letter is done for each sex, `"M"` and `"F"`.
+
+  Also, note that the output is specifically formatted so that the columns of numbers are easier to glance at and compare. Your answer is expected to follow this _exact_ format:
+
+  - Each column has a __fixed width__ of exactly _8_ characters.
+  - The dashed line that separates the header from the data is, consequently, composed of __24__ hyphens.
+  - The first column is __left-justified__
+  - The second and third columns are __right-justified__
+
+  Check out the Hints section for how to _efficiently do this_. Or you could just read the Python documentation on the [`ljust()`](https://docs.python.org/3/library/stdtypes.html?highlight=ljust#str.ljust) and [`rjust()`](https://docs.python.org/3/library/stdtypes.html?highlight=rjust#str.rjust) methods.
+
+
+  #### Think about nested dictionaries
+
+  You could complete this exercise by keeping a separate dictionary by gender:
+
+  ~~~
+  m_dict = {}
+  f_dict = {}
+  # ...etc
+  letter = name[-1]
+  if sex == 'F':
+      if f_dict.get(letter):
+          f_dict[letter += int(babies)
+      # etc etc
+  else:
+      if m_dict.get(letter):
+         m_dict[letter] += int(babies)
+
+  ~~~
+
+  But consider using a _nested_ dictionary, so that you don't need as much repetitious, conditional logic:
+
+  ~~~
+  mydict = {'M': {}, 'F': {}}
+  ~~~
+
+  This exercise is intentionally similar to the previous one, so that you can think of a more elegant way to use dictionaries.
+
+
+  #### Padding and justifying the text
+
+  The `rjust()` string method has 1 required argument: an integer representing a desired _length_ for a right-justified string. This is also referred to as "padding the string":
+
+  ~~~
+  >> mystr = 'hello'
+  >> mystr.rjust(7)
+  '  hello'
+  ~~~
+
+  Though we don't need it for this exercise, a very common use-case is to do __zero-padding__, in which the `0` character is added to the right side of a number to give it a uniform length. The `rjust()` method takes a second optional argument: the character used to "fill" the padding:
+
+  ~~~
+  >>> mynumbers = [42, 9561, 28777]
+  >>> for n in mynumbers:
+  ...     print(n)
+  42
+  9561
+  28777
+
+  >>> for n in mynumbers:
+  ...     print(str(n).rjust(5, '0'))
+  00042
+  09561
+  28777
+  ~~~
+
+
+
+takeaways:
+  - |
+    By using the `ljust()` and `rjust()` methods, we've effectively created a fixed-width delimited data files, which is easier for humans to read at a glance at the cost of a little more programmatic complexity.
+  - |
+    Don't underestimate the ability to use plain text as a data visualization. The output of this program, simple as it is, allows the reader to see immediately for which letters in which the gender gap is different by _orders of magnitude_, e.g. in 2014, there were more than 20 times as many baby girls with names that end in __a__ than baby boys.
+  - Almost seems as if certain kinds of sounds are associated with gender.
+
+expectations:
+  output: |
+    letter         F       M
+    ------------------------
+    a         655469   27931
+    b            573   31085
+    c           1349   23617
+    d           3060   43641
+    e         328326  131036
+    f            164    2839
+    g            690    4685
+    h         127602  100945
+    i          57205   46157
+    j            187    1350
+    k            583   35514
+    l          44417  126372
+    m           5132   58233
+    n         233833  668026
+    o           2189   81861
+    p             58    2511
+    q             53     310
+    r          48361  176800
+    s          21309  127120
+    t          20824   52016
+    u            787    3178
+    v            401    2963
+    w           3905   26401
+    x           2091   18666
+    y         209187  104595
+    z           1020    3524

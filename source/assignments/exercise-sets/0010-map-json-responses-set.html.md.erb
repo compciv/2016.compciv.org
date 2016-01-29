@@ -1,0 +1,72 @@
+---
+title: Deserializing the JSON text from the Google Maps and Mapzen geocoding APIs
+exercises_slug: 0010-map-json-responses
+due_date: 2016-01-29
+description: |
+  Before programmatically using an API, we need to study its response.
+summary: |
+  Even though this uses real JSON-formatted data from the Google Maps and Mapzen geocoders, this exercise is meant to test our understanding of Python list and dictionary objects. Instead of contacting the live API servers, we practice on previously fetched responses, which have been saved as JSON-formatted text files.
+
+  We don't even really practice understanding what the JSON format really means. It's enough to know of the methods used to _deserialize_ a text file and return, for usage in our programs, the appropriate type of Python data object, which is _always_ either a `dict` or `list`.
+---
+
+## About the APIs
+
+If you're interested in the documentation for what these JSON responses actually contain, you can read the docs online:
+
+- [Mapzen Search API](https://mapzen.com/projects/search/)
+- [Google Maps Geocoder API](https://developers.google.com/maps/documentation/geocoding/intro)
+
+However, you don't need to know all the specifics of what the APIs return, or how to contact the APIs yourself, as I've contacted the APIs myself and saved their responses exactly as I received them. 
+
+Here is what I got in response for a query of simply, `"Stanford"`
+
+- [Mapzen Search's JSON response](http://www.compciv.org/files/datadumps/apis/mapzen/search-stanford.json)
+- [Google Maps Geocoder JSON response](http://www.compciv.org/files/datadumps/apis/googlemaps/geocode-stanford.json)
+
+I don't know how your web browser will actually render those files, so visit [this webpage a more web-friendly rendering of these files](https://gist.github.com/dannguyen/b6f13b690ad8736a00e2?short_path=8cf5d0f).
+
+
+
+## About the JSON data format
+
+If these JSON files look just like text files to you, that's right, that's all they are. In fact, they should remind you of Python objects you've seen before, particularly the dictionary and the list.
+
+The fact that the text content of a JSON file looks almost identical to various Python objects is a coincidence that we can deal with later. For now, all you have to know is that if you have a __string object__ that contains purportedly JSON-formatted text, this is how you __deserialize__ (a fancy word for "convert") that text string into whatever Python object it looks like, e.g. a __list__ or a __dictionary__ (usually the latter):
+
+~~~py
+import json
+# etc...
+# assuming mystring points to a text string
+mydata = json.loads(mystring)
+~~~
+
+__That's it:__ you import the [__json__ module](https://docs.python.org/3/library/json.html), and then you pass a string object into the `json.loads()` method.
+
+You don't even need to know (yet) what it means to "serialize" something.
+
+
+You can read about the [json module](https://docs.python.org/3/library/json.html) if you'd like. But for now, just be assured that the Python docs promise us that `json.loads(mystring)` converts (i.e. deserializes) whatever `mystring` points to into some other kind of Python object, either of type `dict` or of type `list`. Well, as long as `mystring` points to a JSON-formatted text string.
+
+And what is that exactly? Sure, you could read the information at [www.json.org](http://www.json.org/). But if I've kept my promise, that the URLs provided for the exercise are JSON-formatted text files, then that's all you need to know to do these exercises.
+
+Test this out in interactive Python if you don't believe me:
+
+~~~py
+>>> import requests
+>>> import json
+>>> URL = 'http://www.compciv.org/files/datadumps/apis/googlemaps/geocode-stanford.json'
+>>> txt = requests.get(URL).text
+>>> type(txt)
+str
+# you can run: print(txt) to see what it actually looks like
+>>> mydata = json.loads(txt)
+>>> type(mydata)
+dict
+# And here's how to derive the answer to b.py
+>>> print(dict['status'])
+OK
+~~~
+
+
+However, while you don't have to know a lot of new specifics for this set of exercises, you will have to know all about [for-loops, lists, and dictionaries](/articles)

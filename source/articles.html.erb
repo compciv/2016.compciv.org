@@ -1,0 +1,100 @@
+---
+title: Articles
+hide_toc: true
+description: |
+  A curated index of all the guides, references, and other writeups for the CompCiv class.
+summary: |
+  I'll be adding lessons and guides here, on a regular basis, as I polish them up. The assignments listing can be found at: [/assignments](/assignments)
+
+mymeta:
+  sections:
+    - title: Python fundamentals
+      description: |
+        Guides to Python fundamental concepts
+      articles:
+        - /guides/python/fundamentals/for-loops
+        - /guides/python/fundamentals/conditional-branching
+        - /guides/python/fileio/open-and-read-text-files
+        - /guides/python/fileio/open-and-write-files
+
+        - title: Python Objects and Data Structures
+          description: |
+            Everything in Python is an object. Here are the built in objects and data structures, including an overview of their most commonly-used methods and behaviors.
+          articles:
+            - /guides/python/fundamentals/text-as-strings
+            - /guides/python/fundamentals/lists-mutability
+            - /guides/python/fundamentals/tuples-immutable
+            - /guides/python/fundamentals/dictionaries-overview
+
+    - title: Python How-Tos
+      description: |
+        Common tasks in Python, both using the standard libraries and popular third-party libraries
+      articles:
+        - /guides/python/how-tos/downloading-files-with-requests
+
+    - title: Development Environment and Operating System Tasks
+      description: |
+        A collection of references about setting up and moving around your programming environment.
+      articles:
+        - /guides/devwork/code-conventions
+        - /guides/devwork/setting-up-github-and-cli-operations
+
+
+    - title: Real-world practice
+      description: |
+        Practice programming concepts on real-world data and scenarios.
+      articles:
+        - /practicum/web-making/geopolitical-sensitivity-google-maps/
+        - /guides/python/fundamentals/fizzbuzz-challenge
+        - slug: /practicum/shakefiles/shakefiles-landing-page/
+          articles:
+            - /practicum/shakefiles/a-creating-a-directory-idempotently
+            - /practicum/shakefiles/b-downloading-the-shakespeare-zip
+            - /practicum/shakefiles/c-unzipping-the-shakespeare-zip
+            - /practicum/shakefiles/d-print-first-5-lines-of-hamlet
+            - /practicum/shakefiles/e-count-each-line-of-hamlet
+            - /practicum/shakefiles/f-print-final-5-romeo-juliet-lines
+            - /practicum/shakefiles/g-glob-glob-tragedies
+            - /practicum/shakefiles/h-count-non-blank-lines-in-shakespeare-tragedies
+---
+
+<article class="site-articles">
+
+
+  <% page_mymeta.sections.each do |section| %>
+    <section class="articles-section">
+      <div class="meta">
+        <h1 class="title center"><%=section.title%></h1>
+        <div class="description">
+          <%=section.description%>
+        </div>
+
+      </div>
+      <section class="uniform-content-resource-listing">
+        <% section.articles.each do |article| %>
+          <% if article.is_a?(Hash) %>
+              <div class="section-head">
+                <!-- a sub-collection -->
+                <% if article.slug.present? %>
+                  <%= content_resource_tag article.slug %>
+                <% else %>
+                  <!-- just a section hed -->
+                    <div class="title h6"><%= article.title %></div>
+                    <div class="description"><%= article.description %></div>
+                <% end %>
+              </div>
+              <section class="sub-listing uniform-content-resource-listing">
+                <% article.articles.each do |sub_article| %>
+                  <%= content_resource_tag sub_article %>
+                <% end %>
+              </section>
+          <% else %>
+            <%= content_resource_tag article %>
+          <% end %>
+        <% end %>
+      </section>
+    </section>
+  <% end %>
+
+
+</article>

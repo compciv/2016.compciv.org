@@ -1,0 +1,546 @@
+---
+title: Text as String Objects
+description: |
+  How to represent and operate on text values using the Python str object.
+summary: |
+  Text makes up the vast majority of the data that we gather, analyze, and produce. So expect to spend a significant amount of time learning about the __str__ object, which Python uses to represent text and other string literals, and the many methods and functions for working with text.
+references:  
+  - title: Text Sequence Type -- str
+    slug: python-docs-str
+    url: https://docs.python.org/3/library/stdtypes.html#textseq
+    description: |
+      Textual data in Python is handled with str objects, or strings. Strings are immutable sequences of Unicode code points. String literals are written in a variety of ways.
+    publisher: Python documentation
+  - title: String methods
+    slug: python-docs-string-methods
+    publisher: Python documentation
+    url: https://docs.python.org/3/library/stdtypes.html#string-methods
+
+  - title: string -- Common string operations
+    slug: python-docs-string-ops
+    url: https://docs.python.org/3/library/string.html
+    publisher: Python documentation
+
+  - slug: automate-boring
+    title: Chapter 6 - Manipulating Strings
+    publisher: Automate the Boring Stuff
+    url: http://automatetheboringstuff.com/chapter6/
+    author: Al Sweigart
+
+  - title: Always bet on text
+    url: http://graydon2.dreamwidth.org/193447.html
+    slug: always-bet-on-text
+    description: |
+      An ode to text as humanity's most stable, precise, portable, and efficient form of communication.
+    author: Graydon Hoare
+    created_at: 2014-10-13
+---
+
+# The str object
+
+The __str__ object -- think of `str` as an abbreviation for __string literal__ -- is the data type that is used by Python to handle literal text values. Run the `type()` function for yourself:
+
+~~~py
+>>> type("hello")
+str
+~~~
+
+
+
+## Representing text as string literals
+
+I'll frequently use the term __string literal__ to describe text values inside code; I like to think of the _literal_ in terms of: that text value is meant to be interpreted _literally_, or _as-is_, by the Python interpreter.
+
+In the snippet below, the text `hello world`, enclosed in double quote marks, is the string literal: 
+
+~~~py
+len("hello world")
+~~~
+
+The text `len` _is not a string literal_ -- it is the name of a function that the Python interprets as something to _execute_. The `len()` function will return the _number of characters_ inside the string literal, `"hello world"` -- which is 11, since the whitespace character counts as a character. 
+
+The following snippet, which looks similar, sans the quotation marks, is interpreted _completely_ different by the Python interpreter:
+
+~~~py
+len(hello world)
+~~~
+
+In fact, it will throw a syntax error, because the Python interpreter tried to interpret `hello world` as actual Python code, _not_ a literal text value:
+
+~~~
+    len(hello world)
+                  ^
+SyntaxError: invalid syntax
+~~~
+
+
+## Delimiting with quotation marks
+
+In other words, paying attention to quotation marks is extremely important when writing code that works with text values.
+
+Text values can be denoted as String objects by enclosing them in quote marks: either __single__ or __double__:
+
+~~~py
+string_a = 'this is a proper string'
+string_b = "this is also proper"
+string_c = 'Double quotes are interpreted "literally" inside single quotes'
+string_d = "And vice versa, d'oh!"
+~~~
+
+Just make sure you use the same delimiter that you started with. This is bad:
+
+~~~
+bad_string = "hello world'
+~~~
+
+## Using the backslash as an escape sequence
+
+What if you want to use double- _and_ single- quotes within a single String object? One strategy is to use the __backslash__ character -- `\` -- which is often referred to as an __escape sequence__ -- which changes the _meaning_ of the character that immediately follows it. 
+
+In the snippet below, the _inner_ set of double quotes are preceded by backslashes; the Python interpreter no longer interprets them as _delimiters_, but instead, as _string literals_ that happen to be quotation marks:
+
+~~~py
+good_string = "He said, \"She said, 'Goodbye!' really loudly.\""
+~~~
+
+Referring to the backslash as an __escape character__ (aka an __escape sequence__), can be thought of as: the presence of a backslash before an otherwise _special character_ -- e.g. a quotation mark -- let's that character "escape" into a more ordinary meaning, i.e. a quotation mark no longer delimits string literals -- it is just a literal text character itself.
+
+### The newline character, "\n"
+
+Get used to seeing the __backslash__ in many other kinds of contexts -- including turning literal characters into special _metacharacters_. 
+
+For example, when the backslash precedes a text value that is normally just a plain string literally, such as the letter `"n"`, that letter is _escaped_ from its plain, literal meaning and takes on special meaning in the program.
+
+In this case, `"\n"` is what's used to represent __newline characters__:
+
+~~~py
+>>> print("We like\nto\nparty")
+We like
+to
+party
+~~~
+
+## Multiline strings
+
+In Python, a String value can contain __newline__ characters when they are represented as `"\n"`, but _not_ the newline characters that you create when you hit the __Enter__ key, i.e.
+
+~~~py
+bad_multi_string = "
+hey 
+   there
+whats going on"
+~~~
+
+The above code will result in this error:
+
+~~~
+SyntaxError: EOL while scanning string literal
+~~~
+
+As you can imagine, using `"\n"` to represent line breaks in a passage of text is going to be incredibly annoying to write and difficult to read:
+
+~~~py
+mysong = "Oh Mickey\nyou're so fine\nYou're so fine\nyou blow my mind\n\"Hey Mickey\"\n\"Hey Mickey\""
+~~~
+
+However, by using __triple__ quote delimiters -- either single or double, though the common style is to use the _double_ quote marks -- we can create a string that spans multiple lines:
+
+~~~py
+mysong = """
+Oh Mickey
+you're so fine
+You're so fine
+you blow my mind
+"Hey Mickey"
+"Hey Mickey"
+"""
+~~~
+
+Note that there's no need to escape individual quote marks in the multi-line passage, as the Python interpreter will keep reading text as string literals until it reaches the closing triple-quote delimiter.
+
+
+# String operations
+
+## Adding strings together
+
+Combining strings, also known as __concatenation__, can be done using the `+` operator:
+
+~~~py
+>>> "a" + "b"
+'ab'
+~~~
+
+It's worth noting that when __numbers__ are denoted as string literals, they behave just like any other text character. Try to figure out why the result of this operation is _not_ `"2"`:
+
+~~~py
+>>> "1" + "1"
+'11'
+~~~
+
+## Converting other data objects to strings
+
+What happens when you try to add an actual number value -- i.e. of `int` or `float` type -- to a `str` object? You get an error:
+
+~~~
+>>> "Party like it's " + 1999
+TypeError: Can't convert 'int' object to str implicitly
+~~~
+
+The type of error will be different if you add a String object _to_ a number:
+
+~~~
+>>> 99 + " bottles of bees"
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+~~~
+
+But the point still remains: you can't concatenate two different types of objects. Python requires you to convert one of the objects to the other's type. If we want to convert a number (or any other object) into a __String__, we use the `str()` function. Yes, that confusingly looks like `str`, as in the thing you get when you do `type("hello")`, but the difference is in those _parentheses_:
+
+~~~py
+>>> str("99") + "bottles of bees"
+'99bottles of bees'
+~~~
+
+The `str()` function -- and others like it, such as `dict()`, `int()`, and `list()` -- are more specifically known as __constructor functions__ in that they _construct_ a new object of their namesakes.
+
+
+## Counting characters in a string
+
+The `len()` function can be used to return the number of characters in a string:
+
+~~~py
+>>> len("hello" + "and" + "welcome" + "to" + "the" + "rock")
+24
+~~~
+
+
+## Detecting if two strings are equal
+
+Strings can be compared using the equals comparator -- `==` -- or the keyword `is`:
+
+~~~py
+>>> "hello" == "hello"
+True
+~~~
+
+Note that this is __case-sensitive__: `"hello"` and `"Hello"` are _completely_ different values to the Python interpreter:
+
+
+~~~py
+>>> "Hello" == "hello"
+False
+~~~
+
+### Comparing strings
+
+The comparison operators, such as __greater than__ and __less than__ -- `>` and `<`, respectively -- can also be used to compare whether one string precedes another, particularly useful for determining alphabetical order. Once again, __case__ matters:
+
+~~~py
+>>> "a" > "z"
+False
+>>> "a" > "Z"
+True
+~~~
+
+And number values that are string literals do _not_ sort in the same way as actual numbers:
+
+~~~py
+>>> 1000 > 9
+True
+>>> "1000" > "9"
+False
+~~~
+
+
+### Detecting if one string is in the other
+
+The `in` keyword can be used to determine if one string is the substring of the other:
+
+~~~py
+>>> "she" in "she sells seashells"
+True
+~~~
+
+Again, this is case-sensitive:
+
+~~~py
+>>> "She" in "she sells seashells"
+False
+~~~
+
+
+# String methods
+
+String objects have a wide variety of methods; I list some of the most common and useful ones here; you can check the <%=link_to "Python documentation for the full suite", ref_url("python-docs-string-methods")%>.
+
+## A note about immutability
+
+Strings are __immutable__ objects -- their values _cannot_ change. I find this an incredibly hard concept to explain without referring to other programming languages, so I won't get into the deep details of what this entails. However, it is worth explaining an observable _effect_ of immutability:
+
+When we call a method of a particular string, such as `upper()`, which produces an upper-cased version of that string:
+
+~~~py
+>>> mystring = "hello"
+>>> mystring.upper()
+HELLO
+~~~
+
+It's important to note that the _calling string_, i.e. `mystring`, is _not itself_ transformed:
+
+~~~py
+>>> mystring = "hello"
+>>> mystring.upper()
+'HELLO'
+>>> print(mystring)
+hello
+~~~
+
+Instead, the `upper()` method effectively returns an entirely new string object. This doesn't really impact us in most of our coding, you just have to reflexively understand that concept, so that you're not confused when you expect a variable to point to a different string value, merely because you invoked that variable's string's method.
+
+If you _want_ the variable to take the value of whatever the string's method returned, you can always _reassign_ the variable:
+
+~~~py
+>>> mystring = "hello"
+>>> mystring = mystring.upper()
+>>> print(mystring)
+HELLO
+~~~
+
+
+
+## Transforming the case of letters
+
+The `upper()` and `lower()` methods return, respectively upper-cased and lower-cased versions of the calling string. This is useful for when trying to detect if one string is in another, but you're unsure of how things are capitalized:
+
+~~~py
+>>> a = "And A Happy New Year"
+>>> "happy" in a
+False
+>>> "happy" in a.lower()
+True
+~~~
+
+## Replacing characters
+
+The `replace()` method takes two String objects as arguments. It returns a new string in which all instances of the first string argument that occur in the _calling string_ -- have been replaced by the second string argument:
+
+~~~py
+>>> m = "she sells seashells"
+>>> a = 'she'
+>>> b = 'Mary'
+>>> m.replace(a, b)
+'Mary sells seaMarylls'
+~~~
+
+
+## Stripping whitespace
+
+When reading text files in the wild, particularly web pages, the text content we care about is often surrounded in extraneous whitespace characters -- this includes Tab characters, `"\t"'; newlines, `"\n"`; and regular whitespaces, `" "`. 
+
+The `strip()` method returns a version of the calling string in which all _consecutive_ whitespace characters from the left-side _and_ right-side are removed. Whitespace characters that occur between non-whitespace characters is left unstripped:
+
+~~~py
+>>> a = """
+    yo 
+      what's 
+    up?
+
+"""
+>>> print(a)
+~~~
+
+Results in this output:
+
+~~~
+   yo 
+     what's 
+   up?
+
+
+~~~
+
+Calling the `strip()` method results in this output:
+
+~~~py
+>>> print(a.strip())
+~~~
+
+~~~
+yo 
+      what's 
+    up?
+
+~~~
+
+(Note that the `print()` method always adds its own newline character to the end of the string).
+
+
+By default, the `strip()` method will operate on whitespace characters. However, you can supply your own text string as the text value to trim:
+
+~~~py
+>>> a = "hahahahaharryhahahaha"
+>>> a.strip("ha")
+'rry'
+~~~
+
+## Splitting a string into a list of strings
+
+The `split()` method is one of the most important String methods to learn, because we will frequently be using it to convert a chunk of text into a __list__ of string values.
+
+The `split()` method takes at least one argument: a string with which to _delimit_ (i.e. _separate_) values in the calling string:
+
+~~~py
+>>> mystring = "hey-you-what-you-want"
+>>> mywords = mystring.split('-')
+>>> type(mywords)
+list
+>>> len(mywords)
+5
+>>> for w in mywords:
+...     print(w.upper())
+HEY
+YOU
+WHAT
+YOU
+WANT
+~~~
+
+### Transforming delimited text into data
+
+Consider this __pipe-delimited__ text string, in which the __pipe character__, i.e. `|` -- is used to separate a person's last name, first name, and birthdate:
+
+~~~py
+mydata = """Jane|Mary|1978-12-02"""
+~~~
+
+If we saved that text as a file and opened it in Excel, the tabular result would look like this:
+
+| Jane | Mary | 1978-12-02 |
+|      |      |            |
+{:table-sql}
+
+If we use `split("|")` on the string, we get a __list__ object in which the last name, first name, and birthdate are assigned to the 0th, 1st, and 2nd indicies, respectively:
+
+~~~py
+cols = mydata.split("|")
+~~~
+
+This allows us to reorganize the data as we wish:
+
+~~~py
+>>> print(cols[1], cols[0], "has a birthday on", cols[2])
+Mary Jane has a birthday on 1978-12-02
+>>> birthdate = cols[2].split('-')
+>>> year = birthdate[0]
+>>> print(cols[1], cols[0], "was born in", year)
+Mary Jane was born in 1978
+~~~
+
+
+If the string object contains multiple records, i.e. multiple __rows__, we can think of it as a data file that uses the newline character, `"\n"` to _separate_ the _rows_:
+
+~~~py
+mydata = """Jane|Mary|1978-12-02
+Smith|John|1990-03-22
+Lee|Pat|1991-08-07"""
+rows = mydata.split("\n")
+for row in rows:
+    cols = row.split("|")
+    print(cols[1], cols[0], "has a birthday on", cols[2])
+~~~
+
+The output:
+
+~~~
+Mary Jane has a birthday on 1978-12-02
+John Smith has a birthday on 1990-03-22
+Pat Lee has a birthday on 1991-08-07
+~~~
+
+# Strings as sequences
+
+While string objects are _not_ __lists__, _per se_, they are _sequences_ that allow for many of the same kind of operations via square-bracket-notation, e.g.
+
+~~~py
+>>> mylist = ["hello", "world"]
+>>> print(mylist[0])
+hello
+~~~
+
+~~~py
+>>> mystring = "hello world"
+>>> print(mystring[0])
+h
+>>> print(mystring[0:5])
+hello
+~~~
+
+## Accessing individual characters as a string
+
+When using square-bracket notation to operate on a string object, we can think of that string object as being a collection of individual characters:
+
+~~~py
+>>> mystring = "123456"
+>>> print(mystring[0])
+1
+>>> print(mystring[-1])
+6
+~~~
+
+## Slicing a string
+
+When we want to get a _slice_ of a string, we use the same square-bracket notation with multiple arguments to specify the start and beginning of the substring. The result is _not_ a __list__, but a new string object:
+
+~~~py
+>>> birthdate = "1975-04-02"
+>>> yr = birthdate[0:4]
+>>> print(yr)
+1975
+>>> type(yr)
+str
+~~~
+
+
+## Iterating through a string using a for-loop
+
+Since strings are sequences, this means we can iterate across them with a for-loop, if we wanted to perform an operation on each individual character:
+
+~~~py
+>>> for c in "hello":
+...     print(c.upper())
+H
+E
+L
+L
+O
+~~~
+
+However, the more common use case is to _split_ a string object with `split()`, and loop across the resulting elements:
+
+~~~py
+>>> mystr = "apples,oranges,pears,peaches"
+>>> for fruit in mystr.split(','):
+...     print("I like", fruit)
+I like apples
+I like oranges
+I like pears
+I like peaches
+~~~
+
+
+# Bet on text
+
+In other lessons, we'll learn all the different ways that text can be converted (i.e. _serialized_) into Python objects, and vice versa. Why are there so many different ways? And why is so much data stored as text?
+
+<% quote_reference 'always-bet-on-text', 
+  %Q{Graydon Hoare said it best in his essay, "Always bet on text"} do %>
+
+_(emphasis added)_
+
+__Text is the most flexible communication technology__. Pictures may be worth a thousand words, when there's a picture to match what you're trying to say. But let's hit the random button on wikipedia and pick a sentence, see if you can draw a picture to convey it, mm? Here:
+
+"Human rights are moral principles or norms that describe certain standards of human behaviour, and are regularly protected as legal rights in national and international law."
+
+Not a chance. Text can convey ideas with a precisely controlled level of ambiguity and precision, implied context and elaborated content, unmatched by anything else. __It is not a coincidence that all of literature and poetry, history and philosophy, mathematics, logic, programming and engineering rely on textual encodings for their ideas__.
+
+<% end %>
+

@@ -1,0 +1,35 @@
+---
+title: The New York Times Article Search API
+references:
+  - slug: nyt-article-search-api-docs
+    url: http://developer.nytimes.com/docs/read/article_search_api_v2
+    title: Article Search API v2
+    publisher: The New York Times Developers
+mymeta:
+  api_endpoint:
+    base_url: http://api.nytimes.com/svc/search/v2/articlesearch
+    params:
+      - name: q
+      - name: api-key
+---
+
+
+
+
+
+.response-format?[q=search term&fq=filter-field:(filter-term)&additional-params=values]&api-key=####
+
+
+## Optional fields
+
+begin_date
+end_date
+sort
+page
+
+## Doing a filtered search
+
+http://developer.nytimes.com/docs/read/article_search_api_v2#filters
+
+
+ &fq=source:("The New York Times")

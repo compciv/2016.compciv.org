@@ -1,0 +1,26 @@
+---
+title: Sample Homework
+---
+
+
+<% exercise = data.homework.exercises["0001-hello-world"] %>
+
+<div class="homework">
+    <h2><%=exercise.title%></h2>
+    <div class="description">
+        <%= markdownify exercise.description %>
+    </div>
+
+    <section class="problems">
+        <h3>Problems</h3>
+        <% exercise.problems.each_with_index do |p, idx| %>
+            <div class="problem">
+                <h5> <%=markdownify p.title%></h5>
+                <div class="description">
+                    <%=markdownify String(p.description) %>
+                </div>
+            </div>
+        <% end %>
+    </section>
+</div>
+

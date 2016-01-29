@@ -1,0 +1,320 @@
+---
+title: Downloading and saving the Shakespeare zip with requests
+references:
+  - title: "Requests: HTTP For Humans"
+    slug: python-requests-docs
+    url: http://docs.python-requests.org/en/latest/
+    publisher: Python Requests Documentation
+  - title: Python Input and Output Tutorial
+    slug: python-docs-io
+    url: https://docs.python.org/3/tutorial/inputoutput.html
+    description: |
+      There are several ways to present the output of a program; data can be printed in a human-readable form, or written to a file for future use. This chapter will discuss some of the possibilities.
+    publisher: Python Documentation
+  - slug: /guides/python/how-tos/downloading-files-with-requests
+    internal: true
+  - slug: /guides/python/fileio/open-and-write-files
+    internal: true
+description: |
+  How to download and save a file to disk. And how to properly resolve a file's full path, including its directory.
+sequence: 
+  landing: /practicum/shakefiles/shakefiles-landing-page
+  next: /practicum/shakefiles/c-unzipping-the-shakespeare-zip
+  previous: /practicum/shakefiles/a-creating-a-directory-idempotently
+mymeta:
+  exercise_slug: '0004-shakefiles/b'
+---
+
+
+<!--associated_exercise-->
+
+# The problem
+<% exercise = load_exercise(page_mymeta.exercise_slug) %>
+
+Here's the problem we're trying to solve &ndash; if you're doing this as homework, see the <%=link_to "full info for this exercise", exercise.exercise_set_path %>:
+
+<% content_card do %>
+  <%= partial '/layouts/coursework/partials/exercise', 
+      :locals => {:exercise => exercise, :show_abstract => true } %>
+<% end %>
+<!--//associated_exercise-->
+
+
+
+# How to write a file to disk
+
+By now, we already know how to _download_ a file from the Web with the [Requests library](<%=url_for_reference "/guides/python/how-tos/downloading-files-with-requests"%>):
+
+~~~py
+import requests
+resp = requests.get('http://www.example.com')
+thetext = resp.text
+~~~
+
+However, the act of __downloading__ a file programatically doesn't mean that that file has been _saved_ (i.e. _written_) to our hard drive. That is its own step.
+
+
+
+Before we can write a file to disk, we must _open_ a new file stream object with the `open()` function. This is similar to what we have to do when _reading_ an existing file, but take notice of the __second argument:__
+
+~~~py
+>>> newfile = open("somenewfile.txt", "w")
+~~~
+
+That `"w"` string tells the `open()` function that we don't want to _read_ from this file object. As you can imagine, `"w"` stands for __write__. You can think of the first argument, e.g. the string `"somenewfile.txt"` as us naming the file to be created.
+
+## How to accidentally destroy your work
+
+It's worth stopping for a moment and considering: _what happens when we try to open an existing file path to write to?_
+
+The answer: _if_ you give the __open()__ function an existing filename with the intention of writing to it -- whatever existed at that filename __is permanently erased__.
+
+There __is no Recycle Bin__ at the programming level. The Python interpreter just assumes you know what you're doing, and won't even throw an error or warning. It will just wipe out the existing file before writing to it.
+
+So consider this your warning to be _incredibly mindful_ whenever you want to write a file to disk.
+
+
+## Using the file's write() function to write data to disk
+
+OK, going back to that step in which we opened a file, at the path `somenewfile.txt`:
+
+
+~~~py
+>>> newfile = open("somenewfile.txt", "w")
+~~~
+
+What is that `newfile` variable pointing to? Use the `type()` function to find out:
+
+~~~py
+>>> type(newfile)
+_io.TextIOWrapper
+~~~
+
+For simplicity's sake, I'm just going to refer to it as a "file object" (or file stream object). Let's use the Tab autocomplete to get its list of methods:
+
+~~~py
+>>> newfile.   # hit Tab here
+newfile.buffer          newfile.isatty          newfile.readlines
+newfile.close           newfile.line_buffering  newfile.seek
+newfile.closed          newfile.mode            newfile.seekable
+newfile.detach          newfile.name            newfile.tell
+newfile.encoding        newfile.newlines        newfile.truncate
+newfile.errors          newfile.read            newfile.writable
+newfile.fileno          newfile.readable        newfile.write
+newfile.flush           newfile.readline        newfile.writelines
+~~~
+
+You can guess that the __write__ function is what we want. But this object _also_ has a __read__ function...That's because it's a file object, and file objects can be written to _or_ read from. It doesn't matter how we called the `open()` function.
+
+That said...go ahead and try to `read()` from `newfile`:
+
+~~~py
+>>> newfile.read()
+UnsupportedOperation: not readable
+~~~
+
+_There_ is how Python reminds us that the file is not meant to be _read_ from, since we called __open()__ with the `"w"` argument.
+
+Now that we have that cleared up, let's just write to the file. You can pass in a string object as the argument, and call __write()__ as many times as you want to:
+
+~~~py
+>>> newfile.write("hello")
+5
+>>> newfile.write("world!")
+6
+~~~
+
+The `write()` function returns the number of characters that was written to the file. After we've finished writing to the file, we call the `close()` function:
+
+~~~py
+newfile.close()
+~~~
+
+Now switch to your text editor and look for the file you just created. If you've been following this example, the filename we used is: `somenewfile.txt`
+
+This is what the contents of that file should look like:
+
+Or, alternatively, you could use Python to re-open the file and then __read__ it:
+
+(Note: when just opening a file in order to __read__ it, the second argument of the `open()` function is optional. By default, `open()` assumes you want to read from the given filepath. I include `"r"` here just to be explicit)
+
+~~~py
+>>> myfile = open("somenewfile.txt", "r")
+>>> txt = myfile.read()
+>>> print(txt)
+helloworld
+>>> myfile.close()
+~~~
+
+### How to write newline characters to a file
+
+Notice that `helloworld` is not on two different lines. The `write()` method doesn't automatically add newline characters to the argument we pass in. If we do want to have `write()` add newlines, we have to explicitly add the __newline character__: `\n`
+
+Let's try it now. And let's also deliberately overwrite our old file (at the path, `somenewfile.txt`):
+
+~~~py
+>>> newfile = open("somenewfile.txt", "w")
+>>> newfile.write("hello\n")
+>>> newfile.write("world\n")
+>>> newfile.close()
+~~~
+
+If you read from `somenewfile.txt`, you'll see that its contents are:
+
+~~~
+hello
+world
+~~~
+
+
+## How to download a text file and write it to disk
+
+I've written a <%=link_to "separate guide about writing files", ref_url("/guides/python/fileio/open-and-write-files") %>, but this section should contain all you need to know for this particular lesson.
+
+Let's go back to `requests.get()`, from the beginning:
+
+~~~py
+>>> import requests
+>>> resp = requests.get("http://www.example.com")
+>>> exampletxt = resp.text
+>>> type(exampletxt)
+str
+~~~
+
+If the download succeeded, the `exampletxt` variable contains the raw HTML of the page at [http://www.example.com](http://www.example.com), and that raw HTML is just a __String__ object.
+
+Which means we can pass it into a file object's __write()__ method just as we wrote the strings `"hello"` and `"world"` to the file:
+
+~~~py
+>>> outfile = open("example.com.html", "w")
+>>> outfile.write(exampletxt)
+1270
+>>> outfile.close()
+~~~
+
+If you use your text editor to open `example.com.html` (wherever directory you saved it to), the file should contain the raw HTML of [www.example.com](http://www.example.com).
+
+# How to write a binary file
+
+Not all files are text. Rather than explain in detail, for now, I will just show how the `open()` function needs to be called when writing a non-text file to disk -- it requires a change to the __second argument__:
+
+~~~py
+>>> zfile = open("mynewzipfile.zip", "wb")
+~~~
+
+Think of that `"wb"` as standing for: "write bytes".
+
+Check the `type()` of `zfile` to see what it points to:
+
+~~~py
+>>> type(zfile)
+_io.BufferedWriter
+~~~
+
+Again, I think of this as a file object -- but note that it is different from the previous example involving a text file, in which the object had a type of: `_io.TextIOWrapper`
+
+Whether it is a binary or text file, the same `read()` and `write()` methods exist.
+
+## How to access the contents of a downloaded binary file
+
+But typically, we don't manually type in the _bytes_ that we want to write to a file. Let's go back to the `requests.get()` method, but this time, let's download a __zip file__ from the following path:
+
+[http://stash.compciv.org/scrapespeare/matty.shakespeare.tar.gz](http://stash.compciv.org/scrapespeare/matty.shakespeare.tar.gz){:.url}
+
+~~~py
+>>> import requests
+>>> zipurl = 'http://stash.compciv.org/scrapespeare/matty.shakespeare.tar.gz'
+>>> resp = requests.get(zipurl)
+~~~
+
+## The `contents` attribute of the Response object
+
+So the `response` variable contains the result of the download from the given URL. This should take considerably longer (by a few seconds, at least) than downloading [example.com](http://www.example.com) because we're downloading the entire works of Shakespeare.
+
+However, its his (text) works all in a zip file, which itself is _not_ a text file. It's a __binary file__ full of bytes, not string characters.
+
+How the Requests library has been designed is that instead of using the `text` attribute, i.e.
+
+~~~
+>>> thedata = resp.text
+~~~
+
+&ndash; for binary files, we use the `content` attribute. This is just something you have to memorize and get used to. Again, use the `type()` method to see what kind of object `resp.content` actually is (it's not a `str`, to hammer on this point):
+
+~~~
+>>> thedata = resp.content
+>>> type(thedata)
+bytes
+~~~
+
+
+## Downloading a binary file and writing it to disk
+
+OK, all together: downloading a zip file and then saving it to disk:
+
+
+~~~py
+import requests
+zipurl = 'http://stash.compciv.org/scrapespeare/matty.shakespeare.tar.gz'
+resp = requests.get(zipurl)
+
+zname = "matty.shakespeare.tar.gz"
+zfile = open(zname, 'wb')
+zfile.write(resp.content)
+zfile.close()
+~~~
+
+Check to see if `matty.shakespeare.tar.gz` was actually saved to your computer at the given path. You can even double-click it to see if it unzips. Note that we _did not_ programatically unzip the file. We simply downloaded and saved it to a path.
+
+
+
+
+
+# Using os.path.join to create a file pathname
+
+This is going to seem exceedingly pedantic. On Mac OSX and Linux, the following file path:
+
+        tempdata/somefile.zip
+
+&ndash; means that the `somefile.zip` file is inside the `tempdata` subdirectory.
+
+However, in Windows, that path looks like this:
+
+        tempdata\somefile.zip
+
+The differences between operating systems means that, just to be safe, it's better to defer the naming of a file path to the `join()` function that is part of Python's `os.path` module (which is automatically included if you ran `import os`).
+
+Here's what that looks like:
+
+~~~py
+>>> mydirname = 'tempdata'
+>>> myfilename = 'somefile.zip'
+>>> myfullfilename = os.path.join(mydirname, myfilename)
+>>> print(myfullfilename)
+tempdata/somefile.zip   # note that this will be different on Windows machines
+~~~
+
+Or, focusing on brevity:
+
+~~~py
+fname = os.path.join("tempdata", "somefile.zip")
+~~~
+
+Yes, that seems like a lot of code to generate the string of `tempdata/somefile.zip`. But besides being cross-platform compatible, it's worth using this pattern because in real-world programming, paths can get fairly complicated (i.e. with deeply nested subdirectories). It's just easier to use Python's helper functions to deal with it, in the long run.
+
+Revisiting our download-and-save code from the previous example, except using the `join()` method, and saving it to the `tempdata` directory (assuming that it's been created):
+
+
+~~~py
+import requests
+import os
+
+zipurl = 'http://stash.compciv.org/scrapespeare/matty.shakespeare.tar.gz'
+resp = requests.get(zipurl)
+
+# assuming the subdirectory tempdata has been created:
+zname = os.path.join('tempdata', "matty.shakespeare.tar.gz")
+zfile = open(zname, 'wb')
+zfile.write(resp.content)
+zfile.close()
+~~~

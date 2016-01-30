@@ -13,6 +13,22 @@ description: |
   - Source: [http://www.compciv.org/files/datadumps/apis/mapzen/search-stanford.json](http://www.compciv.org/files/datadumps/apis/mapzen/search-stanford.json)
   - Save as: `tempdata/mapzen/stanford.json`
 
+
+  Here's what your file tree should look like:
+
+  ~~~
+        compciv-2016
+        └── exercises
+            └── 0010-map-json-responses
+                └── a.py
+                └── tempdata
+                    └── mapzen
+                        └── stanford.json
+                        googlemaps
+                        └── stanford.json
+  ~~~
+
+
   ###### 3. Print the number of lines and characters found in each files text content.
 
 hints: |

@@ -164,12 +164,31 @@ While the Static Maps API is pretty simple for trying out a few parameters at a 
 
 This is where a little programming can help.
 
-
-
-
 # The algorithm
 
-(more TK)
+We want to write a little script that  iterates through combinations of border disputes (i.e. geographic locations) _and_ the countries (i.e. their _country-codes_) who differ in their opinions on the borders. 
+
+For each location, we produce one Google Static Maps URL for each country. 
+
+For example, if the location is `Taiwan`, the base URL looks like this:
+
+~~~
+http://maps.googleapis.com/maps/api/staticmap?&size=400x400&zoom=5&center=Taiwan
+~~~
+
+If we want to compare __China__'s worldview versus __Taiwan's__, we supply the `region` parameter with `cn` and `tw`, respectively, which means we want 2 separate URLs:
+
+http://maps.googleapis.com/maps/api/staticmap?&size=400x400&zoom=5&center=Taiwan&region=cn
+
+http://maps.googleapis.com/maps/api/staticmap?&size=400x400&zoom=5&center=Taiwan&region=tw
+
+
+
+
+
+
+
+
 
 ## Data gathering
 

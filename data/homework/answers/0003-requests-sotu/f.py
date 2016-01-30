@@ -1,3 +1,7 @@
+# Note: If you didn't do it this way, it's because you didn't know for-loops or lists.
+# That's OK. You can just note how much nicer this is than however
+# you did it.
+
 import requests
 urls = [
   'https://www.whitehouse.gov/the-press-office/remarks-president-barack-obama-address-joint-session-congress',

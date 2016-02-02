@@ -10,6 +10,8 @@ summary: |
 
 ---
 
+<h1>Current</h1>
+
 <article class="site-assignments">
   <table class="assignments">
     <thead>
@@ -20,8 +22,8 @@ summary: |
       </tr>
     </thead>
     <tbody>
-      <% assignment_resources.each do |r| %>
-        <tr class="assignment <%=past_date?(r.due_date) ? "past-due" : "current" %> <%=r.kind%>">
+      <% assignment_resources.select{|r| !r.draft? }.each do |r| %>
+        <tr class="assignment <%=stale_date?(r.due_date) ? "past-due" : "current" %> <%=r.kind%>">
           <td class="frontmatter">
             <div class="title-label">
               <span class="kind"><%=r.kind%>: </span>
@@ -53,5 +55,55 @@ summary: |
     </tbody>
 
   </table>
+</article>
 
+
+<h1>Draft</h1>
+
+<p>The due dates are tentative and may just be placeholders.</p>
+
+
+<article class="site-assignments">
+  <table class="assignments">
+    <thead>
+      <tr>
+        <th class="frontmatter">Title</th>
+        <th class="due_date">Due Date</th>
+        <th class="points">Points</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% assignment_resources.select{|r| r.draft? }.each do |r| %>
+        <tr class="assignment <%=stale_date?(r.due_date) ? "past-due" : "current" %> <%=r.kind%>">
+          <td class="frontmatter">
+            <div class="title-label">
+              <span class="kind"><%=r.kind%>: </span>
+              <span class="title">
+                <% if r.stub? %>
+                  <span id="<%= r.slug%>"><%= r.title %></span>
+                <% else %>
+                  <%=link_to r.title, r.url %>
+                <% end %>
+              </span>
+
+            </div>
+
+            <% if r.exercise_set? %>
+              <div><code class="pathname"><%=r.exercises_slug%></code></div>
+            <% end %>
+
+            <div class="description"><%= markdownify r.description %></div>
+
+          </td>
+          <td class="due_date">
+            <span class="date"><%=r.due_date %></span>
+            <span class="day">[<%=day_of_week r.due_date %>]</span>
+          </td>
+          <td class="points"><%=r.points %></td>
+
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
 </article>

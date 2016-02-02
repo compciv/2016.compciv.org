@@ -23,9 +23,14 @@ module CustomHelpers
           end
         end
 
-        # gives a rough estimate at runtime whether the given date is past
         def past_date?(val)
           _to_date(val) < Time.now()
+        end
+
+        # gives a rough estimate at runtime whether the given date is past
+
+        def stale_date?(val)
+          _to_date(val) < Time.now() - (3600 * 30 + 10)
         end
 
         def _to_date(val)

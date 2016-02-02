@@ -6,6 +6,7 @@ module UniformContentResource
         @due_date = @data.due_date
         @exercises_slug = @data.exercises_slug
         @exercises = exercises
+        @status = @data.status
 
 
         @kind = case
@@ -45,6 +46,10 @@ module UniformContentResource
 
     def stub?
       @url.to_s[0] == '#'
+    end
+
+    def draft?
+      @status == 'draft'
     end
 
     private

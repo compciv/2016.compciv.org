@@ -2,8 +2,9 @@
 title: Show Me Where It's At
 description: |
   Our first project: given a user-specified location, traverse a public dataset with geographic information, and deliver the user to a webpage showing the closest records/incidents.
-due_date: 2016-02-09
+due_date: 2016-02-11
 points: 100
+status: draft
 summary: |
   Write a program that shows the user where they are in relation to incidents from a geocoded dataset, using satellite map imagery and other data.
 kind: Project
@@ -27,9 +28,132 @@ components:
     points: 4
 ---
 
-# (STILL BEING DRAFTED)
 
-But maybe you should start thinking of ideas...
+# Deliverables
+
+
+## Project folder
+
+Create a new folder in your __compciv-2016__ repo:
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where           
+</pre>
+
+All of your files for this project will be in the projects/show-me-where file directory.
+
+
+<a id="mark-data-readme"></a>
+
+## Find a dataset, write a README (2016-02-05)
+
+Part of creating a good project is just documenting what you have.
+
+First, find a dataset that meets these characteristics:
+
+- At least 100 records
+- Contains either geocoordinate fields (e.g. latitude, longitude) or fields that _can_ be geocodable, e.g. street address, city, state, zip.
+- Is interesting, even if just to you.
+
+Then, create a `README.md` file in your project folder. 
+
+Create a heading named "About the Dataset", under which you will describe the characteristics of the data (as described below).
+
+Visit the [some-student repo to see an example of the README.md file and the project folder](https://github.com/some-student/compciv-2016/blob/master/projects/show-me-where/).
+
+### Where to put the README.md file
+
+In your project folder, create a file named `README.md`:
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where
+            └── README.md 
+</pre>
+
+### What it contains
+
+In the __README.md__ file, create the heading, __"About the dataset"__
+
+#### 1. A short paragraph describing the data
+
+Write a few sentences describing to a general audience what the dataset contains, where it comes from, why you find it interesting, etc.
+
+#### 2. A listing of basic facts about the dataset
+
+- The name of the agency or organization that originated the data. You may have to Google around for this. And you may find that there's a _better_ or more direct source for the data.
+- A URL to the __landing page__ where you found the data, i.e. where the data file is linked to.
+- If applicable: A __direct__ URL to the data file itself, i.e. if I click it, the data just downloads. 
+- The __format__ of the data, e.g. is it a JSON, CSV, or other kind of delimited text file?
+- How many __rows__ are in the data file
+
+
+#### 3. A description of each of the fields
+
+This is a listing of all the columns/attributes of each record, with a sentence briefly describing what the column contains and the __data type__, e.g. text, integer, float, date, true/false (i.e. boolean). Note that this doesn't necessarily map to Python data types. I just want you to know that _you_ know what your data contains.
+
+#### 4. Describe the anticipated "data wrangling"
+
+It's quite rare that the data you download will be exactly as you need it. Describe, in general terms, what changes/edits/cleaning you anticipate that you might have to do (we'll figure out how to do it programmatically later).
+
+Examples:
+
+- I plan to trim the dataset to show only the last 3 months worth of records.
+- The dataset only had a `coordinates` field, in which latitude and longitude are in a single string, e.g. "(-42.9138223, 106.9202332)". I will have to split that field up into two separate numbers.
+- My dataset includes too many boring categories. I plan to limit the dataset to include records in which the `subcategory` column is equal to `"ROBBERIES"` 
+
+#### Use Markdown
+
+Write this README.md file [using the __Markdown syntax__](https://help.github.com/articles/basic-writing-and-formatting-syntax/), which is a handy plaintext format that Github (and many, many other services) know how to render into attractive HTML.
+
+For example, the following Markdown:
+
+~~~
+My *name* is **Dan** and I say [potatoe](http://www.washingtonpost.com/wp-srv/politics/special/clinton/frenzy/quayle3.htm)
+
+- And
+- This is a
+- bulleted list
+~~~
+
+Results in this HTML rendering:
+
+~~~html
+<p>
+  My <em>name</em> is <strong>Dan</strong> and I say <a href="http://www.washingtonpost.com/wp-srv/politics/special/clinton/frenzy/quayle3.htm">potatoe</a>
+</p>
+
+<ul>
+  <li>And</li>
+  <li>This is a</li>
+  <li>bulleted list</li>
+</ul>
+~~~
+
+Which looks like:
+
+------
+
+My *name* is **Dan** and I say [potatoe](http://www.washingtonpost.com/wp-srv/politics/special/clinton/frenzy/quayle3.htm)
+
+- And
+- This is a
+- bulleted list
+
+------
+
+You can see more examples in [Github's basic Markdown syntax guide](https://help.github.com/articles/basic-writing-and-formatting-syntax/). I'm making this a requirement because using Markdown is a genuinely useful skill; also, it's very easy to learn, which is why it was created in the first place.
+
+
+- [Here's the example report](https://github.com/some-student/compciv-2016/tree/master/projects/show-me-where), when you visit the project folder page on Github.
+
+- [Here's the raw Markdown source of that file](https://raw.githubusercontent.com/some-student/compciv-2016/master/projects/show-me-where/README.md)
+
+
+
 
 # Requirements
 

@@ -1,0 +1,19 @@
+title: "Signup for a NYT Developers Account, create an Application"
+due_date: 2016-02-02
+description: |
+
+  Using the [New York Times data APIs](http://developer.nytimes.com/) simply requires creating an account on the New York Times site (if you're already a subscriber, you should be good to go):
+
+  [https://myaccount.nytimes.com/register](https://myaccount.nytimes.com/register)
+
+  After signing in at nytimes.com, register a "New Application":
+
+  [http://developer.nytimes.com/apps/register](http://developer.nytimes.com/apps/register)
+
+  And just select all the available APIs.
+
+  This is the typical workflow for working with any API. It's so that the service can track (and limit) your usage.
+
+
+
+

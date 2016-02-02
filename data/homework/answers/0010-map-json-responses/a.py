@@ -3,7 +3,6 @@ from os.path import join
 import requests
 
 STORAGE_DIR = 'tempdata'
-BASE_FILENAME = 'stanford.json'
 URL_DIR = 'http://www.compciv.org/files/datadumps/apis'
 
 # I arrange things this way because I see in the
@@ -31,8 +30,8 @@ for upath in PARTIAL_URL_PATHS:
     # create the directory, e.g. tempdata/googlemaps
     makedirs(big_dir, exist_ok=True)
     # Finally, the full path
-    # e.g. tempdata/googlemaps.stanford.json
-    fname = join(big_dir, BASE_FILENAME)
+    # e.g. tempdata/googlemaps/stanford.json
+    fname = join(big_dir, 'stanford.json')
     print("Writing to:", fname)
     f = open(fname, 'w')
     txt = resp.text

@@ -1,7 +1,7 @@
 title: "Print the 10 longest names, given to at least 2,000 babies in 2014"
 points: 1
 description: |
-  Of the names that have been given to at least 2,000 babies -- male and female combined -- in 2014, print the top 10 in descending order of character length, then in number of babies.
+  Of the names that have been given to at least 2,000 babies -- male and female combined -- in 2014, print the top 10 in descending order of character length. Note that in a case of a tie, (i.e. 2 names with 10 letters) just leave the sorting as is, i.e. random.
 
   The 2,000 baby count is the _combined_ number of boys and girls for a given name. So you'll want to create a new list from the original data that aggregates both boy and girl babies into a single count per name.
 

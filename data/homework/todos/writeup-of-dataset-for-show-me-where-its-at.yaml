@@ -1,10 +1,10 @@
 title: "Write a README for data in Show-Me-Where-It's-At Project"
-due_date: 2016-02-05
+due_date: 2016-02-04
 points: 10
 description: |
   In your compciv-2016 folder, create the file:
 
-      compciv-2016/projects/showmewhere/README.md
+      compciv-2016/projects/show-me-where/README.md
 
   See the assignment as described on the [the project description page](/assignments/projects/show-me-where-it-is-at#mark-data-readme)
 

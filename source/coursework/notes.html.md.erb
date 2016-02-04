@@ -1,0 +1,314 @@
+---
+title: Notes for today
+description: |
+  A place to keep links and notes useful for class, before I port them to tutorials
+---
+
+# Twitter data as JSON
+
+Official docs for Twitter data:
+
+- [users/show](https://dev.twitter.com/rest/reference/get/users/show)
+- [statuses/user_timeline](https://dev.twitter.com/rest/reference/get/statuses/user_timeline)
+
+
+Sample data files
+
+
+Using [@realdonaldtrump](https://twitter.com/realdonaldtrump) as an example
+
+
+- profile information: [http://stash.compciv.org/samples/twitter/realDonaldTrump-profile.json](http://stash.compciv.org/samples/twitter/realDonaldTrump-profile.json)
+- single tweet: [http://stash.compciv.org/samples/twitter/realDonaldTrump-single-tweet.json](http://stash.compciv.org/samples/twitter/realDonaldTrump-single-tweet.json)
+- recent tweets (a list of the __200__ most recent tweets): [http://stash.compciv.org/samples/twitter/realDonaldTrump-tweets.json](http://stash.compciv.org/samples/twitter/realDonaldTrump-tweets.json)
+- last 3,300+ tweets [http://stash.compciv.org/samples/twitter/realDonaldTrump.tweets.2016-02-02_1551.json](http://stash.compciv.org/samples/twitter/realDonaldTrump.tweets.2016-02-02_1551.json)
+
+
+
+## Sample JSON deserialization code
+
+~~~py
+import requests
+import json
+ROOT_URL_PATH = 'http://stash.compciv.org/samples/twitter/'
+url = ROOT_URL_PATH + 'realDonaldTrump-profile.json'
+
+# Download it
+resp = requests.get(url)
+# deserialize it
+data = json.loads(resp.text)
+# to get the followers count:
+print(data['followers_count'])
+# to get the text of his latest tweet
+print(data['status']['text'])
+~~~
+
+## Sample data searches
+
+It's more fun to search across a list of objects, such as a list of tweets:
+
+[http://stash.compciv.org/samples/twitter/realDonaldTrump-tweets.json](http://stash.compciv.org/samples/twitter/realDonaldTrump-tweets.json)
+
+
+### How many times has a recent Trump tweet mentioned 'cruz'?
+
+~~~py
+url = ROOT_URL_PATH + 'realDonaldTrump-tweets.json'
+resp = requests.get(url)
+tweets = json.loads(resp.text)
+tnum = 0
+for tweet in tweets:
+    if 'cruz' in tweet['text'].lower():
+        tnum += 1
+
+print("cruz was mentioned", tnum, 'times')
+~~~
+
+
+### Loop within a loop for multiple terms
+
+Using more variable names and abstracting things out, we can create a faster way of counting terms:
+
+~~~py
+words = ['hillary', 'bernie', 'cruz', 'jeb', 'rubio', 
+         'iowa', 'god', 'isis', 'megyn', 'loser',
+         'idiot', 'dumb']
+for word in words:
+    tnum = 0
+    for tweet in tweets:
+        if word in tweet['text'].lower():
+            tnum += 1
+    print(word, "was mentioned", tnum, "times")
+~~~
+
+The output:
+
+~~~py
+hillary was mentioned 5 times
+bernie was mentioned 1 times
+cruz was mentioned 33 times
+jeb was mentioned 4 times
+rubio was mentioned 4 times
+iowa was mentioned 34 times
+god was mentioned 1 times
+isis was mentioned 0 times
+megyn was mentioned 11 times
+loser was mentioned 0 times
+idiot was mentioned 1 times
+dumb was mentioned 2 times
+~~~
+
+
+### Which Twitter client does Trump use?
+
+Create a dictionary that, for each value of `source` (i.e. "Android"), it increments the count by 1, starting from 0. 
+
+~~~py
+mydict = {}
+for tweet in tweets:
+    s = tweet['source']
+    if mydict.get(s):        
+        mydict[s] += 1
+    else:
+        mydict[s] = 1
+~~~
+
+
+# Working with CSV info
+
+[Official documentation](https://docs.python.org/3/library/csv.html)
+
+
+[Washington U CSE140 example](https://courses.cs.washington.edu/courses/cse140/13wi/csv-parsing.html)
+
+
+# SF restaurant inspections
+
+San Francisco's restaurant inspection data is an example
+
+The official scorecard and database page for SF restaurant inspections: [score explanations](https://www.sfdph.org/dph/EH/Food/Score/); [searchable database](https://101g-xnet.sfdph.org:8443/ords/f?p=132:1:2137487583328891)
+
+Here's a mirror of the zipfile that you can download:
+
+[http://stash.compciv.org/sf/SFFoodProgram_Complete_Data.zip](http://stash.compciv.org/sf/SFFoodProgram_Complete_Data.zip)
+
+Here's the [data uploaded to a Google spreadsheet](https://docs.google.com/spreadsheets/d/1N0e8yTTHWDuartmdgYEltQaWfrEF5B3-q0a2bhX7uk0/edit#gid=631750140).
+
+
+
+## Code snippets
+
+
+
+~~~py
+from os import makedirs
+from os.path import join
+
+DATA_DIR = join("sf-food")
+makedirs(DATA_DIR, exist_ok=True)
+~~~
+
+
+Let's download the file
+
+~~~py
+import requests
+URL = 'http://stash.compciv.org/sf/SFFoodProgram_Complete_Data.zip'
+resp = requests.get(URL)
+
+# save the file
+zip_name = join(DATA_DIR, 'programdata.zip')
+f = open(zip_name, 'wb')
+f.write(resp.content)
+f.close()
+~~~
+
+Unzip it
+
+~~~py
+# unzip it
+from shutil import unpack_archive
+unpack_archive(zip_name, extract_dir=DATA_DIR)
+~~~
+
+## Sample CSV deserialization code
+
+
+
+### Convert to a list of lists, no headers
+
+
+Use `csv.reader()` constructor function
+
+~~~py
+import csv
+# first read the file
+fname = join(DATA_DIR, 'violations_plus.csv')
+f = open(fname, 'r')
+lines = f.read().splitlines()  # preferable to f.readlines()
+f.close()
+
+# then convert to a CSV delimited list
+rows = list(csv.reader(lines))
+~~~
+
+To print the 'description' field, we have to remember that it is 5th field (i.e. 4th indexed)
+
+~~~py
+for row in rows:
+    print(row[4])
+~~~
+
+
+
+### Convert to list of dicts, using headers
+
+Use the `csv.DictReader()` constructor function
+
+~~~py
+import csv
+# first read the file
+fname = join(DATA_DIR, 'violations_plus.csv')
+f = open(fname, 'r')
+lines = f.read().splitlines()  # preferable to f.readlines()
+f.close()
+
+# then convert to a CSV delimited list
+rows = list(csv.DictReader(lines))
+~~~
+
+
+To print the 'description' field:
+
+~~~py
+for row in rows:
+    print(row['description'])
+~~~
+
+
+### Sorting it
+
+
+
+To aggregate the number of occurrences per type of description, let's use a dictionary:
+
+~~~py
+mydict = {}
+for row in rows:
+    desc = row['description']
+    if mydict.get(desc):
+        mydict[desc] += 1
+    else: 
+        mydict[desc] = 1
+~~~
+
+
+One way to sort it:
+
+~~~py
+from operator import itemgetter
+mylist = list(mydict.items())
+
+# sort by the description text, alphabetical order
+x = sorted(mylist, key=itemgetter(0))
+
+# sort in ascending order of count
+y = sorted(mylist, key=itemgetter(1)) 
+
+# sort in descending order of count
+z = sorted(mylist, key=itemgetter(1), reverse=True) 
+
+~~~
+
+
+
+# FEC Data
+
+FEC data for past and some of the current cycle can be downloaded in bulk: [http://www.fec.gov/finance/disclosure/ftpdet.shtml#a2015_2016](http://www.fec.gov/finance/disclosure/ftpdet.shtml#a2015_2016)
+
+Here's the [candidate, committee, candidate-to-committee lookup, and operation expenditures for Trump's committee in a Google Spreadsheet](https://docs.google.com/spreadsheets/d/1j2gh4aXs-SzOnuivonAD6jnPBb4MeRjFWKxaRuAMTjw/edit?usp=drive_web).
+
+There's more than one "Trump", but here's what you'll find for his main presidential committee:
+
+- Candidate: P80001571
+- Committee ID: C00580100
+
+
+
+
+
+## Working with individual committee data
+
+Individual committee data requires a bit more parsing: http://docquery.fec.gov/cgi-bin/forms/DL/1047287/
+
+
+### Sample FEC end-of-year filings stories
+
+These stories come from end of year filings:
+
+
+- [Someone Actually Went to Hooters for the Wings](http://gawker.com/someone-actually-went-to-hooters-for-the-wings-1756591055)
+  + [FEC report: 1047160](http://docquery.fec.gov/cgi-bin/forms/DL/1047287/)
+- [Which Candidate's Campaign Spends the Most Money on Pizza: An Investigation](http://gawker.com/which-candidates-campaign-spends-the-most-money-on-pizz-1756384862)
+  + [FEC report for Trump](http://docquery.fec.gov/cgi-bin/forms/DL/1047287/)
+
+
+
+# Haversine
+
+~~~py
+from math import radians, cos, sin, asin, sqrt
+def haversine(lon1, lat1, lon2, lat2):
+    lon1 = radians(lon1)
+    lon2 = radians(lon2)
+    lat1 = radians(lat1)
+    lat2 = radians(lat2)
+    # haversine formula 
+    dlon = lon2 - lon1 
+    dlat = lat2 - lat1 
+    a = sin(dlat /2 ) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+    c = 2 * asin(sqrt(a)) 
+    r = 6371 # Radius of earth in kilometers.
+
+    return c * r
+~~~

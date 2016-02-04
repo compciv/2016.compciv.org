@@ -1,42 +1,217 @@
 ---
 title: Function fundamentals in Python
+description: |
+    Think of functions as shortcuts for executing blocks of code.
+references:
+    - title: "Chapter 3: Functions"
+      url: https://automatetheboringstuff.com/chapter3/
+      publisher: Automate the Boring Stuff
+      author: Al Sweigart
+      slug: automate-boring-functions
+    - title: Defining functions
+      url: "https://docs.python.org/3/tutorial/controlflow.html#defining-functions"
+      publisher: Python documentation 
+      slug: python-docs-defining-functions
+
+summary: |
+    If we think of __variables__ as a sort-of _label_ for data values, then think of functions as another kind of _label_, but for code that is meant to be __called__ at a later time. Just as it is convenient to give a human-readable name -- a.k.a. assigning a variable -- to a complicated data object for later reference, it's convenient to give a label/nickname to a series of expressions that we intend to execute again.
 ---
 
 
-# The basic Python function
+
+
+# How to use a function?
+
+We've been using functions from the very start:
+
+~~~py
+print("hello world")
+~~~
+
+The token `print` is _not_ a special Python keyword. It's a name assigned to a block of code that handles the work of taking an argument -- `"hello world"` -- and printing it to screen. The [actual code](https://gist.github.com/dannguyen/b7d7ce593fe748157f34.js) that _does that work_ is much more complex than you probably thought:
+
+<script src="https://gist.github.com/dannguyen/b7d7ce593fe748157f34.js"></script>
+
+Imagine typing all of those instructions just to print something to screen. But we never have to actually do that. By having all the Python instructions needed to print to screen wrapped up in the label, `print`, we just have to remember that label (i.e. `print`) and call it with the appropriate arguments:
+
+~~~py
+print("hello world", "it's", "me")
+~~~
+
+
+# Defining our own Python functions
+
+Why do we want to define our own functions? Because we're lazy, and we're tired of having to copy and paste the same code, over and over, when we need to do something repeatedly. Defining our own functions let's us, at a bare minimum, clean up our scripts and make things much more readable.
+
+Defining a Python function is almost as easy as using them, but more complicated than assigning a variable.
+
+Basically, we use the `def` keyword, then pick a name, and then write the code we want to save for later execution as an indented block.
+
+The rest of this guide focuses on the bare syntax for defining functions. Check out Al Sweigart's [Chapter 3: Functions, via Automate the Boring Stuff](https://automatetheboringstuff.com/chapter3/) for a good walkthrough that covers functions and some of their related topics.
+
+
+# Syntax for the basic Python function
+
+Here's a very basic function:
 
 ~~~py
 def hello_world():
-    print("Hello world")
+    print("Hello world!")
 ~~~
+
+Jump into the interactive Python shell and type out the code above. Nothing should happen because _nothing is being executed_ when we're simply _defining_
+ the function.
+
+The function's code only executes when we call the function by name:
+
+~~~py
+>>> hello_world()
+Hello world!
+~~~
+
+Note that the parentheses have to be included to indicate that we want to _execute_ the function. Otherwise, the function acts just as any another Python object:
+
+~~~py
+>>> hello_world
+<function __main__.hello_world>
+>>> type(hello_world)
+function
+~~~
+
+
+## Syntax components of a basic Python function
+
+From the [Python documentation](https://docs.python.org/3/tutorial/controlflow.html#defining-functions):
+
+> The keyword `def` introduces a function definition. It must be followed by the function name and the parenthesized list of formal parameters. The statements that form the body of the function start at the next line, and must be indented.
+
+The function example from above does _not_ have a parenthesized list of formal parameters. We'll deal with that example later.
+
+Essentially, a function can be broken down to this bare form:
 
 ~~~py
 def the_function_name():
     what_the_function_does   
 ~~~
 
-## the `def` keyword
+### the `def` keyword
 
-## The function name
+This is just one of those Python key words you memorize. It is short for, ``
 
-Can basically have the same conventions as a __variable__ name. In fact, it's not off-base to think of functions as being labels for code to execute.
+### The function name
 
-In general, stick to lowercase letters and underscore characters.
+This can basically have the same conventions as a __variable__ name. In general, stick to lowercase letters and underscore characters.
 
+As for what kind of code can go inside the indented code block; anything that is valid Python code. Just like indented blocks for conditional branches and for-loops.
 
+# A function that returns something
 
-# A function with a return value
+One subtle aspect of the `print` function is that it _does not return a value_. What does that mean? It's easier to demonstrate a function that _does_ return a value: `len`
 
 ~~~py
-def big_hello():
-    return "HELLO WORLD"
+>>> x = len("hello")
 ~~~
+
+The variable `x` contains the value 5, because the `len` function is designed to return an integer that represents the length of whatever value was passed to it.
+
+Now try it with `print()`:
+
+~~~py
+>>> pval = print("hello")
+hello
+~~~
+
+The function obviously executed, because `hello` is printed to screen. But what is assigned to the variable `pval`? _Nothing_
+
+~~~py
+>>> type(pval)
+NoneType
+~~~
+
 
 ## The return keyword
 
+The simple `hello_world` function didn't return anything because it simply called the `print` function. To have our function actually _return_ a value, we need to use the __return__ keyword -- yet another of one of Python's few keywords:
+
+~~~py
+def hello_world_again():
+    return "Hello world!"
+~~~
+
+Try this out in your interactive console:
+
+~~~py
+>>> txt = hello_world_again()
+>>> type(txt)
+str
+~~~
+
+Note that nothing is printed to screen. That's because `hello_world_again` doesn't call the `print` function itself. If we want to print the result of `hello_world_again`, we have to call `print` ourselves:
+
+~~~py
+>>> print(hello_world_again())
+Hello world!
+~~~
+
+Again, note that the closed parentheses have to follow the function name in order for it to be executed. That is, you _probably_ don't want to print the function _itself_, like this:
+
+~~~py
+>>> print(hello_world_again)
+<function hello_world_again at 0x10c289bf8>
+~~~
+
+A __return__ statement effectively _ends_ a function; that is, when the Python interpreter executes a function's instructions and reaches the `return`, it will _exit_ the function at that point.
+
+The function below will always just return `"hello"`:
+
+~~~py
+def foo_a():
+    return "hello"
+    return "world"
+~~~
+
+
+
+# Functions with arguments
+
+The function examples so far have been very dull. The use of __arguments__ allows us to call a function for different situations, making functions vastly more useful.
+
+Here's a simple example:
+
+~~~py
+def hello_there(someone):
+    print("Hello, %s!" % str(someone).upper())
+~~~
+
+~~~py
+>>> hello_there('dan')
+Hello, DAN!
+>>> hello_there(42 * 42)
+Hello, 1764!
+~~~
+
+In the function definition, the arguments are in the parentheses that follow the function:
+
+
+
+Functions can have more than one argument:
+
+~~~py
+def sup(first_name, last_name):
+    print("Sup, %s %s?" % (last_name, first_name))
+~~~
+
+
+
+
+
+
+
+<!-- 
+
 ### Returning a collection
 
-
+ -->
 
 
 # A function with an argument (or two)
@@ -60,7 +235,7 @@ def embiggen(some_string):
 # An example
 
 
-
+<!-- 
 ~~~py
 def easy_datetime(v):    
     from datetime import datetime
@@ -85,9 +260,9 @@ def delta_seconds(from_date, to_date = None):
     delta = y - x
     return delta.total_seconds()
 ~~~
+ -->
 
-
-
+<!-- 
 # Design tips
 
 ## Do one thing and do it well
@@ -103,3 +278,4 @@ https://en.wikipedia.org/wiki/Robustness_principle
 
 ## Document them
 
+ -->

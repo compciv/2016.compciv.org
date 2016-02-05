@@ -12,12 +12,9 @@ references:
       url: "https://docs.python.org/3/tutorial/controlflow.html#defining-functions"
       publisher: Python documentation 
       slug: python-docs-defining-functions
-
 summary: |
-    If we think of __variables__ as a sort-of _label_ for data values, then think of functions as another kind of _label_, but for code that is meant to be __called__ at a later time. Just as it is convenient to give a human-readable name -- a.k.a. assigning a variable -- to a complicated data object for later reference, it's convenient to give a label/nickname to a series of expressions that we intend to execute again.
+    If we think of __variables__ as a sort-of _label_ for data values, then think of functions as another kind of _label_, but for code that is meant to be __called__ at a later time. Just as it is convenient to give a human-readable name -- a.k.a. assigning a variable -- to a complicated data object for later reference, it's convenient ttindo give a label/nickname to a series of expressions that we intend to execute again.
 ---
-
-
 
 
 # How to use a function?
@@ -190,92 +187,127 @@ Hello, DAN!
 Hello, 1764!
 ~~~
 
-In the function definition, the arguments are in the parentheses that follow the function:
+In the function definition, the arguments are in the parentheses that follow the function name. Think of them as variable names to refer to in the function body. At the time that we define the function, we don't know exactly what values the user will pass to it.
 
-
-
-Functions can have more than one argument:
+Functions can have more than one argument; use a comma to separate each argument:
 
 ~~~py
 def sup(first_name, last_name):
     print("Sup, %s %s?" % (last_name, first_name))
 ~~~
 
+~~~py
+>>> sup('dan', 'nguyen')
+Sup, nguyen dan?
+~~~
 
-
-
-
-
-
-<!-- 
-
-### Returning a collection
-
- -->
-
-
-# A function with an argument (or two)
+Arguments can be defined as optional by assigning a _default value_ to them in the argument list:
 
 ~~~py
-def embiggen(some_string):
-    return some_string.upper() + "!!!"
+def sup_2(first_name, last_name='Doe'):
+    print("Sup, %s %s?" % (last_name, first_name))
+~~~
+
+~~~py
+>>> sup_2('John', "Johnson")
+Sup, John Johnson?
+>>> sup_2('John')
+Sup, John Doe?
 ~~~
 
 
+# Wrapping requests and JSON
 
-## The function arguments
+When should you define a function? Whenever you want. But typically, we define functions for things that we do, over and over.
 
+For example, we have repeatedly been fetching files from the web and, in the case of JSON files, deserializing them into Python objects:
 
-### Named arguments
-
-### Optional arguments
-
-----
-
-# An example
-
-
-<!-- 
 ~~~py
-def easy_datetime(v):    
-    from datetime import datetime
-    from dateutil.parser import parse
-
-    if type(v) is datetime:
-        dataobj = v
-    elif type(v) is int or type(v) is float:
-        dataobj = datetime.utcfromtimestamp(v)
-    else:
-        dateobj = parse(v)
-    return dateobj
-
-def delta_seconds(from_date, to_date = None):
-    from datetime import datetime
-    x = easy_datetime(from_date)
-    if to_date:
-       y = easy_datetime(to_date)
-    else:
-       y = datetime.now()
-    
-    delta = y - x
-    return delta.total_seconds()
+import requests
+import json
+resp = requests.get("http://stash.compciv.org/congress-twitter/2016-01/sentedcruz.json")
+mydata = json.loads(resp.text)
 ~~~
- -->
 
-<!-- 
-# Design tips
+If we had to do that for many JSON files (that require downloading from the web), we'd have to copy-paste that snippet of code, over and over. It's repetitive. And it's prone to errors.
 
-## Do one thing and do it well
+So let's make it into a function. The main strategy in designing a function is knowing:
 
-https://en.wikipedia.org/wiki/Robustness_principle
-## Be liberal in what you accept
+- What is it I need to do?
+- What should the function _return_?
+- What can I _abstract_?
 
-## Be conservative in what you do
+### What is it I need to do?
 
-## Silence is golden
+Well, given a URL for a JSON file, we need to download it and turn it into a data object. We _just_ did that above, so let's just copy-paste that code and throw it into a function body named `fetch_json`:
 
-## Keep it short
+~~~py
+def fetch_json():
+    import requests
+    import json
+    resp = requests.get("http://stash.compciv.org/congress-twitter/2016-01/sentedcruz.json")
+    mydata = json.loads(resp.text)
+~~~
 
-## Document them
 
- -->
+### What should the function return?
+
+If you copy-paste that code above and then call the function:
+
+~~~py
+>>> fetch_json()
+~~~
+
+It _will_ work. But it doesn't actually return anything, so it will, for all practical purposes, not be useful.
+
+So let's just have it return the deserialized object:
+
+~~~py
+def fetch_json():
+    import requests
+    import json
+    resp = requests.get("http://stash.compciv.org/congress-twitter/2016-01/sentedcruz.json")
+    mydata = json.loads(resp.text)
+    return mydata
+~~~
+
+
+Note that `mydata`, and all the other variable names, do not have meaning outside the __scope__ of the function definition. In other words, you don't have to worry about `resp` and `mydata` clashing with other places that you've used those same variable names.
+
+~~~py
+>>> thing = fetch_json()
+>>> type(thing)
+dict
+>>> thing['name']
+'Senator Ted Cruz'
+~~~
+
+
+### What can I abstract?
+
+This is where we think about _arguments_. The `fetch_json` function works...but only if we want to keep fetching the stashed version of Ted Cruz's Twitter profile. 
+
+So, what is the part of the function that is _repeatable_. And what is the part of the function that _changes_?
+
+In this case, the __url__ is the thing that we'd like to vary each time. So let's make that an argument:
+
+~~~py
+def fetch_json(url):
+    import requests
+    import json
+    resp = requests.get(url)
+    mydata = json.loads(resp.text)
+    return mydata
+~~~
+
+Now, we can point it to any URL we want that purportedly contains JSON formatted text. Try calling `fetch_json` on these URLs out for yourself:
+
+- http://stash.compciv.org/congress-twitter/2016-01/sensanders.json
+- http://stash.compciv.org/congress-twitter/2016-01/congress-twitter-profiles.json
+- https://status.github.com/api.json
+- https://status.github.com/api/status.json
+- https://data.usajobs.gov/api/jobs?series=2210
+
+# More reading
+
+Check out Al Sweigart's [Chapter 3: Functions, via Automate the Boring Stuff](https://automatetheboringstuff.com/chapter3/) for a good walkthrough that covers functions and some of their related topics.

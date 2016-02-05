@@ -4,6 +4,53 @@ description: |
   A place to keep links and notes useful for class, before I port them to tutorials
 ---
 
+Read [about functions](/guides/python/fundamentals/function-definitions) for Friday.
+
+Homework answers: [https://github.com/compciv/2016.compciv.org/tree/master/data/homework/answers](https://github.com/compciv/2016.compciv.org/tree/master/data/homework/answers)
+
+# APIs
+
+Why do some datasets have APIs and others don't?
+
+How [an engineer uses Tinder](https://www.youtube.com/watch?v=Qgnxb-O-CBQ):
+
+<iframe width="853" height="480" src="https://www.youtube.com/embed/Qgnxb-O-CBQ?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Example APIs:
+
+- [New York Times](http://developer.nytimes.com/docs)
+- [USAJobs](https://data.usajobs.gov/Rest) (sample call: [https://data.usajobs.gov/api/jobs?series=2210](https://data.usajobs.gov/api/jobs?series=2210))
+- [Spotify](http://www.compciv.org/recipes/data/touring-the-spotify-api/)
+
+What services don't have an API?
+
+- Tinder
+    + [A brilliant Tinder hack made hundreds of bros unwittingly flirt with each other](http://www.theverge.com/2015/3/25/8277743/tinder-hack-bros-swiping-bros)
+    + [​Developer Uses Tinder's Private API to Automate Dating](http://www.programmableweb.com/news/%E2%80%8Bdeveloper-uses-tinders-private-api-to-automate-dating/2015/02/10)
+    + [Tinder API documentation](https://gist.github.com/rtt/10403467)
+- Craigslist
+    - [Is there a developers api for craisglist.org?](http://stackoverflow.com/questions/10353021/is-there-a-developers-api-for-craisglist-org)
+    - [The Craigslist Lawsuit](https://3taps.com/the-craigslist-lawsuit.php)
+    - [Scraping Craigslist for sold out concert tickets](http://www.gregreda.com/2014/07/27/scraping-craigslist-for-tickets/)
+
+
+# NYTimes Articles API
+
+- [Developer console - keys listing](http://developer.nytimes.com/apps/mykeys)
+- [Documentation](http://developer.nytimes.com/docs/read/article_search_api_v2)
+- Example search for Clinton:
+
+        http://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=YOUR_API_KEY&q=Clinton
+
+
+# Example of using Google's geocoder
+
+- [Geocoding gist](https://gist.github.com/dannguyen/787da4d8c54ee94bb69f)
+
+
+
+------------------
+
 # Twitter data as JSON
 
 Official docs for Twitter data:
@@ -261,8 +308,48 @@ z = sorted(mylist, key=itemgetter(1), reverse=True)
 ~~~
 
 
+## More CSVs: Starbucks
+
+Example dataset: [Starbucks](https://opendata.socrata.com/Business/All-Starbucks-Locations-in-the-World/xy4y-c4mk)
+
+Direct URL to CSV: [https://opendata.socrata.com/api/views/xy4y-c4mk/rows.csv?accessType=DOWNLOAD](https://opendata.socrata.com/api/views/xy4y-c4mk/rows.csv?accessType=DOWNLOAD)
+
+~~~py
+import requests
+from csv import DictReader()
+URL = 'https://opendata.socrata.com/api/views/xy4y-c4mk/rows.csv?accessType=DOWNLOAD'
+
+
+~~~
+
+
+
+
+# Haversine
+
+~~~py
+from math import radians, cos, sin, asin, sqrt
+def haversine(lon1, lat1, lon2, lat2):
+    lon1 = radians(lon1)
+    lon2 = radians(lon2)
+    lat1 = radians(lat1)
+    lat2 = radians(lat2)
+    # haversine formula 
+    dlon = lon2 - lon1 
+    dlat = lat2 - lat1 
+    a = sin(dlat /2 ) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+    c = 2 * asin(sqrt(a)) 
+    r = 6371 # Radius of earth in kilometers.
+
+    return c * r
+~~~
+
+
+
 
 # FEC Data
+
+(note: I haven't gotten around to this stuff)
 
 FEC data for past and some of the current cycle can be downloaded in bulk: [http://www.fec.gov/finance/disclosure/ftpdet.shtml#a2015_2016](http://www.fec.gov/finance/disclosure/ftpdet.shtml#a2015_2016)
 
@@ -292,23 +379,3 @@ These stories come from end of year filings:
 - [Which Candidate's Campaign Spends the Most Money on Pizza: An Investigation](http://gawker.com/which-candidates-campaign-spends-the-most-money-on-pizz-1756384862)
   + [FEC report for Trump](http://docquery.fec.gov/cgi-bin/forms/DL/1047287/)
 
-
-
-# Haversine
-
-~~~py
-from math import radians, cos, sin, asin, sqrt
-def haversine(lon1, lat1, lon2, lat2):
-    lon1 = radians(lon1)
-    lon2 = radians(lon2)
-    lat1 = radians(lat1)
-    lat2 = radians(lat2)
-    # haversine formula 
-    dlon = lon2 - lon1 
-    dlat = lat2 - lat1 
-    a = sin(dlat /2 ) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
-    c = 2 * asin(sqrt(a)) 
-    r = 6371 # Radius of earth in kilometers.
-
-    return c * r
-~~~

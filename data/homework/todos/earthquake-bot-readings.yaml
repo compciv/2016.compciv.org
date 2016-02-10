@@ -1,0 +1,19 @@
+title: "Read about Earthquake bots and other bots"
+due_date: 2016-02-11
+description: |
+
+
+  Readings:
+
+  - [How to break news while you sleep](https://source.opennews.org/en-US/articles/how-break-news-while-you-sleep/)
+  - [Quakebot - the earthquake-story-writing robot](http://www.slate.com/blogs/future_tense/2014/03/17/quakebot_los_angeles_times_robot_journalist_writes_article_on_la_earthquake.html)
+  - [How a California Earthquake Becomes the News: An Extremely Precise Timeline](http://www.theatlantic.com/technology/archive/2014/03/how-a-california-earthquake-becomes-the-news-an-extremely-precise-timeline/284506/)
+  - [Earthquake: 4.8 earthquake near San Simeon reported erroneously](http://www.latimes.com/local/lanow/la-me-earthquakesa-earthquake-48-quake-strikes-near-san-simeon-calif-2ibr88-story.html)
+  - [The LA Quake Twitter Bot](https://twitter.com/earthquakesla)
+  - Peruse the [USGS Earthquakes as Spreadsheets dataset](http://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php)
+
+
+  - [Times Haiku](http://www.niemanlab.org/2013/04/not-an-april-fools-joke-the-new-york-times-has-built-a-haiku-bot/) - auto-generation of haikus from NYT stories
+  - [SCOTUS-SERVO](https://github.com/vzvenyach/scotus-servo) - tracking changes in Supreme Court opinions
+  - [Bot or Not?](http://truthy.indiana.edu/botornot/) - Twitter spambot detection
+    - (is this a [bot or not?](http://bit.ly/isthisabotornot) how about [this](https://twitter.com/stefanierichars/)?)

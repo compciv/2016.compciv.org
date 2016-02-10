@@ -4,7 +4,59 @@ description: |
   A place to keep links and notes useful for class, before I port them to tutorials
 ---
 
-Read [about functions](/guides/python/fundamentals/function-definitions) for Friday.
+
+# This week
+
+Check out the assignments page for the relevant readings about earthquakes and bots.
+
+Related: 
+
+- Peruse the [USGS Earthquakes as Spreadsheets dataset](http://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php)
+
+
+## How to map a bunch of earthquakes at once
+
+
+
+The CSV feeds come from the USGS:
+
+[http://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php](http://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php)
+
+
+~~~py
+import csv
+import requests
+from urllib.parse import urlencode
+import webbrowser
+
+usgs_url = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.csv'
+resp = requests.get(usgs_url)
+lines = resp.text.splitlines()
+coordinate_pairs = []
+for quake in csv.DictReader(lines):
+    coordinate_pairs.append(quake['latitude'] + ',' + quake['longitude'])    
+# contact google's api
+endpoint_url = 'https://maps.googleapis.com/maps/api/staticmap'
+query_string = urlencode(
+                {'size': '800x500', 'markers': coordinate_pairs}, 
+                doseq=True)
+url = endpoint_url + '?' + query_string
+webbrowser.open(url)
+~~~
+
+
+
+
+
+
+
+
+
+
+# From last week
+
+
+Read [about functions](/guides/python/fundamentals/function-definitions/) for Friday.
 
 Homework answers: [https://github.com/compciv/2016.compciv.org/tree/master/data/homework/answers](https://github.com/compciv/2016.compciv.org/tree/master/data/homework/answers)
 

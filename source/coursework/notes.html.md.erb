@@ -4,6 +4,23 @@ description: |
   A place to keep links and notes useful for class, before I port them to tutorials
 ---
 
+# This Thursday (Feb. 11)
+
+[Hacks/Hackers this next Tuesday, Feb. 16](http://www.meetup.com/hacksandhackers/events/228735079/)
+
+New guide: <%=link_to_content_resource("/guides/python/fundamentals/sorting-collections-with-sorted") %>.
+
+Use [it to finish this assignment](http://www.compciv.org/assignments/exercise-sets/0013-sorted-names-set/).
+
+I will probably just give you the code needed to retrieve geocoded data from Mapzen's API -- but please just sign up for a developer key (see the [Assignments page](/assignments)).
+
+Here's an example of a [geocoder for Mapzen](https://gist.github.com/dannguyen/682f8c42c9f100405e04). And here's one for [Google's geocoder](https://gist.github.com/dannguyen/787da4d8c54ee94bb69f).
+
+
+Random trivia: last year, I had students try to write 100 different data scrapers: [https://github.com/compjour/search-script-scrape](https://github.com/compjour/search-script-scrape)...at this point, you pretty much know all you need to know to do these, except for some very specific applications, such as how to parse HTML (i.e. deserialize it into data), or how to read an Excel file as just a regular CSV file. Go ahead and take a look at it if you're curious.
+
+
+
 
 # This week
 
@@ -12,6 +29,8 @@ Check out the assignments page for the relevant readings about earthquakes and b
 Related: 
 
 - Peruse the [USGS Earthquakes as Spreadsheets dataset](http://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php)
+
+
 
 
 ## How to map a bunch of earthquakes at once
@@ -370,8 +389,6 @@ Direct URL to CSV: [https://opendata.socrata.com/api/views/xy4y-c4mk/rows.csv?ac
 import requests
 from csv import DictReader()
 URL = 'https://opendata.socrata.com/api/views/xy4y-c4mk/rows.csv?accessType=DOWNLOAD'
-
-
 ~~~
 
 
@@ -380,8 +397,8 @@ URL = 'https://opendata.socrata.com/api/views/xy4y-c4mk/rows.csv?accessType=DOWN
 # Haversine
 
 ~~~py
-from math import radians, cos, sin, asin, sqrt
 def haversine(lon1, lat1, lon2, lat2):
+    from math import radians, cos, sin, asin, sqrt
     lon1 = radians(lon1)
     lon2 = radians(lon2)
     lat1 = radians(lat1)
@@ -392,7 +409,7 @@ def haversine(lon1, lat1, lon2, lat2):
     a = sin(dlat /2 ) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
     c = 2 * asin(sqrt(a)) 
     r = 6371 # Radius of earth in kilometers.
-
+    # return the final calculation
     return c * r
 ~~~
 

@@ -1,0 +1,605 @@
+---
+title: Sorting Python collections with the sorted method
+description: |
+  Sorting a list of items is not as simple as it seems. But it is also far more important than it seems.
+references:
+  - slug: python-docs-functions-sorted
+    url: https://docs.python.org/3/library/functions.html#sorted
+    title: "Built-in Functions: sorted"
+    publisher: Python documentation
+    description: |
+      Even though the list object has its own `sort()` method, I will heavily implore you to ignore it and instead, use the `sorted()` function, which sorts a list without mutating it.
+
+  - slug: python-docs-sorting-howto
+    url: "https://docs.python.org/3/howto/sorting.html#sortinghowto"
+    title: Sorting HOW TO
+    publisher: Python documentation
+    description: |
+      This tutorial describes several ways to sort sequences in Python. I highly recommend on just focusing on the `sorted()` examples.
+
+  - slug: /guides/python/fundamentals/function-definitions
+    internal: true
+  - slug: /guides/python/fundamentals/lists-mutability
+    internal: true
+  - slug: /guides/python/fundamentals/dictionaries-overview
+    internal: true
+  - slug: /guides/python/fundamentals/tuples-immutable
+    internal: true
+summary: |
+  In Excel, sorting data is as ["easy"](http://superuser.com/questions/511981/my-excel-spreadsheet-wont-sort-alphabetize-properly) as clicking a column-header. But of course, it's much more complicated in the programming-land to do sorting. We have to write our own functions to tell Python's sorting functions exactly how each item in a collection should be ranked.
+
+  It's annoying at first, but the necessity of such explicitness becomes evident when working with data. Not everything in the world can be ranked in alphabetical order.
+---
+
+
+# Why is sorting important and difficult
+
+In Python, as in most high-level programming languages, it's very easy to sort a list of simple objects such as numbers or text strings:
+
+
+~~~py
+>>> sorted([3, 0, 2])
+[0, 2, 3]
+>>> sorted(['oranges', 'apples'])
+['apples', 'oranges']
+~~~
+
+It's when we want to sort a collection of objects that are _not_ all the same that things get slightly more complicated:
+
+~~~py
+>>> sorted(["apples", 42])
+TypeError: unorderable types: int() < str()
+~~~
+
+Or, if the objects are all the same type of thing, but there's no obvious way that they should be sorted. How should a list of lists be sorted? By length of list? By the alphabetical/numerical order of the things in each list?
+
+
+A real-life analogy would be trying to sort a list of movies. Sorting movie titles in alphabetical order is pretty straightforward. But how would we write a program that sorts a list of movies by _quality_? It's ultimately a problem as hard as defining what "quality" means -- is it number of Oscar awards? The box office receipts? The average of critics' reviews scores? But the core concept is that when we want to sort by something more ephemeral or abstract than the alphabetical order of a name, we have to do a little more work.
+
+This guide focuses on the built-in [__sorted__](https://docs.python.org/3/library/functions.html#sorted) function. The Python documentation has a nice how-to tutorial that has even more ways and examples of [how to do sorting](https://docs.python.org/3/howto/sorting.html#sortinghowto).
+
+
+# The built-in sorted function
+
+Python has a built-in function named [__sorted__](https://docs.python.org/3/library/functions.html#sorted) which, given an iterable collection, such as a __list__, will return a new list of items, but in sorted order:
+
+~~~py
+>>> mylist = [42, -5, 0]
+>>> sorted(mylist)
+[-5, 0, 42]
+~~~
+
+
+
+
+Note: by "_iterable collection_", I mean that `sorted` can deal with sequences other than lists. Strings, for example, are iterable:
+
+~~~py
+>>> sorted("Hello World!")
+[' ', '!', 'H', 'W', 'd', 'e', 'l', 'l', 'l', 'o', 'o', 'r']
+~~~
+
+...but, for the most part, we'll be dealing with lists.
+
+
+
+
+## Sorting alphabetically and numerically with sorted
+
+By default, `sorted` will return numbers and text strings in __ascending__ order, i.e. from lowest to highest, and alphabetically.
+
+Of course, [even that is more complicated than you might think.](http://stackoverflow.com/questions/12994412/why-do-upper-case-letters-come-before-lower-case-letters-in-the-ascii-table) Since every digital object is ultimately just a bunch of ones and zeros, letters and numbers are actually sorted by their binary values, e.g. `1000001` (i.e. __65__) for `"A"`, and `1100001` (i.e. __97__) for `"a"`. Which should explain this result:
+
+~~~py
+>>> sorted(["alpha", "Zed"])
+['Zed', 'alpha']
+~~~
+
+And when numbers are represented as _strings_, they are _not_ sorted in numerical order, [but by their binary/hexadecimal value](http://ee.hawaii.edu/~tep/EE160/Book/chap4/subsection2.1.1.1.html), e.g. the character `"1"` has a value of `49`:
+
+~~~py
+>>> sorted(["hundred", "100"])
+['100', 'hundred']
+~~~
+
+Try to apply that factoid in explaining this seemingly contradictory result:
+
+~~~py
+>>> sorted([9, 10])
+[9, 10]
+>>> sorted(["9", "10"])
+['10', '9']
+~~~
+
+
+## Sorting in reverse with sorted
+
+The `sorted` function takes a named argument, `reverse`, which is set to `False` by default. If we want things to be sorted in reverse-order (which would be __descending__ order for character strings and numbers), pass `True` to the `reverse` argument:
+
+~~~py
+>>> mylist = [42, -9, 0]
+>>> sorted(mylist)
+[-9, 0, 42]
+>>> sorted(mylist, reverse=True)
+[42, 0, -9]
+~~~
+
+
+# Defining a key function
+
+Besides a `reverse` argument, the `sorted` function takes one other named argument: __key__.
+
+However, the `key` argument does not take a simple value, such as `True`. Instead, we have to pass in the _name_ of a function, a function that defines how each object in the collection should be evaluated as for sorting purposes:
+
+~~~py
+sorted(["a", 2, "z"], key=some_function_name)
+~~~
+
+Which means that a function by that name has to actually be _defined_:
+
+~~~py
+
+def some_function_name(item):
+    return do_something(item) 
+# obviously, do_something is some other hypothetical function
+# that also has to be defined
+sorted(["a", 2, "z"], key=some_function_name)
+~~~
+
+
+## How to sort apples and oranges and numbers
+
+Here's an actual example: how do we sort a list of text strings that have different kinds of capitalization?
+
+~~~py
+mylist = ['apples', 'Oranges', 'bananas']
+~~~
+
+Remember that while text strings are seemingly sorted in alphabetical order, _uppercase_ characters take precedence:
+
+~~~py
+>>> sorted(mylist)
+['Oranges', 'apples', 'bananas']
+~~~
+
+And maybe that's what we _want_. But in other situations, we might want the strings to be sorted alphabetically without regard to capitalization.
+
+One way to do this is to convert everything to either all-upper or all-lower case characters:
+
+~~~py
+>>> my_big_list = ['APPLES', 'ORANGES', 'BANANAS']
+>>> sorted(my_big_list)
+['APPLES', 'BANANAS', 'ORANGES']
+~~~
+
+Of course, doing that manual conversion has a lot of disadvantages, the primary one being that you have to _manually_ convert each item in the list.
+
+What a __key function__ allows us to do is delegate that work to the __sorted__ function. Essentially, we tell the `sorted` function: _hey, sort each item in this list not by the item's actual value, but by some transformation of its value_.
+
+For the current scenario, the "transformation" of the value is simply: the uppercased version of the string. That function is fairly trivial to write:
+
+~~~py
+def my_foo(item):
+    return item.upper()
+~~~
+
+And now we can pass `my_foo` into the `sorted` function. Here's all the code, all together:
+
+~~~py
+def my_foo(item):
+    return item.upper()
+
+mylist = ['Oranges', 'apples', 'bananas']
+
+sorted(mylist, key=my_foo)
+~~~
+
+The result of that sort will be:
+
+~~~py
+['apples', 'bananas', 'Oranges']
+~~~
+
+Note how the resulting list contains the original values, but sorted according to the result of `my_foo` being called upon each item. The `sorted` function -- and the `key` function that it calls -- never alters the original list.
+
+
+How about sorting a list that contains numbers _and_ strings? 
+
+~~~py
+['apples', 42, 'Oranges']
+~~~
+
+Note that this kind of scenario is a bit unusual in that...well, what is the purpose of sorting a list that contains text strings and numbers? The answer: *um...I don't know*. Which is exactly what the Python interpreter is thinking when it throws you an error if you try to sort the list _without_ a key function:
+
+~~~py
+>>> mylist = ['apples', 42, 'Oranges']
+>>> sorted(mylist)
+TypeError: unorderable types: int() < str()
+~~~
+
+It just doesn't know how to order a number compared to a string. So, let's give it a simple key function which simply transforms any given value into a string, using the `str()` constructor function:
+
+~~~py
+def my_foofoo(item):
+    return str(item)
+~~~
+
+With `my_foofoo` (or whatever you want to call it), we can use it as the key function:
+
+~~~py
+>>> mylist = ['apples', 42, 'Oranges']
+>>> sorted(mylist, key=my_foofoo)
+[42, 'Oranges', 'apples']
+~~~
+
+## Sorting lists of lists
+
+Suppose we have a list of lists. Each sub-list contains two values: a name (as a `str`) and an age (an `int`):
+
+~~~py
+list_o_peeps = [
+  ['Lisa', 42],
+  ['Bart', 9],
+  ['Maggie', 2]
+]
+~~~
+
+If we want to sort by the second value of each list, we simply define a function that, given an item that is ostensibly a collection or sequence, attempts to return the second value:
+
+~~~py
+def sort_foo(x):
+    return x[1]
+~~~
+
+~~~py
+>>> sorted(list_o_peeps, key=sort_foo)
+[['Maggie', 2], ['Bart', 9], ['Lisa', 42]]
+~~~
+
+
+## Sorting lists of dictionaries
+
+Pretty much the same thing as sorting lists, except of course we have to change how we reference the values, i.e. using keys instead of numerical indexes:
+
+~~~py
+dict_o_peeps = [
+  {'name': 'Lisa', 'age': 42},
+  {'name': 'Bart', 'age': 9},
+  {'name': 'Maggie', 'age': 2}
+]
+~~~
+
+~~~py
+def foo2(x):
+    return x['age']
+~~~
+
+~~~py
+>>> sorted(dict_o_peeps, key=foo2)
+[{'age': 2, 'name': 'Maggie'},
+ {'age': 9, 'name': 'Bart'},
+ {'age': 42, 'name': 'Lisa'}]
+~~~
+
+### Example: sorting by length of a string
+
+Let's try a more complicated key function. Instead of simply pulling out a value via index, e.g. sort by `name`.
+
+Let's sort by _length_ of the `name` value in _descending_ order (i.e. reverse the standard sort):
+
+~~~py
+def foo_len(item):
+    name = item['name']
+    return len(name)
+
+peeps = [
+  {'name': 'Lisa', 'age': 42},
+  {'name': 'Homer', 'age': 70},
+  {'name': 'Maggie', 'age': 2}
+]
+~~~
+
+~~~py
+>>> sorted(peeps, key=foo_len, reverse=True)
+[{'age': 2, 'name': 'Maggie'},
+ {'age': 70, 'name': 'Homer'},
+ {'age': 42, 'name': 'Lisa'}]
+~~~
+
+
+
+## How to break a tie
+
+As the collections of things we want to sort get bigger and more complicated, so do the criteria we use to rank them. Given a collection of dictionaries that looks like this:
+
+~~~py
+peeps = [
+  {'name': 'Mary', 'age': 42},
+  {'name': 'Mary', 'age': 9},
+  {'name': 'John', 'age': 42},
+  {'name': 'Mary', 'age': 2}
+]
+~~~
+
+If we want to sort by the `name` in each dictionary, how does `sorted` know what to do with all the identical `"Mary"`'s? It doesn't know, so it will return them in an arbitrary order.
+
+If we want it to sort by `name`, and then by `age` for when the name is the same, we define the key function to return a __tuple__ of values:
+
+~~~py
+def foo3(x):
+    return (x['name'], x['age'])
+~~~
+
+
+~~~py
+>>> sorted(peeps, key=foo3)
+[{'age': 42, 'name': 'John'},
+ {'age': 2, 'name': 'Mary'},
+ {'age': 9, 'name': 'Mary'},
+ {'age': 42, 'name': 'Mary'}]
+~~~
+
+Alternatively, if we wanted to sort by `age`, then by `name`:
+
+~~~py
+def foo4(x):
+    return (x['age'], x['name'])
+~~~
+
+~~~py
+>>> sorted(peeps, key=foo4)
+[{'age': 2, 'name': 'Mary'},
+ {'age': 9, 'name': 'Mary'},
+ {'age': 42, 'name': 'John'},
+ {'age': 42, 'name': 'Mary'}]
+~~~
+
+
+# Variations and common patterns of key functions
+
+If you've understood everything up until now, e.g. what a list and dictionary are, what the `sorted` function does, and what a _key function_ is -- then you're good to go. This section reviews other ways of writing out the same concepts, with cleaner-looking code at the cost of having to learn more about Python's standard library.
+
+## Using operator.itemgetter to sort lists of lists
+
+
+Consider this previous example:
+
+~~~py
+peeps = [
+  ['Lisa', 42],
+  ['Bart', 9],
+  ['Maggie', 2]
+]
+
+def foo(x):
+    return x[1]
+
+sorted(peeps, key=foo)
+~~~
+
+It's such a common pattern to sort dictionaries by a single key that we can pass the `itemgetter` method (from the `operator` module) as the key function, along with a __number__ that refers to which value from each list that we want to sort by: 
+
+~~~py
+from operator import itemgetter
+peeps = [
+  ['Lisa', 42],
+  ['Bart', 9],
+  ['Maggie', 2]
+]
+
+sorted(peeps, key=itemgetter(1))
+# [['Maggie', 2], ['Bart', 9], ['Lisa', 42]]
+~~~
+
+
+
+
+## Using operator.itemgetter to sort lists of lists
+
+
+Consider this previous example:
+
+~~~py
+peeps = [
+  {'name': 'Lisa', 'age': 42},
+  {'name': 'Bart', 'age': 9},
+  {'name': 'Maggie', 'age': 2}
+]
+
+def foo(x):
+    return x['age']
+
+sorted(peeps, key=foo)
+~~~
+
+It's such a common pattern to sort dictionaries by a single key that we can pass the `itemgetter` method (from the `operator` module) as the key function, along with a __string__ that refers to the key in the _dictionary_ that we want to sort by:
+
+~~~py
+from operator import itemgetter
+peeps = [
+  {'name': 'Lisa', 'age': 42},
+  {'name': 'Bart', 'age': 9},
+  {'name': 'Maggie', 'age': 2}
+]
+
+sorted(peeps, key=itemgetter('age'))
+# [{'age': 2, 'name': 'Maggie'},
+#  {'age': 9, 'name': 'Bart'},
+#  {'age': 42, 'name': 'Lisa'}]
+~~~
+
+
+
+# sorted vs sort
+
+Note that the `sorted` is _not_ an in-place function, i.e. it does _not_ modify the list that's passed into it:
+
+~~~py
+>>> mylist = [8, 3, 12]
+>>> newlist = sorted(mylist)
+>>> mylist
+[8, 3, 12]
+>>> newlist
+[3, 8, 12]
+~~~
+
+This is in contrast to the `sort` method that the __list__ object has. It actually _changes_ the calling list. And it returns a `NoneType` value:
+
+~~~py
+>>> mylist = [8, 3, 12]
+>>> returnvalue = mylist.sort()
+>>> type(returnvalue)
+NoneType
+>>>  mylist
+[3, 8, 12]
+~~~
+
+For many intents and purposes, the fact that `sort` mutates a list may not matter...except it can be hard to infer from reading the code (as a human) to see that the `mylist` list has actually changed.
+
+For our purposes, it's just a lot easier to call the `sorted` method.
+
+[Automate the Boring Stuff with Python](https://automatetheboringstuff.com/chapter4/) has examples on using the list's sort method.
+
+
+
+# Example: Sorting earthquakes
+
+Let's try sorting some real-world data. The [U.S. Geological Survey has real-time earthquake feeds in CSV form](http://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php).
+
+I've downloaded a snapshot of M4.5+ earthquakes over a recent 7-day period:
+
+[http://www.compciv.org/files/datadumps/apis/usgs/4.5_week.csv](http://www.compciv.org/files/datadumps/apis/usgs/4.5_week.csv){:.url}
+
+To preview the data in a spreadsheet-like form, [you can view it on Github here](https://github.com/compciv/2016.compciv.org/blob/master/source/files/datadumps/apis/usgs/4.5_week.csv).
+
+
+## Deserializing a CSV file into a list of dictionaries
+
+CSV is just text that, passed through the appropriate deserialization function, can be turned into a Python collection. For our purposes, [we need the __csv.DictReader__ function](https://docs.python.org/3/library/csv.html):
+
+~~~py
+from csv import DictReader
+import requests
+DATA_URL = 'http://www.compciv.org/files/datadumps/apis/usgs/4.5_week.csv'
+resp = requests.get(DATA_URL)
+txt = resp.text
+lines = txt.splitlines()
+datarows = list(DictReader(lines))
+# or obviously, do it all in one go
+# datarows = list(DictReader(resp.text.splitlines()))
+~~~
+
+`datarows` is a list of dictionaries. Inspect the first element in `datarows`, i.e. `datarows[0]`:
+
+~~~py
+{'depth': '10.99',
+ 'depthError': '4.2',
+ 'dmin': '28.964',
+ 'gap': '120',
+ 'horizontalError': '12.8',
+ 'id': 'us20004zj3',
+ 'latitude': '-25.6731',
+ 'locationSource': 'us',
+ 'longitude': '-13.7383',
+ 'mag': '5.2',
+ 'magError': '0.064',
+ 'magNst': '81',
+ 'magSource': 'us',
+ 'magType': 'mb',
+ 'net': 'us',
+ 'nst': '',
+ 'place': 'Southern Mid-Atlantic Ridge',
+ 'rms': '1.01',
+ 'status': 'reviewed',
+ 'time': '2016-02-11T17:00:32.920Z',
+ 'type': 'earthquake',
+ 'updated': '2016-02-11T17:42:15.185Z'}
+~~~
+
+It's a dictionary. But note how all the columns that contain numbers are actually denoted as __strings__. This is because, well, a CSV file is a __text file__...and, without further instruction, the Python `csv.DictReader` function is just going to treat everything as text strings. Note how this is much different than if you had imported the CSV file into Excel...in which case, Excel will try to guess what's in a column.
+
+Which is sometimes good. And sometimes catastrophic ([which is why we're not using Excel](http://blog.concentra.co.uk/2013/05/15/why-ssis-always-gets-excel-data-types-wrong-and-how-to-fix-it/)).
+
+### Find top 5 earthquakes by biggest magnitude
+
+The [USGS dataset](https://github.com/compciv/2016.compciv.org/blob/master/source/files/datadumps/apis/usgs/4.5_week.csv) has a `mag` column that specifies the magnitude of the earthquake as a float.
+
+To sort the dataset in descending order of magnitude, we need to write a function that extracts the value from an object's `mag` key. We also have to convert that value into a __float__ object, because all values by default are just __strings__:
+
+~~~py
+def foo(quake):
+    return float(quake['mag'])
+
+sortedquakes = sorted(datarows, key=foo, reverse=True)[0:5]
+
+for q in sortedquakes:
+    print(q['mag'], q['place'], q['time'])
+
+# 6.4 92km WSW of Panguna, Papua New Guinea 2016-02-08T16:19:13.090Z
+# 6.4 24km SSE of Yujing, Taiwan 2016-02-05T19:57:27.390Z
+# 6.3 40km W of Ovalle, Chile 2016-02-10T00:33:05.690Z
+# 5.8 89km NNE of Hihifo, Tonga 2016-02-07T02:03:40.400Z
+# 5.5 276km WNW of Nadi, Fiji 2016-02-06T01:39:18.300Z
+~~~
+
+
+
+### Sorting by distance from a point
+
+Let's say we have a geospatial point. Such as the location of Stanford, California, which is at the longitude/latitude coordinates of:
+
+|  longitude   |      latitude      |
+|--------------|--------------------|
+| -122.1660756 | 37.42410599999999  |
+            
+How do we find the earthquakes nearest to that point? We need whatever distance formula is appropriate for, given two points on a X/Y plane returns a value that represents the distance between those two points
+
+You can read about the [haversine function here](https://en.wikipedia.org/wiki/Haversine_formula):
+
+> The haversine formula is an equation important in navigation, giving great-circle distances between two points on a sphere from their longitudes and latitudes. It is a special case of a more general formula in spherical trigonometry, the law of haversines, relating the sides and angles of spherical triangles.
+> 
+
+And here's a [Python implementation that I almost certainly copied from this StackOverflow answer](http://stackoverflow.com/questions/4913349/haversine-formula-in-python-bearing-and-distance-between-two-gps-points), which I found by Googling for ["haversine python"](https://www.google.com/search?q=haversine+python):
+
+~~~py
+def haversine(lon1, lat1, lon2, lat2):
+    from math import radians, cos, sin, asin, sqrt
+    lon1 = radians(lon1)
+    lon2 = radians(lon2)
+    lat1 = radians(lat1)
+    lat2 = radians(lat2)
+    # haversine formula 
+    dlon = lon2 - lon1 
+    dlat = lat2 - lat1 
+    a = sin(dlat /2 ) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+    c = 2 * asin(sqrt(a)) 
+    r = 6371 # Radius of earth in kilometers.
+    # return the final calculation
+    return c * r
+~~~
+
+
+Here's one way to approach this problem: Use the `haversine` function, but write _another_ function that _calls_ `haversine` and provides the known coordinates (i.e. longitude/latitude of Stanford, CA):
+
+~~~py
+STANFORD_LNG = -122.1660756 
+STANFORD_LAT = 37.42410599999999  
+
+def haver_foo(item):
+    # remember that each record in the CSV
+    # has to have its numerical columns converted to numbers:
+    lng = float(item['longitude'])
+    lat = float(item['latitude'])
+
+    return haversine(STANFORD_LNG, STANFORD_LAT, lng, lat)
+
+
+nearest_quakes = sorted(datarows, key=haver_foo)[0:5]
+for quake in nearest_quakes:
+    print(quake['mag'], quake['place'])
+# 4.6 13km SSW of Teziutlan, Mexico
+# 4.9 18km N of Chicomuselo, Mexico
+# 4.6 33km WSW of La Libertad, El Salvador
+# 5 77km SSW of Masachapa, Nicaragua
+# 5.3 72km S of Semisopochnoi Island, Alaska
+~~~

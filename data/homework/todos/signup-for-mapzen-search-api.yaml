@@ -1,0 +1,23 @@
+title: "Signup for a Mapzen developer account and get a key"
+due_date: 2016-02-12
+description: |
+
+  While we can use the Google Maps Geocoding API to do geocoding, the Mapzen Search service gives pretty good results with a lot fewer restrictions.
+
+  Here's [the landing page](https://mapzen.com/projects/search/).
+
+  The rate limit is very generous:
+
+  > Search early & search often. With Mapzen Search, you get up to 30,000 geocoding requests per day (and 6 per second) to do with as you wish.
+
+  And this is where you sign in:
+
+  [https://mapzen.com/developers/sign_in](https://mapzen.com/developers/sign_in)
+
+  After completing the process, you should find yourself at this page:
+
+  [https://mapzen.com/developers](https://mapzen.com/developers)
+
+  With a search key that looks something like:
+
+      search-BLAHBLAH

@@ -1,0 +1,62 @@
+{
+  "geocoding": {
+    "version": "0.1",
+    "attribution": "https://search.mapzen.com/v1/attribution",
+    "query": {
+      "text": "McClatchy Hall, Stanford, CA",
+      "parsed_text": {
+        "name": "McClatchy Hall",
+        "state": "CA",
+        "regions": [
+          "McClatchy Hall",
+          "Stanford"
+        ],
+        "admin_parts": "Stanford, CA"
+      },
+      "size": 1,
+      "private": false,
+      "querySize": 1
+    },
+    "engine": {
+      "name": "Pelias",
+      "author": "Mapzen",
+      "version": "1.0"
+    },
+    "timestamp": 1455398994073
+  },
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "5371369",
+        "gid": "gn:venue:5371369",
+        "layer": "venue",
+        "source": "gn",
+        "name": "McClatchy Hall",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "California",
+        "region_a": "CA",
+        "county": "Santa Clara County",
+        "locality": "Stanford",
+        "neighbourhood": "Oak Creek",
+        "confidence": 0.6,
+        "label": "McClatchy Hall, Stanford, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.16969,
+          37.42827
+        ]
+      }
+    }
+  ],
+  "bbox": [
+    -122.16969,
+    37.42827,
+    -122.16969,
+    37.42827
+  ]
+}

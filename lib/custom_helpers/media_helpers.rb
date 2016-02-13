@@ -5,7 +5,7 @@ module CustomHelpers
       buff = ActiveSupport::SafeBuffer.new
       image_src = image_path(url)
       # :link_to specifies a clickable URL for the image
-      link_to = options.delete(:link_to)
+# NOT USED:      link_to = options.delete(:link_to)
       # handle caption stuff
       if block_given?
          raise ArgumentError.new("Can't pass in block and :caption") if options[:caption].present?
@@ -19,9 +19,9 @@ module CustomHelpers
 
       options.reverse_merge!(:src => image_src, :class => "", :alt => image_src)
       wrap_classes = ['image_wrap', options.delete(:class)].join(" ")
-      if options.delete(:bordered) == true
-        wrap_classes << " bordered"
-      end
+      wrap_classes << " bordered" if options.delete(:bordered) == true
+      wrap_classes << " wide" if options.delete(:wide) == true
+
 
       # TODO: presenter classes, e.g. thumbnail, rounded, though I guess we can just
       #  pass that in via SASS?

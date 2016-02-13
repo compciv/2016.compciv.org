@@ -20,6 +20,11 @@
     margin-top: 2.2rem;
   }
 
+  table{
+    @extend .table;
+    @extend .table-sm;
+  }
+
 }
 
 

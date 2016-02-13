@@ -1,3 +1,4 @@
+require 'addressable'
 module CustomHelpers
   module MarkupExtensionHelpers
 
@@ -29,7 +30,15 @@ module CustomHelpers
       else
         return Kramdown::Document.new(str).to_html
       end
-
     end
+
+    def link_to_url_alone(url)
+      a_url = Addressable::URI.parse(url)
+      if a_url.relative?
+        a_url = Addressable::URI.join(site_baseurl, a_url)
+      end
+      link_to(a_url.to_s, a_url.to_s, :class => "url-alone")
+    end
+
   end
 end

@@ -15,6 +15,12 @@
     }
   }
 
+  &.wide{
+    img{
+      width: 100%;
+    }
+  }
+
   img, .caption{
     @include img-wrap(); // TODO: remove this after image_wrap() helper is fixed
   }
@@ -25,6 +31,7 @@
     font-family: $font-family-sans-serif;
     margin-top: 0.8rem;
     text-align: center;
+    margin-bottom: 2px;
 
     a:link{
       text-decoration: underline;

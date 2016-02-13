@@ -1,0 +1,244 @@
+---
+title: Dissecting the Mapzen Search API response
+image_url: "http://maps.googleapis.com/maps/api/staticmap?size=800x350&markers=37.428554,-122.17106&markers=37.427478,-122.170321&markers=37.430134,-122.171492"
+sequence:
+  landing: /guides/data/apis/mapzen/mapzen-search-api-landing-page
+  previous: /guides/data/apis/mapzen/getting-started-with-mapzen-search-api
+description: A detailed examination of the data structured returned by Mapzen Search API.
+---
+
+
+Here's the endpoint for getting the 3 most relevant geocoded results for the address string, `"450 Serra Mall, Stanford, CA"`:
+
+(note that you need to replace `YOUR-KEY-HERE` with your actual Mapzen API key)
+
+<%=link_to_url_alone "https://search.mapzen.com/v1/search?api_key=YOUR-KEY-HERE&size=3&text=450+Serra+Mall,+Stanford,+CA" %>
+
+
+You can see the full response as I've downloaded and cached it here:
+
+<%=link_to_url_alone "/files/datadumps/apis/mapzen/search-450-serra-mall.json" %>
+
+
+<%=
+  image_wrap( 
+    "http://maps.googleapis.com/maps/api/staticmap?size=800x350&markers=label:1|37.428554,-122.17106&markers=label:2|37.427478,-122.170321&markers=label:3|37.430134,-122.171492",
+    :caption => "Google Static Map of Mapzen Search API's 3 results returned for 450 Serra Mall, Stanford, CA",
+    :wide => true,
+    :source_url => "/files/datadumps/apis/mapzen/search-450-serra-mall.json")
+%>
+
+
+# The full response
+
+
+~~~json
+{
+  "geocoding": {...},
+  "type": "FeatureCollection",
+  "features": [...],
+  "bbox": [...],
+}
+~~~
+
+
+
+# The `geocoding` object
+
+~~~json
+{
+  "geocoding": {...},  //<<---------------//
+  "type": "FeatureCollection",
+  "features": [...],
+  "bbox": [...],
+}
+~~~
+
+The `"geocoding"` key points to this object:
+
+~~~json
+{
+  "version": "0.1",
+  "attribution": "https://search.mapzen.com/v1/attribution",
+  "query": {
+    "text": "450 Serra Mall, Stanford, CA",
+    "parsed_text": {
+      "name": "450 Serra Mall",
+      "number": "450",
+      "street": "Serra Mall",
+      "state": "CA",
+      "regions": [
+        "Stanford"
+      ],
+      "admin_parts": "Stanford, CA"
+    },
+    "size": 3,
+    "private": false,
+    "querySize": 1
+  },
+  "engine": {
+    "name": "Pelias",
+    "author": "Mapzen",
+    "version": "1.0"
+  },
+  "timestamp": 1455400661088
+}
+~~~
+
+
+## The `geocoding.query`
+
+This contains information about the query that was sent to the Mapzen API. The most useful object is `parsed_text`, which takes the original `text` value -- i.e. 
+
+    "450 Serra Mall, Stanford, CA"
+
+&ndash; and shows how the Mapzen API interpreted it:
+
+~~~json
+{
+  "name": "450 Serra Mall",
+  "number": "450",
+  "street": "Serra Mall",
+  "state": "CA",
+  "regions": [
+    "Stanford"
+  ]
+}
+~~~
+
+
+
+
+# The `type` string
+
+This is a simple __string__ describing the nature of the data in the response. For all of our searches, this will be `"FeatureCollection`.
+
+
+# The `features` collection
+
+The `features` key points to the data we care about: the geocoded location results from the Mapzen Search servers.
+
+This comes as a collection of objects (i.e. a list of dictionaries, in Python terms). Each object looks like this:
+
+
+~~~json
+{
+      "type": "Feature",
+      "properties": {
+        "id": "poi-address-osmnode-2438059060",
+        "gid": "osm:address:poi-address-osmnode-2438059060",
+        "layer": "address",
+        "source": "osm",
+        "name": "450 Serra Mall",
+        "housenumber": "450",
+        "street": "Serra Mall",
+        "postalcode": "94305",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "California",
+        "region_a": "CA",
+        "county": "Santa Clara County",
+        "locality": "Stanford",
+        "neighbourhood": "Oak Creek",
+        "confidence": 0.6,
+        "label": "450 Serra Mall, Stanford, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.17106,
+          37.428554
+        ]
+      }
+}
+~~~
+
+Each object has two objects of interest:
+
+- `geometry`: This object contains the `type` of geolocation returned -- usually some kind of `"Point"`. In the case of point-level data, the `coordinates` key points to a __list__ of __2__ decimal numbers: __longitude__, then __latitude__. But `coordinates` being a list, the identity of those respective numbers can only be inferred from their order in the list.
+- `properties`: This contains a lot of useful metadata about a given location, such as geopolitical labels. For example, the `county` that contains `"450 Serra Mall, Stanford, CA"` is `Santa Clara County`. And apparently, the `neighbourhood` is `Oak Creek`. Why not, "Stanford University"? Keep in mind two things:
+
+  1. Mapzen Search data comes from OpenStreetMap, which is a _collaborative_ data source, much like Wikipedia. 
+  2. Neighborhoods are generally _not_ official. And where their boundaries begin and end may not [stir up global tensions](https://en.wikipedia.org/wiki/Nine-dash_line), they can be highly disputed in the context of real estate. For example, the cachet attached to Brooklyn's "Williamsburg" versus "Bushwick" sometimes results in properties being labeled as "East Williamsburg".
+
+
+## Determining reliability of results with the `properties.confidence` score 
+
+One of the most important attributes in the `properties` object is: `confidence`. By default, Mapzen Search returns results in __descending order of confidence__.
+
+
+For the example data file, the first `confidence` value (and the corresponding `label` for the `location`) looks like this:
+
+~~~json
+        "confidence": 0.943,
+        "label": "450 Serra Mall, Stanford, CA"
+~~~
+
+~~~json
+        "confidence": 0.903,
+        "label": "450 Serra Mall, Stanford, CA"
+~~~
+
+~~~json
+        "confidence": 0.604,
+        "label": "385 Serra Mall, Stanford, CA"
+~~~
+
+
+
+The third result, which has a `label` of `"385 Serra Mall, Stanford, CA"` is clearly not what we want in this situation, though apparently Mapzen feels obligated to provide a third-most relevant result since I specified in my query that I wanted 3 results...But what's the difference between the first and second result, which have `confidence` values of `0.943` and `0.903` respectively? 
+
+The first result seems to be more specific and complete; for example, it contains a `postalcode`. Here's what the 3 results look like on a map:
+
+<%=
+  image_wrap( 
+    "http://maps.googleapis.com/maps/api/staticmap?size=800x350&markers=label:1|37.428554,-122.17106&markers=label:2|37.427478,-122.170321&markers=label:3|37.430134,-122.171492",
+    :caption => "Google Static Map of Mapzen Search API's 3 results returned for 450 Serra Mall, Stanford, CA",
+    :wide => true,
+    :source_url => "/files/datadumps/apis/mapzen/search-450-serra-mall.json")
+%>
+
+
+
+
+# The `bbox` collection
+
+As geocoded queries can return more than one "feature", the `bbox` list serves as a convenient way to determine the __bounding box__ that contains all of the returned points.
+
+The `bbox` object is a __collection__ of 4 coordinates:
+
+~~~json
+[
+    -122.171492,
+    37.427478,
+    -122.170321,
+    37.430134
+]
+~~~
+
+
+
+
+It's just a simple list, so we can't refer to the values by human-friendly keys, e.g. `latitude`, `longitude`. But here's what each value is, based on its position in this list:
+
+| index (0-based) |                   value                   |
+|-----------------|-------------------------------------------|
+|               0 | __longitude__ of the __left__-most point  |
+|               1 | __latitude__ of __top__-most point        |
+|               2 | __longitude__ of the __right__-most point |
+|               3 | __latitude__ of __bottom__-most point     |
+
+
+
+Another way to think of this is that values at `0` and `1` constitute the __top-left__ coordinate pair of the bounding box. And `2` and `3` constitute the __bottom-right__ coordinate pair.
+
+Note that when only __1__ result/feature is returned, both coordinate pairs will be identical.
+
+
+<%=
+  image_wrap( 
+    "http://maps.googleapis.com/maps/api/staticmap?size=800x350&markers=label:1|37.428554,-122.17106&markers=label:2|37.427478,-122.170321&markers=label:3|37.430134,-122.171492&path=color%3ablue|weight:3|37.427478,-122.171492|37.427478,-122.170321|37.430134,-122.170321|37.430134,-122.171492|37.427478,-122.171492",
+    :caption => "Google Static Map of Mapzen Search API's 3 results returned for 450 Serra Mall, Stanford, CA",
+    :wide => true,
+    :source_url => "/files/datadumps/apis/mapzen/search-450-serra-mall.json")
+%>

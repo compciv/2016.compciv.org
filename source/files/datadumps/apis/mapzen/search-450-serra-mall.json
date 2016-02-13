@@ -1,0 +1,122 @@
+{
+  "geocoding": {
+    "version": "0.1",
+    "attribution": "https://search.mapzen.com/v1/attribution",
+    "query": {
+      "text": "450 Serra Mall, Stanford, CA",
+      "parsed_text": {
+        "name": "450 Serra Mall",
+        "number": "450",
+        "street": "Serra Mall",
+        "state": "CA",
+        "regions": [
+          "Stanford"
+        ],
+        "admin_parts": "Stanford, CA"
+      },
+      "size": 3,
+      "private": false,
+      "querySize": 6
+    },
+    "engine": {
+      "name": "Pelias",
+      "author": "Mapzen",
+      "version": "1.0"
+    },
+    "timestamp": 1455402604977
+  },
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi-address-osmnode-2438059060",
+        "gid": "osm:address:poi-address-osmnode-2438059060",
+        "layer": "address",
+        "source": "osm",
+        "name": "450 Serra Mall",
+        "housenumber": "450",
+        "street": "Serra Mall",
+        "postalcode": "94305",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "California",
+        "region_a": "CA",
+        "county": "Santa Clara County",
+        "locality": "Stanford",
+        "neighbourhood": "Oak Creek",
+        "confidence": 0.943,
+        "label": "450 Serra Mall, Stanford, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.17106,
+          37.428554
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cbea9e3023654e06b42f90a1f81dff5e",
+        "gid": "oa:address:cbea9e3023654e06b42f90a1f81dff5e",
+        "layer": "address",
+        "source": "oa",
+        "name": "450 Serra Mall",
+        "housenumber": "450",
+        "street": "Serra Mall",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "California",
+        "region_a": "CA",
+        "county": "Santa Clara County",
+        "locality": "Stanford",
+        "neighbourhood": "Oak Creek",
+        "confidence": 0.903,
+        "label": "450 Serra Mall, Stanford, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.170321,
+          37.427478
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "489df89588ff4cfbb3434565df298175",
+        "gid": "oa:address:489df89588ff4cfbb3434565df298175",
+        "layer": "address",
+        "source": "oa",
+        "name": "385 Serra Mall",
+        "housenumber": "385",
+        "street": "Serra Mall",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "California",
+        "region_a": "CA",
+        "county": "Santa Clara County",
+        "locality": "Stanford",
+        "neighbourhood": "Oak Creek",
+        "confidence": 0.604,
+        "label": "385 Serra Mall, Stanford, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.171492,
+          37.430134
+        ]
+      }
+    }
+  ],
+  "bbox": [
+    -122.171492,
+    37.427478,
+    -122.170321,
+    37.430134
+  ]
+}

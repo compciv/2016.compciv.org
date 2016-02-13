@@ -1,0 +1,64 @@
+ {
+  "geocoding": {
+    "version": "0.1",
+    "attribution": "https://search.mapzen.com/v1/attribution",
+    "query": {
+      "text": "Hoover Tower, Stanford, CA",
+      "parsed_text": {
+        "name": "Hoover Tower",
+        "state": "CA",
+        "regions": [
+          "Hoover Tower",
+          "Stanford"
+        ],
+        "admin_parts": "Stanford, CA"
+      },
+      "size": 1,
+      "private": false,
+      "querySize": 1
+    },
+    "engine": {
+      "name": "Pelias",
+      "author": "Mapzen",
+      "version": "1.0"
+    },
+    "timestamp": 1455397887336
+  },
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "232805688",
+        "gid": "osm:venue:232805688",
+        "layer": "venue",
+        "source": "osm",
+        "name": "Hoover Tower",
+        "housenumber": "550",
+        "street": "Serra Mall",
+        "country_a": "USA",
+        "country": "United States",
+        "region": "California",
+        "region_a": "CA",
+        "county": "Santa Clara County",
+        "locality": "Stanford",
+        "neighbourhood": "Southgate",
+        "confidence": 0.6,
+        "label": "Hoover Tower, Stanford, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.16695,
+          37.427727
+        ]
+      }
+    }
+  ],
+  "bbox": [
+    -122.16695,
+    37.427727,
+    -122.16695,
+    37.427727
+  ]
+}

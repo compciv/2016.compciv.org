@@ -18,3 +18,50 @@ expectations:
     Nathaniel           4257
     Mackenzie           4152
 
+
+hints: |
+
+  A partial answer for c.py:
+
+  ~~~python
+  from os.path import join
+
+  DATADIR = 'tempdata'
+  FPATH = join(DATADIR, 'ssa-babynames-nationwide-2014.txt')
+  ~~~
+
+  Now we need to create a dictionary derived from the data
+  in which every name is a key and points to the
+  total number of babies (i.e. both "M" and "F")
+  e.g.
+
+        {
+            'Mackenzie': 4152
+            'Christopher': 10293
+        }
+
+
+  ~~~py
+  namesdict = {}
+  with open(FPATH) as f:
+      for line in f:
+          name, sex, babies = line.strip().split(',')
+          if namesdict.get(name):
+              namesdict[name] += int(babies)
+          else:
+              namesdict[name] = int(babies)
+  ~~~
+
+  This is necessary because the assignment requires that
+  we select the longest names from a list of names, each of
+  which have been given to at least 2,000 babies
+  -- M and F -- so we need to basically rebuild a list that
+  is gender-agnostic and is just a list of names and numbers.
+
+
+  After `namesdict` is populated, we filter it to include only key-value pairs, in which the value (i.e. number of babies) is at least 2,000, as per the assignment requirements.
+
+
+  Then, finally, with that filtered list of "popular" names, you can then sort it by length of name, then number of babies.
+
+

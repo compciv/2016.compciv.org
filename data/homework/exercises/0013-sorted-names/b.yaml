@@ -4,6 +4,30 @@ description: |
 
 points: 0.5
 
+hints: |
+    The easiest way to approach this (and the other exercises) is to iterate through each line in the file and create a list. __Then__, do the sorting:
+
+    ~~~py
+    records_list = []
+    f = open(yourfilename, 'r')
+    for line in f:
+        name, sex, babies = line.strip().split(',')
+        row = [name, sex, int(babies)]
+        records_list.append(row)
+    ~~~
+
+    Another way to approach this, if you've forgotten how a for-loop can iterate through a file object::
+
+    ~~~py
+    records_list = []
+    lines = open(yourfilename, 'r').readlines()
+    for line in lines:
+        name, sex, babies = line.strip().split(',')
+        row = [name, sex, int(babies)]
+        records_list.append(row)
+    ~~~
+
+
 expectations:
   output: |
     1. Emma,F,20799

@@ -16,7 +16,7 @@ hints: |
         records_list.append(row)
     ~~~
 
-    Another way to approach this, if you've forgotten how a for-loop can iterate through a file object::
+    Another way to approach this, if you've forgotten how a for-loop can iterate through a file object:
 
     ~~~py
     records_list = []
@@ -26,6 +26,22 @@ hints: |
         row = [name, sex, int(babies)]
         records_list.append(row)
     ~~~
+
+    What does that for-loop do? Well, `records_list` now contains a list of lists, as opposed to just a list of strings.
+
+    In other words, the above for-loop turned each line (a string):
+
+    `"Emma,F,20799"`
+
+    Into a __list__ object, containing 3 objects:
+
+    `["Emma", "F", 20799]`
+
+
+    Now, we just need to:
+
+    - Sort babylist in reverse order of its third element, e.g. the baby count.
+    - Then loop through just the first 10 elements, and print the results.
 
 
 expectations:

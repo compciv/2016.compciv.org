@@ -3,6 +3,24 @@ points: 1.0
 description: |
   Iterate through the list of names in 2014 and print the 5 most popular names that contain at least one `"x"`, for both females and males.
 
+hints: |
+    Follow the process in b.py, in which we write a for-loop just to make a list of lists from the file...but with one twist...use an if-statement to only append rows which meet a certain condition...i.e. the `name` contains at least one `"x"`:
+
+    ~~~py
+    x_list = []
+    f = open(yourbabynamesfilename, 'r')
+    for line in f:
+        name, sex, babies = line.strip().split(',')
+        if "SOMETHING SOMETHING SOMETHNG":
+            row = [name, sex, int(babies)]
+            x_list.append(row)
+    ~~~
+
+    Then you can do two for-loops two create two new lists from `x_list`, one in which the gender is `F` and `M` respectively, and sort them in descending order of count. Then iterate through each list for the top 5 names.
+
+    There's more graceful ways to do it, but whatever makes sense to you with the least amount of typing...
+
+
 
 expectations:
   output: |

@@ -23,6 +23,8 @@ hints: |
 
   A partial answer for c.py:
 
+  (You can also view it [on Github](https://github.com/compciv/2016.compciv.org/blob/master/data/homework/answers/0013-sorted-names/c-alt.py))
+
   ~~~python
   from os.path import join
 

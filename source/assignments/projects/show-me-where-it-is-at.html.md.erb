@@ -2,9 +2,8 @@
 title: Show Me Where It's At
 description: |
   Our first project: given a user-specified location, traverse a public dataset with geographic information, and deliver the user to a webpage showing the closest records/incidents.
-due_date: 2016-02-19
+due_date: 2016-02-25
 points: 100
-status: draft
 summary: |
   Write a program that shows the user where they are in relation to incidents from a geocoded dataset, using satellite map imagery and other data.
 kind: Project
@@ -31,6 +30,31 @@ components:
 
 # Deliverables
 
+## Things _not_ to do
+
+This project is not meant to be a test of software-engineering, but just to push you to create something more complicated than the homework assignments, so you get the feel of how things are integrated. A lot of parts will be provided to you. And for the most part, I'm not grading on style, either in code or output.
+
+Given those vague goals, it's easier just to state what __will__ end up docking you in points:
+
+###### 1. Your project repo contains your Mapzen credentials
+
+You will have to include a geocoder function. But that doesn't mean you have to include _your Mapzen API credentials_. If you create a new text file and name it correctly -- e.g. `creds_mapzen.txt` -- and store your key in there, to be read by your main program, then you're good to go.
+
+But if you paste your API key -- i.e. `"search-xxyyzz"` -- as a _literal_ text string anywhere in your code base -- you've basically given up your password to anyone who downloads your program. That's bad. And if you did that, it shows that you probably don't yet grasp the concept of opening a file, reading its contents as text, and using it in a program, which is something you've been doing for each assignment up to this point.
+
+
+###### 2. Your `publish` command includes a picture of Nicolas Cage
+
+This project requires you to produce a webpage for the user.
+
+But it's not a web design project so I'll have a few examples for you to copy from and tailor to your liking. They will include pictures of Nicolas Cage: 
+
+If your command contain
+
+
+
+
+
 
 ## Project folder
 
@@ -43,6 +67,109 @@ Create a new folder in your __compciv-2016__ repo:
 </pre>
 
 All of your files for this project will be in the projects/show-me-where file directory.
+
+At a minimum, this is what your project folder should contain:
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where           
+            └── README.md
+            └── woz.py 
+</pre>
+
+And this is what I should be able to do to run your program from my system shell:
+
+~~~sh
+$ python woz.py
+~~~
+
+## Minimum functionality
+
+What it does after that can vary quite a bit...but here is the general design that I want to see:
+
+When I run your `woz.py` script, it should ask me what I want to do. Your script should have a response to these commands:
+
+### Little helper commands
+
+The following commands are required just to make sure you can get small parts of the application working. For example, can you make a program that says "hello" to the user.
+
+There are also commands such as `geocode` and `filtrate` that aren't really meant for the user to call directly, but are useful to have, on their own, so you can test them out without running the "main" commands, which are __report__ and __publish__:
+
+
+- __hello__: Have the program ask my name, then say something like `"Hello, [whatever my name happens to be when I check your program]"`
+- __help__: Prints all the docstrings for each of the functions that comprise your program, e.g. `geocode()`, `wrangle()` (here's [Python's documentation on what a docstring is](https://www.python.org/dev/peps/pep-0257/))
+- __bootstrap__: Creates any folders you need to stash data or other temporary files into. Also, downloads the original dataset that you're working with.
+- __wrangle__: Performs any preparation of the raw original dataset that's needed...which might be nothing. But if it does have to do something, this script should save this "wrangled" data into a new file, separate from the original data. Mostly, this step exists for you to produce a form of the data that is easier for the rest of your program to work with. If your data requires __geolocation__, this is where you want to do it (i.e. if you have to add latitude/longitude columns)
+- __geocode__: Asks me for a location, then prints a JSON-formatted string that contains [Mapzen Search-powered geolocation data based on what I entered](https://mapzen.com/projects/search/).
+- __filtrate__: This asks me for a __longitude__ and a __latitude__. It then uses these numbers to __sort__ your "wrangled" dataset, then _filter_ (I'm requiring the function to be called __filtrate__ just so you don't accidentally overwrite Python's built-in `filter()` function) it to find the 5 (or whatever) nearest records, by geographical distance. Note: for the most part, I'll just give you the code to most effectively do this. But you should still at least remember how to sort data objects.
+
+### Main user-facing commands
+
+These are the commands that wrap up functionality in the previous commands and actually produce something interesting. For example, they both will call your `geocode()` function and translate a user-provided location into geocoordinates. Then they will use `filtrate()` to get the nearest records to the user.
+
+Basically, these commands are concerned with making your data __presentable and relevant__ to the user:
+
+- __report__: This command should ask the user for their location, e.g. `"Stanford, CA"` and use that to print a plain-text, but human-readable list of relevant data (i.e. nearest records) from your data.
+
+- __publish__: This command should, again, ask the user for their location, find the most relevant records based on location...but then send the user to a __webpage__, where the data is even more human-readable than it was in __report__.
+
+
+
+
+## Detailed implementation
+
+(Note: I'm trying to have instructions here while simultaneously having them on the live example and tutorial...and I've failed at completing that duplication here at the moment. But the description of the __bootstrap()__ function is relevant)
+
+### A bootstrap() function
+
+There should be a __bootstrap()__ function that, when run, will do these things:
+
+###### 1. Create a tempdata/ sub-directory
+
+Our good friend the `tempdata/` directory will be joining us as in previous assignments:
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where           
+            └── README.md
+            └── woz.py 
+            └── tempdata/
+</pre>
+
+###### 2. Download the data for your project from its original source
+
+Your data should have some place that it can be downloaded from the source. For example, if I were doing earthquakes, my source file would be at this URL:
+
+<%= link_to_url_alone "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_month.csv" %>
+
+And my `bootstrap()` function would download and save it somewhere in my `tempdata` subdirectory. I might even make a special subdirectory for it (you can do what you like):
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where           
+            └── README.md
+            └── woz.py 
+            └── tempdata
+                └── original
+                    └── earthquakes.csv
+</pre>
+
+
+
+
+
+
+
+
+
+(That's it for now. Check out the demo for an example, and make sure it can run on your system: [https://github.com/compciv/show-me-earthquakes](https://github.com/compciv/show-me-earthquakes))
+
+
+-------------
+
 
 
 <a id="mark-data-readme"></a>

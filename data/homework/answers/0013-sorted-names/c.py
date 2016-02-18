@@ -1,20 +1,18 @@
 from os.path import join
+from collections import defaultdict
 
 DATADIR = 'tempdata'
 FPATH = join(DATADIR, 'ssa-babynames-nationwide-2014.txt')
-namesdict = {}
+names = defaultdict(int)
 
 with open(FPATH) as f:
     for line in f:
         name, sex, babies = line.strip().split(',')
-        if namesdict.get(name):
-            namesdict[name] += int(babies)
-        else:
-            namesdict[name] = int(babies)
+        names[name] += int(babies)
 
 
 bignames = {}
-for k, v in namesdict.items():
+for k, v in names.items():
     if v >= 2000:
         bignames[k] = v
 

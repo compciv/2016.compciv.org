@@ -21,3 +21,4 @@ tempdata/
 creds_*
 scratchnotes*
 .s3_sync
+__pycache__/

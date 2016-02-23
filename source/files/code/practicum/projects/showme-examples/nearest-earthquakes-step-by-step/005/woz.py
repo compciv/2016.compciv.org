@@ -1,3 +1,5 @@
+from utils import geocoding
+
 B_X = "\033[1m"
 B_Z = "\033[0m"
 
@@ -8,11 +10,13 @@ if the_command == "hello":
     print("Hello", B_X + usertext + B_Z)
 
 elif the_command == 'help':
-    print("TODO: help")
+    print(geocode.__name__)
+    print(geocode.__doc__)
 
 elif the_command == 'geocode':
-    print("TODO: geocode it")
-
-
+    userlocation = input("What is your location? ")
+    print("OK...geocoding:", userlocation)
+    georesult = geocoding.geocode(userlocation)
+    print(georesult)
 else:
     print("Sorry, I don't know how to respond to", the_command)

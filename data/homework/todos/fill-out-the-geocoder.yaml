@@ -1,0 +1,7 @@
+title: Fill out your geocoder
+kind: Reading
+due_date: 2016-02-25
+description: |
+  In your projects folder, complete the steps needed to have a `geocode` routine, as described in:
+
+    [Create a functioning geocoder](/practicum/projects/showme_examples/nearest-earthquakes/005-creating-a-functioning-geocoder)

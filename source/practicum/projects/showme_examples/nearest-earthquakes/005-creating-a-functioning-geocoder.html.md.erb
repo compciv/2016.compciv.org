@@ -7,22 +7,147 @@ sequence:
   previous: /practicum/projects/showme_examples/nearest-earthquakes/003-documenting-a-fake-geocoder
 ---
 
-3. Make a `read_mapzen_credentials()` function that opens and reads the `creds_mapzen.txt` and returns the API key as a string.
-4. Revisit `fetch_mapzen_response()` to actually call the live API.
+
+# Getting started
+
+This exercise assumes you've completed the <%=link_to "previous exercise", url_for_sequence_previous %>:
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where
+            └── woz.py
+            └── utils
+                └── geocoding.py
+                └── __init__.py
+</pre>
 
 
-3. Make a `read_mapzen_credentials()` function that opens and reads the `creds_mapzen.txt` and returns the API key as a string.
-4. Revisit `fetch_mapzen_response()` to actually call the live API.
+
+# Testing out the credential via the browser
+
+If your API key is something like this:
+
+      search-ZzZzZz
+
+Then you should be able to just call Mapzen's API via the browser:
+
+Here's the endpoint URL:
+
+      https://search.mapzen.com/v1/search
+
+The location you want to search is specified via the `text` parameter. Pick a simple location for now:
+
+      https://search.mapzen.com/v1/search?text=New+York
+
+
+And the API key is specified via the `api_key` parameter -- obviously replace it with your own key:
+
+      https://search.mapzen.com/v1/search?text=New+York&api_key=search-zZzZzZ
+
+
+And when you visit that via your browser, [it should look something like this](https://gist.githubusercontent.com/dannguyen/bad8f0288c9c641607bd/raw/0d7c5b11cd6d56430c8721e3c86845491a13a660/mapzen-newyork.json).
 
 
 
 
-In the meantime, what about that big `geocode()` function we've already written? That's easy, `geocode()` just calls these three other functions. Think of `geocode()` as the overseer of the other functions:
+# Add the creds_mapzen.txt file to your project
 
-- `geocode()` function is called and a `location` string is passed as an argument.
-  - `geocode()` calls `fetch_mapzen_response()` and passes in `location`.
-    -   `fetch_mapzen_response()` contacts some canned URL and returns with a raw text response.
-  - `geocode()` takes that raw text response passes it into the call of `parse_mapzen_response()`
-    + `parse_mapzen_response()` parses the raw text and returns the geolocation data.
-  - `geocode()` now has a dictionary with `latitude`, `longitude`, etc. It adds the `query_text` attribute (which is the original location), and returns that result to whatever called it.
+Just a simple text file with a single line: whatever key you got from the Mapzen API:
 
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where
+            └── creds_mapzen.txt
+            └── woz.py
+            └── utils
+                └── geocoding.py
+                └── __init__.py
+</pre>
+
+
+
+
+
+
+
+## Test in iPython
+
+Before we write and run the function, let's just pretend we're running the old-fashioned way, without importing `utils.geocoding`. Just running stuff straight from the interactive prompt.
+
+No need to run all the other functions. We can try to contact Mapzen as if we hadn't written any other code. 
+
+Jump into __ipython__
+
+~~~py
+>>> import requests
+>>> MAPZEN_ENDPOINT =  'https://search.mapzen.com/v1/search'
+>>> filename = 'creds_mapzen.txt'
+>>> keytxt = open(creds_filename).read().strip()
+>>> print(keytxt)
+search-WHATEVER
+~~~
+
+OK, now let's make the call:
+
+~~~py
+>>> somelocation = "New York NY"
+>>> mapzenparams = {'api_key': keytxt,  'text': somelocation}
+>>> resp = requests.get(MAPZEN_ENDPOINT, params = mapzenparams)
+>>> print(resp.text)
+~~~
+
+
+
+# Creating utils.geocoding.read_mapzen_credentials()
+
+The function to read the Mapzen credentials is fairly straightforward. This goes inside the the `utils/geocoding.py` file because only the geocoding functions -- the ones that contact Mapzen -- actually need access to it.
+
+~~~py
+def read_mapzen_credentials():
+    creds_filename = "creds_mapzen.txt"
+    keytxt = open(creds_filename).read().strip() # e.g. "search-blahblah"
+    return keytxt
+~~~
+
+
+
+
+
+# Changing fetch_mapzen_response() to get live data
+
+OK, now we just have to alter one function to make things work: `fetch_mapzen_response` which is also in `utils/geocoding.py`
+
+Remember, it looked like this.
+
+~~~py
+def fetch_mapzen_response(location):
+    """
+    `location` is a string that will be passed onto Mapzen API for geocoding
+
+    returns a text string containing JSON-formatted data from Mapzen
+    """
+    # ignore the location string for now
+    SAMPLE_DATA_URL = 'http://www.compciv.org/files/datadumps/apis/mapzen/search-stanford.json'
+    resp = requests.get(SAMPLE_DATA_URL)
+    return resp.text
+~~~
+
+We don't want it to get canned data. We want it to talk to the Mapzen geocoder.
+
+Here's a start -- basically, fix `SOME_URL` to point to the right place.
+
+
+~~~py
+def fetch_mapzen_response(location):
+    """
+    `location` is a string that will be passed onto Mapzen API for geocoding
+
+    returns a text string containing JSON-formatted data from Mapzen
+    """
+    mykey = read_mapzen_credentials()
+    my_params = {'text': location, 'api_key': mykey}
+    resp = requests.get(SOME_URL, params = my_params)
+    return resp.text
+~~~

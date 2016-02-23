@@ -136,6 +136,14 @@ def fetch_mapzen_response(location):
 
 We don't want it to get canned data. We want it to talk to the Mapzen geocoder.
 
+So refer to what you did when you tried it out in iPython above. Or heck, when you tried it via your web browser:
+
+        https://search.mapzen.com/v1/search?text=New+York&api_key=search-zZzZzZ
+
+
+(obviously, replace `search-zZzZzZ` with whatever your Mapzen API key is)
+
+
 Here's a start -- basically, fix `SOME_URL` to point to the right place.
 
 
@@ -151,3 +159,52 @@ def fetch_mapzen_response(location):
     resp = requests.get(SOME_URL, params = my_params)
     return resp.text
 ~~~
+
+
+
+# What you should have
+
+Here's how you know what you have works.
+
+Go to your project directory via the command-line, e.g. 
+
+    cd ~/Desktop/compciv-2016/projects/show-me-where
+
+
+Then, run __iPython__ (I mean, sure you could go through `woz.py` if you want):
+
+
+Your `utils.geocoding.geocode` function should _just work_. Even though you didn't touch it. Why? Because only `fetch_mapzen_response` was the part that wasn't doing its real job. Once you fixed it, by having it talk to the real API...everything else around it...stayed the _same_.
+
+Just try it:
+
+~~~py
+>>> from utils.geocoding import geocode
+>>> g = geocode("WALLA WALLA WASHINGTON")
+>>> print(g['label'])
+Washington School, Walla Walla, WA
+>>> print(g['longitude'], g['latitude'])
+-118.35191 46.06847
+~~~
+
+Maybe you got something different...but you definitely should not be getting the Stanford data.
+
+
+So what changed? Just having `fetch_mapzen_response` use the correct URL and parameters. Remember what the `geocode` function looks like:
+
+~~~py
+    rawtext = fetch_mapzen_response(location)
+    mydict = parse_mapzen_response(rawtext)
+    # add the location string to mydict
+    mydict['query_string'] = location
+    # return the diccionary
+    return mydict
+~~~
+
+The second line of that function:
+
+~~~py
+    mydict = parse_mapzen_response(rawtext)
+~~~
+
+-- does its job as long as `rawtext` is a text string that can be deserialized and fits Mapzen's standard format. Otherwise, none of the other steps in the `geocode` function body care what's going on in the internals of `fetch_mapzen_response`...and that's pretty much why we package things into different functions and files: to keep a separation of concerns.

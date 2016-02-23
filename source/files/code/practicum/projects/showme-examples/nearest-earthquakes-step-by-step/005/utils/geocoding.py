@@ -15,11 +15,10 @@ def fetch_mapzen_response(location):
 
     returns a text string containing JSON-formatted data from Mapzen
     """
+    MAPZEN_ENDPOINT = 'https://search.mapzen.com/v1/search'
+    mykey = read_mapzen_credentials()
+    # do it yourself...
 
-    # ignore the location string for now
-    SAMPLE_DATA_URL = 'http://www.compciv.org/files/datadumps/apis/mapzen/search-stanford.json'
-    resp = requests.get(SAMPLE_DATA_URL)
-    return resp.text
 
 def parse_mapzen_response(txt):
     """

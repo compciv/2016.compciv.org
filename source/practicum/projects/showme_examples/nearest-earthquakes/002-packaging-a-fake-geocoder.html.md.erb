@@ -1,0 +1,261 @@
+---
+title: Making and packaging a fake (for now) geocode() function
+description: |
+  We might not know how to write a geocoder yet, but we can at least fake it with some fake data and then package it in the Python way.
+summary: |
+  This lesson doesn't involve writing a ton of new code, but we learn how to just draft out code that we complete later. And then, how to organize it within a project so that all the code isn't in a giant mess of a file.
+sequence:
+  landing: /practicum/projects/showme_examples/nearest-earthquakes/show-me-nearest-earthquakes-landing-page
+  previous: /practicum/projects/showme_examples/nearest-earthquakes/making-a-program-that-says-hello-name
+references:
+  - slug: python-docs-packaging
+    url: "https://docs.python.org/3/tutorial/modules.html#packages"
+    title: "Python Modules: Packages"
+    publisher: Python documentation
+---
+
+# Getting started
+
+This exercise assumes you've completed the <%=link_to "previous exercise", url_for_sequence_previous%>, in which you've created a basic `woz.py` file in your `projects/show-me-where` folder:
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where
+            └── woz.py
+</pre>
+
+You should still have a Terminal window open to your system shell, at your `show-me-where` subdirectory, i.e., this should still work:
+
+~~~
+$ python woz.py
+~~~
+
+
+## Create geocoding.py
+
+For this phase, we'll start out by creating a new file in `show-me-where/`: `geocoding.py`
+
+
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where
+            └── geocoding.py
+            └── woz.py
+</pre>
+
+
+In a later exercise, we'll actually make it do something with a real-world API. But for this exercise, we'll "mock" it out. No matter what the user inputs into the function, the `geocode` command will always print out a pre-cannned response.
+
+
+
+
+
+# What does our (fake) geocoder do?
+
+
+# woz.py/geocode
+
+In `woz.py`, look for this code:
+
+~~~py
+elif the_command == 'geocode':
+    print("TODO: geocode it")
+~~~
+
+We want this part of the program to accept user input, similar to `"hello"`:
+
+~~~py
+if the_command == "hello":
+    usertext = input("What is your name? ")
+~~~
+
+Except, we want to ask for the user's location. So refer to the `"hello"` snippet above, and change it accordingly. Here's one way to do it:
+
+~~~py
+elif the_command == 'geocode':
+    userlocation = input("What is your location? ")
+    print("OK...geocoding:", userlocation)
+    print("""
+    {
+      "latitude": 99,
+      "longitude": -42
+    }
+    """)    
+~~~
+
+Now run `woz.py` from the command line:
+
+~~~
+$ python woz.py
+What do you want to do? geocode
+What is your location? Somewhere
+OK...geocoding: Somewhere
+
+    {
+      "latitude": 99,
+      "longitude": -42
+    }
+~~~
+
+That dictionary/JSON-formatted text is just dummy text, of course. But it works for now.
+
+
+# geocoding.py
+
+So this is a bit of software engineering and Python organization.
+
+We don't _want_ to do our geocoding inside of `woz.py` -- because things would get very cluttered. Instead, we want to "package" a `geocode()` function inside of a _different_ file.
+
+If you haven't done it already, create a new file named `geocoding.py` and, for now, put it in the current folder with `woz.py`:
+
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where
+            └── geocoding.py
+            └── woz.py
+</pre>
+
+Now, inside __geocoding.py__, create a function named `geocode`. For now, it can just print the same dummy text as `woz.py` did, in our previous example:
+
+
+~~~py
+def geocode(location):
+    return ("""
+    {
+      "latitude": 99,
+      "longitude": -42
+    }
+    """)
+~~~
+
+(again, the above snippet should be in geocoding.py__)
+
+## Add an import statement: `import geocoding`
+
+
+OK, now switch back to __woz.py__, and now add an __import__ statement at the top of __woz.py__:
+
+~~~py
+import geocoding
+~~~
+
+
+Now, further down in the code, change this section:
+
+~~~py
+    elif the_command == 'geocode':
+        userlocation = input("What is your location? ")
+        print("OK...geocoding:", userlocation)
+        print("""
+        {
+          "latitude": 99,
+          "longitude": -42
+        }
+        """)
+~~~
+
+
+To:
+
+~~~py
+    elif the_command == 'geocode':
+        userlocation = input("What is your location? ")
+        print("OK...geocoding:", userlocation)
+        georesult = geocoding.geocode(userlocation)
+        print(georesult)
+~~~
+
+The result should be the same; all we've done is move the fake functionality into a separate file and function.
+
+
+# Creating a subfolder of utilities
+
+This is where things stand:
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where
+            └── geocoding.py
+            └── woz.py
+</pre>
+
+Things get a little messy when you throw a ton of files all in the same subfolder. Let's let `woz.py` stand-alone for now. Which we can do by making a __subfolder__ named `utils`:
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where
+            └── geocoding.py
+            └── woz.py
+            └── utils
+</pre>
+
+
+Then, move `geocoding.py` into `utils`:
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where
+            └── woz.py
+            └── utils
+                └── geocoding.py
+</pre>
+
+
+## Creating `utils/__init__.py`
+
+This is going to seem like the most arbitrary thing. Basically, we want to make the `utils` subfolder a __package__ of files. And the way to do that is to create an __empty__ file in `utils` named `__init__.py`: note the exact naming of the file, with double underscores before and after `init`:
+
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where
+            └── woz.py
+            └── utils
+                └── geocoding.py
+                └── __init__.py
+</pre>
+
+
+## Changing the import statement in `woz.py`
+
+
+The `woz.py` file no longer imports from `geocoding` but __from__ `utils`, i.e., change:
+
+~~~py
+import geocoding
+~~~
+
+
+To:
+
+~~~py
+from utils import geocoding
+~~~
+
+
+When you run `woz.py` from the command line and say you want to `"geocode"`, everything should work just as before.
+
+
+
+
+# Moving on
+
+And that's it. You've created a slightly more organized Python project by creating a [__package__ (which involves making that `utils/__init__.py` file)](https://docs.python.org/3/tutorial/modules.html#packages).
+
+Remember all those times we've written this at the beginning of our scripts:
+
+~~~py
+from os.path import join
+~~~
+
+Those were Python packages, too. Python packages let's us separate and organize code in different files, calling it as we need it in other files. Seems like a bit over-the-top right now, but that's only because we haven't written much code yet.
+

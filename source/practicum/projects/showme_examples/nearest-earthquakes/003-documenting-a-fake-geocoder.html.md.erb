@@ -1,0 +1,367 @@
+---
+title: Documenting our fake geocode() function with a docstring
+description: |
+  By adding a "docstring" to the beginning of our functions, we can create a human-readable piece of text that describes what our function actually does.
+summary: |
+    We don't add any new files or functionality in this short chapter. We just add a __docstring__, which helps us think about what we need to do even before we write out our function.
+sequence:
+  landing: /practicum/projects/showme_examples/nearest-earthquakes/show-me-nearest-earthquakes-landing-page
+  previous: /practicum/projects/showme_examples/nearest-earthquakes/002-packaging-a-fake-geocoder
+  next: /practicum/projects/showme_examples/nearest-earthquakes/004-parsing-the-mapzen-geocoding-results
+
+references:
+  - slug: pep-0257
+    url: "https://www.python.org/dev/peps/pep-0257/"
+    title: Docstring Conventions
+    publisher: PEP
+---
+
+
+
+# Getting started
+
+This exercise assumes you've completed the <%=link_to "previous exercise", url_for_sequence_previous %>, in which you've created a basic `woz.py` file in your `projects/show-me-where` folder, and then a `utils` subfolder:
+
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where
+            └── woz.py
+            └── utils
+                └── geocoding.py
+                └── __init__.py
+</pre>
+
+# Introduction to Docstrings
+
+
+
+The easiest way to try things out is to jump into the interactive Python shell. Every Python object, including functions, has an attribute named: __doc__.
+
+For example, what _does_ that `print()` function really do?
+
+~~~py
+>>> print(print.__doc__)
+print(value, ..., sep=' ', end='\n', file=sys.stdout, flush=False)
+
+Prints the values to a stream, or to sys.stdout by default.
+Optional keyword arguments:
+file:  a file-like object (stream); defaults to the current sys.stdout.
+sep:   string inserted between values, default a space.
+end:   string appended after the last value, default a newline.
+flush: whether to forcibly flush the stream.
+~~~
+
+And what about `len()`?
+
+~~~py
+>>> print(len.__doc__)
+Return the number of items in a container.
+~~~
+
+
+And what about your `utils.geocoding.geocode()` function? First, you have to import it -- note that this will only work if you started __iPython__ in your project directory:
+
+~~~py
+>>> from utils import geocoding
+>>> print(geocoding.geocoder.__doc__)
+None
+~~~
+
+We get `None` because, well, we haven't added the actual Docstring yet. Exit out of ipython and back into your text editor. Then look at __utils/geocoding.py__.
+
+
+
+# How to add a Docstring
+
+
+<% via_reference 'pep-0257' do %>
+
+> #### What is a Docstring?
+> A docstring is a string literal that occurs as the first statement in a module, function, class, or method definition. Such a docstring becomes the __doc__ special attribute of that object.
+
+<% end %>
+
+
+In other words, a __Docstring__ is simply a __string__ that is the very first thing inside a function. Inside __utils/geocoding.py__, edit the `geocode()` function in a way similar to this:
+
+~~~py
+def geocode(location):
+    """
+      ____________
+    < "I am a cow" >
+      ------------
+            \   ^__^
+             \  (oo)\_______
+                (__)\       )\/
+                    ||----w |
+                    ||     ||
+
+    Whats up docstring?
+    """
+
+    return ("""
+    {
+      "latitude": 99,
+      "longitude": -42
+    }
+    """)
+~~~
+
+The __triple quotes__ is a convenient way to specify a multi-line string in Python, without worry of having to escape regular quotation marks. Python just assumes you've got a big giant string going until it reaches another set of triple-quotes.
+
+__Save__ the `geocoder.py` file. Then jump back into your command-line, open up __iPython__, and try to print out the `geocode()` function's new Docstring:
+
+~~~py
+>>> from utils import geocoding
+>>> print(geocoding.geocode.__doc__)
+~~~
+
+And the output:
+
+~~~
+      ____________
+    < "I am a cow" >
+      ------------
+            \   ^__^
+             \  (oo)\_______
+                (__)\       )\/
+                    ||----w |
+                    ||     ||
+
+    Whats up docstring?
+~~~
+
+
+# Writing a descriptive Docstring
+
+We don't want to actually have a cow for our Docstring. You can review the suggestions in the [Python documentation](https://www.python.org/dev/peps/pep-0257/#id17), but for the class project, I want you to follow this format for the Docstring, for all the required functions:
+
+
+~~~py
+    """
+    Write some short description of what the function is supposed to do.
+
+    What it expects:
+    ----------------
+    Describe what arguments it takes, and what types of objects those arguments are. Also, describe what files it expects to already exist.
+
+    What it does:
+    ----------------
+    Describe in brief every action this function takes, including:
+
+    - Does it save to disk?
+    - Does it print anything to screen?
+    - Does it create/alter any data objects?
+
+    What it returns:
+    ----------------
+    Even if your function returns __nothing__, state it here.
+
+    If your function does return something, describe what that object is, including its type, e.g. "a dictionary"
+    """
+~~~
+
+
+## The Docstring for utils.geocoder.geocode()
+
+Since I'm providing most of the functionality, you can follow my lead here:
+
+Please actually type it out so that you notice the details. Change up some of the wording.
+
+~~~py
+    """
+    Attempt to geocode a location string using Mapzen Search API
+
+    What it expects:
+    ----------------
+    It expects `location` is a string, representing some kind of human-readable
+      geographical location, e.g. "Stanford, CA"
+
+    It also expects the variable `CREDS_FILE` to point to an existing file
+    that contains a valid Mapzen Search key.
+
+    What it does:
+    -------------
+    It opens and reads the file at CREDS_FILE to get the API key.
+
+    It calls the Mapzen Search API via a HTTP request, using the API key, 
+    and the user-provided `location` string as the `text` parameter.
+
+    It deserializes the Mapzen Search response into a dictionary, using
+    the JSON library.
+
+    It then creates a dictionary
+
+    What it returns:
+    ----------------
+    A dictionary containing these key-value pairs:
+
+    - query_text: the `location` string provided by the user
+    - label: The string label that Mapzen provides in describing the found location
+    - confidence: A float representing the confidence value that Mapzen has in its result.
+    - latitude: a float representing the latitude coordinate
+    - longitude: a float representing the longitude coordinate
+    - status: "OK", a string that indicates a result was found. Else, None
+
+    """
+~~~
+
+
+That's pretty verbose, much longer than the actual functional code will be. 
+
+## Returning a dictionary
+
+We're not going to write much more code...but let's at least fulfill the requirements stated in the __What it returns__ part of the Docstring:
+
+      What it returns:
+        ----------------
+        A dictionary containing these key-value pairs:
+
+        - query_text: the `location` string provided by the user
+        - label: The string label that Mapzen provides in describing the found location
+        - confidence: A float representing the confidence value that Mapzen has in its result.
+        - latitude: a float representing the latitude coordinate
+        - longitude: a float representing the longitude coordinate
+
+
+Currently, `geocode()` returns a __string__ that just _looks_ like a dictionary -- and not even all of the key/value pairs:
+
+~~~py
+    return ("""
+    {
+      "latitude": 99,
+      "longitude": -42
+    }
+    """)
+~~~
+
+
+Let's change that:
+
+~~~py
+def geocode(location):
+    """
+    ...the docstring goes here...
+    """
+    # just fakin some data!
+    mydict = {}
+    mydict['status'] = 'OK'
+    mydict['query_text'] = location
+    mydict['latitude'] = 99
+    mydict['longitude'] = -42
+    mydict['confidence'] = 0.01
+    mydict['label'] = "HA HA JK"
+    return mydict
+~~~
+
+
+# Revisiting woz.py
+
+So what's changed back in good ol' `woz.py` land?
+
+Nothing...theoretically. Run `python woz.py` again, and then the `"geocode"` command to see if you're still getting a dummy answer:
+
+~~~
+$ python woz.py 
+What do you want to do? geocode
+What is your location? my house
+OK...geocoding: my house
+{'label': 'HA HA JK', 'latitude': 99, 'longitude': -42, 'confidence': 0.01, 'query_text': 'my house', 'status': 'OK'}
+~~~
+
+The `woz` routine still just prints whatever the return value is from `geocode()`, i.e. because of these lines:
+
+~~~py
+    georesult = geocoding.geocode(userlocation)
+    print(georesult)
+~~~
+
+We don't need to do anything fancier (except for eventually returning real geocoded results, of course). You may want to tidy the `import` call up a bit:
+
+At the top of the `woz.py` file:
+
+~~~py
+from utils.geocoding import geocode
+~~~
+
+
+And then inside the `geocode` conditional branch, replace `geocoding.geocode` with just `geocode` -- nothing functionally changed, just cleaned up the call:
+
+~~~py
+    georesult = geocode(userlocation)
+    print(georesult)
+~~~
+
+It's of course up to you what you want to do...it doesn't affect the end user in anyway.
+
+
+
+# Adding the `help` conditional branch
+
+In `woz.py`, we want to let the user type in `"help"` at the prompt. After which, the program should just spit out the name of the functions and their respective docstrings.
+
+Just add another `elif` branch -- it can be before or after the `geocode` branch, it doesn't matter.
+
+~~~py
+elif the_command == 'help':
+    print("geocode")
+    print(geocode.__doc__)
+~~~
+
+
+Instead of printing the literal __string__ of `"geocode"`, you could also print its `__name__` attribute. Seems like a minor change, perhaps, but will pay off later...
+
+
+~~~py
+elif the_command == 'help':
+    print(geocode.__name__)
+    print(geocode.__doc__)
+~~~
+
+
+# Running your functions from iPython
+
+Don't think you have to actually go through `woz.py` to test out functions such as `utils.geocoding.geocoder()`. The `woz.py` program is just a nice wrapper. But you can always go through __ipython__ and test things interactively by using the same `import` statement as `woz.py` does:
+
+~~~py
+>>> from utils.geocoding import geoode
+>>> geocode("Alabama")
+{'confidence': 0.01,
+ 'label': 'HA HA JK',
+ 'latitude': 99,
+ 'longitude': -42,
+ 'query_text': 'Alabama'}
+~~~
+
+Note that you can't run the `help` function, as it is implemented in `woz.py`...because it isn't actually a function. It's just a branch in the that big if/elif/else statement. The code in `woz.py` is not really meant to run in iPython.
+
+
+
+
+# Moving forward
+
+Not much has changed. While we added some new documentation and text and functionality, there aren't any new files:
+
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where
+            └── woz.py
+            └── utils
+                └── geocoding.py
+                └── __init__.py
+</pre>
+
+
+In the next chapter, we'll  make a functioning geocoder that actually talks to Mapzen. But for the user, all they care about is that this is what is required of them to use your program:
+
+~~~sh
+$ python woz.py
+~~~
+
+Then enter: `geocode` to the input prompt.
+
+And then get a dictionary of purported geo results.

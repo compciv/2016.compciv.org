@@ -1,0 +1,19 @@
+3. Make a `read_mapzen_credentials()` function that opens and reads the `creds_mapzen.txt` and returns the API key as a string.
+4. Revisit `fetch_mapzen_response()` to actually call the live API.
+
+
+3. Make a `read_mapzen_credentials()` function that opens and reads the `creds_mapzen.txt` and returns the API key as a string.
+4. Revisit `fetch_mapzen_response()` to actually call the live API.
+
+
+
+
+In the meantime, what about that big `geocode()` function we've already written? That's easy, `geocode()` just calls these three other functions. Think of `geocode()` as the overseer of the other functions:
+
+- `geocode()` function is called and a `location` string is passed as an argument.
+  - `geocode()` calls `fetch_mapzen_response()` and passes in `location`.
+    -   `fetch_mapzen_response()` contacts some canned URL and returns with a raw text response.
+  - `geocode()` takes that raw text response passes it into the call of `parse_mapzen_response()`
+    + `parse_mapzen_response()` parses the raw text and returns the geolocation data.
+  - `geocode()` now has a dictionary with `latitude`, `longitude`, etc. It adds the `query_text` attribute (which is the original location), and returns that result to whatever called it.
+

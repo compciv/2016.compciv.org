@@ -1,0 +1,173 @@
+---
+title: Getting ready to call Mapzen by first figuring out the parsing of its data
+description: |
+  Before we make the geocode() function actually talk to Mapzen, let's just focus on a pre-fetched response and extracting the data from it. 
+summary: |
+    Contacting the Mapzen Geocoder and returning sensible results is a multi-step process...which we won't complete just yet. So while nothing in woz.py changes, we'll be adding code to `utils/geocoding.py`, including a function that will just "pretend" to get data from Mapzen API. 
+
+    Once we're sure we can deal with Mapzen's data format and extract the good parts from it, _then_ we'll finally contact Mapzen and have it geocode live locations.
+sequence:
+  landing: /practicum/projects/showme_examples/nearest-earthquakes/show-me-nearest-earthquakes-landing-page
+  previous: /practicum/projects/showme_examples/nearest-earthquakes/003-documenting-a-fake-geocoder
+  next: /practicum/projects/showme_examples/nearest-earthquakes/005-creating-a-functioning-geocoder
+references:
+  - slug: mapzen-search-api
+    url: https://mapzen.com/documentation/search/search/
+    title: Mapzen Search API
+    publisher: Mapzen
+  - slug: /assignments/exercise-sets/0010-map-json-responses-set
+    internal: true
+---
+
+
+# Getting started
+
+This exercise assumes you've completed the <%=link_to "previous exercise", url_for_sequence_previous %>:
+
+<pre class="filetree">
+    compciv-2016
+    └── projects
+        └── show-me-where
+            └── woz.py
+            └── utils
+                └── geocoding.py
+                └── __init__.py
+</pre>
+
+Nothing will change in `woz.py`. But we will be making these changes to `geocoding.py`
+
+- Adding a `fetch_mapzen_response()` function
+- Adding a `parse_mapzen_response()` function
+- Changing the `geocode()` function to use the data that the `fetch` and `parse` functions return.
+
+
+
+# How to turn one problem into 3 separate problems
+
+There's many ways to approach this problem, but I'm going to aim for a somewhat convoluted path, in which the geocoding functionality is split up into 3 separate functions in `utils/geocoding.py`. 
+
+Here are the following changes, and the order we'll implement them, in the `utils/geocoding.py` file.
+
+1. Make a `fetch_mapzen_response()` function that, for now, just returns the raw text data from a canned JSON response.
+2. Make a `parse_mapzen_response()` function that takes the raw text response from Mapzen (canned or not) and extracts the necessary data and returns a dictionary.
+
+Basically, `fetch_mapzen_response()` is going to do its thing, which is fetch some canned/stale -- but legitimate -- data from a given URL. And `parse_mapzen_response()` just doesn't care where the data came from. Its job is just to extract the geocoded data. 
+
+But how does `fetch_mapzen_response()` send its data to `parse_mapzen_response()`? That's `geocode()`'s job. Remember `geocode()`? It's just been returning a fake dictionary. But now it can do the work of coordinating the fetching and the parsing of geodata.
+
+It's worth keeping in mind that we _still_ aren't talking to Mapzen's API. That's OK. We're moving one step forward -- which is working with data that, at one point, did come from Mapzen. In the next lesson, we'll do the relatively trivial step of contacting Mapzen and getting fresh data with every call.
+
+It'll be a little confusing at first. But hopefully you'll see the reasoning and orderliness of writing separate functions that do their own thing.
+
+
+
+# Fetching and returning a canned response with fetch_mapzen_response()
+
+Again, this will seem a little backwards...but let's not worry about contacting the actual Mapzen service yet, which would involve reading their documentation and also writing the function that reads the credentials file. Which is not that hard, but still...
+
+Go into `utils/geocoder.py` and add this function -- you don't have to write a verbose Docstring, but you should write something:
+
+~~~py
+def fetch_mapzen_response(location):
+    """
+    `location` is a string that will be passed onto Mapzen API for geocoding
+
+    returns a text string containing JSON-formatted data from Mapzen
+    """
+~~~
+
+
+No matter what, this function will require the __requests__ library -- whether it is fetching from Mapzen directly, or from some other online stashed file. You should add `import requests` to the __top__ of `utils/geocoder.py`.
+
+As for what stashed data file it should pull from...why not the one we used in the <%=link_to "previous homework assignment", ref_url "/assignments/exercise-sets/0010-map-json-responses-set"%>?
+
+<%= link_to_url_alone "http://www.compciv.org/files/datadumps/apis/mapzen/search-stanford.json" %>
+
+
+Here's what the body of the function will look like -- nothing different from past assignments in which you had to use `requests.get()`, though this time, you don't have to write it to disk:
+
+~~~py
+def fetch_mapzen_response(location):
+    """
+    `location` is a string that will be passed onto Mapzen API for geocoding
+
+    returns a text string containing JSON-formatted data from Mapzen
+    """
+    # ignore the location string for now
+    SAMPLE_DATA_URL = 'http://www.compciv.org/files/datadumps/apis/mapzen/search-stanford.json'
+    resp = requests.get(SAMPLE_DATA_URL)
+    return resp.text
+~~~
+
+
+
+__Try it in ipython__. Instead of running `python woz.py`, just run __ipython__. Then import the function from `utils.geocoding`:
+
+~~~python
+>>> from utils.geocoding import fetch_mapzen_response
+>>> x = fetch_mapzen_response("whatever it doesn't matter right now")
+>>> type(x)
+str
+>>> len(x) # count number of text characters
+6826
+~~~
+
+You should get a big block of JSON-formatted text -- remember that `fetch_mapzen_response` returns a __string__.
+
+
+# Let's parse a canned Mapzen JSON response
+
+OK, `fetch_mapzen_response()` works so far, as far as the current thing we care about -- `parse_mapzen_response()` -- is concerned.
+
+Add this skeleton of a function to `utils/geocoding.py`:
+
+~~~py
+def parse_mapzen_response(txt):
+    """
+    `txt` is a string containing JSON-formatted text from Mapzen's API
+
+    returns a dictionary containing the useful key/values from the most
+       relevant result.
+    """
+~~~
+
+This `parse_mapzen_response()` function basically does the hard work of the `geocode()`  (remember `geocode()`? We'll get back to it) function, which is __deserializing__ the `txt` string into a dictionary, then picking out the first result, then extracting that result's longitude, latitude, confidence, et. al.
+
+At this point, it's worth revisiting the <%=link_to "past homework assignment", ref_url "/assignments/exercise-sets/0010-map-json-responses-set"%>, in which you had to parse that samed canned Mapzen JSON response. The key points were:
+
+- Mapzen's API response, when deserialized from JSON, becomes [a dictionary](http://www.compciv.org/files/datadumps/apis/mapzen/search-stanford.json).
+- That dictionary contains a `features` key, which consists of the actual results.
+- The results are listed in order of relevance. We just need to return the first result.
+- Each result is itself a dictionary with a few useful keys:
+  + `properties` points to a __dictionary__, which contains `confidence`, e.g. `0.949` and `label`, e.g. `"Stanford, Santa Clara County, CA"`
+  + `geometry` has a __list__ named `coordinates`, in which the desired longitude and latitude values are listed, respectively:
+      
+      ~~~json
+      {
+        "type": "Point",
+        "coordinates": [
+          -122.16608,
+          37.42411
+        ]
+      }
+      ~~~
+
+
+
+
+## Implementing parse_mapzen_response()
+
+It's actually not much different from the homework:
+
+- Create an empty dictionary `resultsdict`, which we'll fill with result data.
+  + Before the parsing starts, set `resultsdict["status"]` to `None`, since we theoretically don't know if any results exist.
+- Deserialize the raw text (`txt`) with `json.loads()`
+  + This means we have to include `import json` at the top of the file
+- The dictionary contains a `features` key, which points to a list of results. 
+- __If__ there is more than one result/feature:
+  + set `resultdict["status"]` to `"OK"`, because everything is just OK.
+  + pluck the first result/feature, then fill up `resultsdict` with the copied attributes, e.g. `latitude`, `longitude`, etc.
+
+Here's one way of doing it:
+
+

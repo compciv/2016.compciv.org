@@ -6,7 +6,8 @@ summary: |
   This lesson doesn't involve writing a ton of new code, but we learn how to just draft out code that we complete later. And then, how to organize it within a project so that all the code isn't in a giant mess of a file.
 sequence:
   landing: /practicum/projects/showme_examples/nearest-earthquakes/show-me-nearest-earthquakes-landing-page
-  previous: /practicum/projects/showme_examples/nearest-earthquakes/making-a-program-that-says-hello-name
+  previous: /practicum/projects/showme_examples/nearest-earthquakes/001-making-a-program-that-says-hello-name
+  next: /practicum/projects/showme_examples/nearest-earthquakes/003-documenting-a-fake-geocoder
 references:
   - slug: python-docs-packaging
     url: "https://docs.python.org/3/tutorial/modules.html#packages"
@@ -55,8 +56,12 @@ In a later exercise, we'll actually make it do something with a real-world API. 
 
 # What does our (fake) geocoder do?
 
+Nothing much. It's not really "fake" so much as a "placeholder". We know that our main program, `woz.py`, will eventually call a `geocode()` function that takes in an argument -- a `location` string from the user -- and then return geodata from Mapzen, e.g. `latitude` and `longitude`.
 
-# woz.py/geocode
+But we'll do the actual geocoding in a later lesson. So we'll just write the code to respond with a "dummy string" for now.
+
+
+## Adding a `"geocode"` option in woz.py
 
 In `woz.py`, look for this code:
 
@@ -185,6 +190,9 @@ This is where things stand:
             └── woz.py
 </pre>
 
+
+## Moving geocoding.py into the `utils` folder
+
 Things get a little messy when you throw a ton of files all in the same subfolder. Let's let `woz.py` stand-alone for now. Which we can do by making a __subfolder__ named `utils`:
 
 <pre class="filetree">
@@ -197,7 +205,7 @@ Things get a little messy when you throw a ton of files all in the same subfolde
 </pre>
 
 
-Then, move `geocoding.py` into `utils`:
+Then, _move_ `geocoding.py` into `utils`. In other words, it should no longer be at the same level as `woz.py`. Move it into `utils`:
 
 <pre class="filetree">
     compciv-2016
@@ -227,19 +235,24 @@ This is going to seem like the most arbitrary thing. Basically, we want to make 
 
 ## Changing the import statement in `woz.py`
 
+One more maintenance thing.
 
-The `woz.py` file no longer imports from `geocoding` but __from__ `utils`, i.e., change:
+In `woz.py`, we had this `import` statement:
 
 ~~~py
 import geocoding
 ~~~
 
+But that won't work anymore because `geocoding.py` is no longer in the same folder relative to `woz.py`
 
-To:
+
+Now that `geocoding.py` has been moved into a subfolder, `utils`, we just have to change the `import` target:
 
 ~~~py
 from utils import geocoding
 ~~~
+
+i.e. _"From the `utils` folder, import the `geocoding.py` file"_
 
 
 When you run `woz.py` from the command line and say you want to `"geocode"`, everything should work just as before.

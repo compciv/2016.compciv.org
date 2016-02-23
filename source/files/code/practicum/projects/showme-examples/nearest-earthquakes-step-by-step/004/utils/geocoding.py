@@ -20,27 +20,22 @@ def parse_mapzen_response(txt):
     returns a dictionary containing the useful key/values from the most
        relevant result.
     """
-    resultdict = {'status': None} # just initialize a dict for now, with status of None
+    gdict = {} # just initialize a dict for now, with status of None
     data = json.loads(txt)
     if data['features']: # it has at least one feature...
-        resultdict['status'] = 'OK' # instead of None
+        gdict['status'] = 'OK'
         feature = data['features'][0] # pick out the first one
         props = feature['properties']  # just for easier reference
-        resultdict['confidence'] = props['confidence']
-        resultdict['label'] = props['label']
+        gdict['confidence'] = props['confidence']
+        gdict['label'] = props['label']
 
         # now get the coordinates
         coords = feature['geometry']['coordinates']
-        resultdict['longitude'] = coords[0]
-        resultdict['latitude'] = coords[1]
-
-    # note that if the if branch isn't entered...i.e. Mapzen
-    # couldn't find _any_ features
-    # the `resultdict` dictionary is still returned at the end of the program
-    # But it is mostly empty and contains a "status" of None
-    #  which the function caller can use in deciding to ignore
-    #  the response
-    return resultdict
+        gdict['longitude'] = coords[0]
+        gdict['latitude'] = coords[1]
+    else:
+        gdict['status'] = None
+    return gdict
 
 def geocode(location):
     """
@@ -76,10 +71,9 @@ def geocode(location):
     - latitude: a float representing the latitude coordinate
     - longitude: a float representing the longitude coordinate
     """
-    mydict = {}
-    mydict['query_text'] = location
-    mydict['latitude'] = 99
-    mydict['longitude'] = -42
-    mydict['confidence'] = 0.01
-    mydict['label'] = "HA HA JK"
+    rawtext = fetch_mapzen_response(location)
+    mydict = parse_mapzen_response(rawtext)
+    # add the location string to mydict
+    mydict['query_string'] = location
+    # return the diccionary
     return mydict

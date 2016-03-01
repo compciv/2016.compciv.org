@@ -37,7 +37,8 @@ module CustomHelpers
         h.merge!(
           :iframe_url => page_banner.iframe.url,
           :source_name => page_banner.iframe.source_name,
-          :source_url => page_banner.iframe.source_url
+          :source_url => page_banner.iframe.source_url,
+          :caption => page_banner.iframe.caption
         )
         h[:width] = page_banner.iframe.width || nil
       end

@@ -1,0 +1,56 @@
+
+
+# Need to look up the user
+
+Reference:
+
+https://www.flickr.com/services/api/flickr.urls.lookupUser.html
+
+~~~py
+ENDPOINT = 'https://api.flickr.com/services/rest'
+~~~
+
+- method: flickr.urls.lookupUser
+- api_key: whatever
+- url: https://www.flickr.com/photos/whitehouse/ 
+
+~~~python
+import requests
+MYKEY = 'f8ab9a98e73cb3917f8a353909892a6e'
+ENDPOINT = 'https://api.flickr.com/services/rest'
+resp = requests.get(ENDPOINT, {
+    'method': 'flickr.urls.lookupUser',
+    'url': 'https://www.flickr.com/photos/whitehouse/',
+    'api_key': MYKEY,
+    'format': 'json'
+  })
+~~~
+
+
+
+Reference:
+
+https://www.flickr.com/services/api/flickr.people.getPhotos.html
+
+
+~~~py
+ENDPOINT = 'https://api.flickr.com/services/rest'
+~~~
+
+
+- method: flickr.people.getPhotos
+- api_key: whatever
+- user_id: 35591378@N03
+- extras: url_o,description,date_upload,date_taken,license,views,media
+
+~~~python
+import requests
+MYKEY = 'f8ab9a98e73cb3917f8a353909892a6e'
+ENDPOINT = 'https://api.flickr.com/services/rest'
+resp = requests.get(ENDPOINT, {
+    'method': 'flickr.urls.lookupUser',
+    'url': 'https://www.flickr.com/photos/whitehouse/',
+    'api_key': MYKEY,
+    'format': 'json'
+  })
+~~~

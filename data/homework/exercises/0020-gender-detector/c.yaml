@@ -1,0 +1,14 @@
+title: Count the number of unique names by gender since 1950
+
+
+description: |
+  DESC
+
+points: 0.5
+expectations:
+    output: |
+      F:   824806 M:   538706 F/M Ratio: 1.53
+
+
+hints: |
+  Hint

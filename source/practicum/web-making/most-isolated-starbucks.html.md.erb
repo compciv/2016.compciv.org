@@ -6,12 +6,14 @@ image_url: /files/images/practicum/web-making/starbucks-us-census/variable-dot-m
 banner:
   iframe: 
     url: https://dansn.cartodb.com/viz/5a76ae36-df47-11e5-b94d-0ea31932ec1d/embed_map
+    source_name: CartoDB interactive map
+    source_url: https://dansn.cartodb.com/viz/5a76ae36-df47-11e5-b94d-0ea31932ec1d/public_map
     caption: |
       Every Starbucks location in the United States, color-coded and sized based on distance from nearest Starbucks; i.e. the bigger the dot, the more isolated it is relative to other Starbucks locations.
 
 summary: |  
 
-  This is a walkthrough showing how to go from raw comma-delimited data to interesting visualization. 
+  This is a walkthrough showing how to go from [comma-delimited plaintext data](https://opendata.socrata.com/Business/All-Starbucks-Locations-in-the-World/xy4y-c4mk) to [interesting visualization](https://dansn.cartodb.com/viz/5a76ae36-df47-11e5-b94d-0ea31932ec1d/public_map). 
 
   The dataset for this scenario is a [spreadsheet of all the known Starbucks locations in the world](https://opendata.socrata.com/Business/All-Starbucks-Locations-in-the-World/xy4y-c4mk). To make things simple, we filter it down to U.S. locations. And then, for each Starbucks location, we calculate the distance from it to _every other Starbucks location_ so that, for each Starbucks location, we can find out how far away it is to the next Starbucks. Here's the [filtered CSV](/files/datadumps/practicum/us-starbucks-distant.csv).
 
@@ -21,9 +23,9 @@ summary: |
 
   ![img google](https://maps.googleapis.com/maps/api/staticmap?size=800x400&markers=label%3AA%7C55.34944534301758%2C-131.673828125&markers=label%3AB%7C57.81049346923828%2C-152.36724853515625&markers=label%3AC%7C29.392152786254883%2C-100.90473937988281&markers=label%3AD%7C36.915977478027344%2C-111.4585189819336&markers=label%3AE%7C37.98002624511719%2C-100.84310150146484&markers=label%3AF%7C39.36470031738281%2C-101.05500030517578&markers=label%3AG%7C46.87602233886719%2C-102.79847717285156&markers=label%3AH%7C38.8739128112793%2C-99.34193420410156&markers=label%3AI%7C41.115745544433594%2C-100.76504516601562&markers=label%3AJ%7C35.53567886352539%2C-108.75711059570312)
 
-  The Python code in this exercise shows how to do this brute-force style with Python's standard library, including __csv__ and the built-in __sorted()__ function. Because there are 12,000+ Starbucks locations in the U.S., running a sort on the entire list, for each location, is basically about as inefficient as you can do this (took 10 minutes to crunch on my laptop). But it's pretty intuitive, if all you know is how to iterate through a list.
+  This walkthrough is meant to be simple, requiring little more knowledge of the Python standard library than the __csv__ module and the built-in __sorted()__  function, and optionally, __urllib__ and __Requests__, just to make fetching data a bit easier. I don't even bother separating things into scripts; you can just type everything in into iPython and watch things happen.
 
-  Below is a quickie description of how to get the data to how to filter the data to create a visualization, without regard for best practices in software engineering.
+  The algorithm of _"Take one Starbucks location, then calculate its distance to each and every other of the 12,000 Starbucks locations in America" is what we call "brute-force". There are obviously better ways to do this, but if you aren't well-versed in [nearest-neighbor optimization routines](https://en.wikipedia.org/wiki/Nearest_neighbor_search), then brute force isn't an _inelegant_ way to think of how to solve this problem, just _inefficient_ in a computational sense. It works here because of the relatively few data points that we're working with (i.e. under a million). 
 ---
 
 
@@ -31,7 +33,7 @@ summary: |
 # Fetching the Starbucks location dataset
 
 
-The [data can be found here at Socrata](https://opendata.socrata.com/Business/All-Starbucks-Locations-in-the-World/xy4y-c4mk), which is described as:
+The [data can be found here at this Socrata portal](https://opendata.socrata.com/Business/All-Starbucks-Locations-in-the-World/xy4y-c4mk), which is described as:
 
 > ##### All Starbucks Locations in the World
 > 

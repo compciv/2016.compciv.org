@@ -1,0 +1,9 @@
+title: |
+  Count the total number of babies (and SSN enrollees) since 1950 by gender.
+
+
+
+points: 0.5
+expectations:
+    output: |
+       F: 115355620 M: 123329590 F/M Ratio: 0.94

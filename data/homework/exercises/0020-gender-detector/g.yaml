@@ -1,0 +1,17 @@
+title: Reshape the 2014 babynames file so that it is optimized for use in a gender-detecting program.
+
+description: |
+  DESC
+
+points: 0.5
+expectations:
+    output: |
+      year,name,females,males,fm_ratio,total
+      2014,Emma,20799,12,100,20811
+      2014,Olivia,19674,22,100,19696
+      2014,Noah,106,19144,-99,19250
+      2014,Sophia,18490,17,100,18507
+
+
+hints: |
+  Hint

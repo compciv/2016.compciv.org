@@ -1,0 +1,227 @@
+---
+title: How to search your own Google Searches
+---
+
+~~~py
+import json
+from glob import glob
+dancount = 0
+for jname in glob("*.json"):
+    data = json.load(open(jname))['event']
+    for d in data:
+        qtxt = d['query']['query_text']
+        if "dan" in qtxt.lower() and 'nguyen' in qtxt.lower():
+            dancount += 1
+print("I searched for myself", dancount, "times")
+~~~
+
+
+
+Sample:
+
+~~~json
+{
+  "event": [
+    {
+      "query": {
+        "query_text": "passenger ruby",
+        "id": [
+          {
+            "timestamp_usec": "1399925303454187"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "carnival cruise phone app",
+        "id": [
+          {
+            "timestamp_usec": "1399922924009706"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "rake args with defaults",
+        "id": [
+          {
+            "timestamp_usec": "1399920190277053"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "total solitary confinment u.s.",
+        "id": [
+          {
+            "timestamp_usec": "1399919440735018"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "rails datetime",
+        "id": [
+          {
+            "timestamp_usec": "1399919161131722"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "rails datetime helper formatter",
+        "id": [
+          {
+            "timestamp_usec": "1399919143096193"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "javascript fastest way to assign a loop",
+        "id": [
+          {
+            "timestamp_usec": "1399917771079373"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "ruby 1.9 encoding sucks",
+        "id": [
+          {
+            "timestamp_usec": "1399917626317582"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "javascript array access vs push",
+        "id": [
+          {
+            "timestamp_usec": "1399917250403970"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "sqlalchemy",
+        "id": [
+          {
+            "timestamp_usec": "1399916918490642"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "ruby 1.9 unicode",
+        "id": [
+          {
+            "timestamp_usec": "1399916718583510"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "excel import access null",
+        "id": [
+          {
+            "timestamp_usec": "1399913966100964"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "peter cobus",
+        "id": [
+          {
+            "timestamp_usec": "1399911385993992"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "ete Cobus",
+        "id": [
+          {
+            "timestamp_usec": "1399911379328397"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "appdata",
+        "id": [
+          {
+            "timestamp_usec": "1399911349704324"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "reliability of heroin overdose statistics",
+        "id": [
+          {
+            "timestamp_usec": "1399906222450097"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "accuracy of overdose statistic",
+        "id": [
+          {
+            "timestamp_usec": "1399906001691940"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "coroner data unreliable",
+        "id": [
+          {
+            "timestamp_usec": "1399905780692355"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "xaxis highchart",
+        "id": [
+          {
+            "timestamp_usec": "1399903362060784"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "query_text": "z-index stacking",
+        "id": [
+          {
+            "timestamp_usec": "1399902298345462"
+          }
+        ]
+      }
+    }
+  ]
+}
+~~~

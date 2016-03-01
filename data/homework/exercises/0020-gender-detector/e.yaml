@@ -1,0 +1,16 @@
+title: TITLE
+
+
+description: |
+  DESC
+
+points: 0.5
+expectations:
+    output: |
+      Total: 30579 unique names for 3670151 babies
+          M: 13977 unique names for 1901376 babies
+          F: 19067 unique names for 1768775 babies
+
+
+hints: |
+  Hint

@@ -1,0 +1,16 @@
+
+
+
+
+~~~py
+import csv
+f = open("sample-data/the-counted.csv")
+records = csv.DictReader(f)
+
+
+for r in records:
+    print(r['streetaddress'], r["city"],  r['state'])
+    s = " ".join([r['streetaddress'], r["city"],  r['state']])
+    result = geocode(s)
+    print(result['latitude'], result['longitude'])
+~~~

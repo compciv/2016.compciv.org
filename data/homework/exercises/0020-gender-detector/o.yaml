@@ -1,0 +1,15 @@
+title: TITLE
+
+
+description: |
+  DESC
+
+points: 0.5
+expectations:
+    output: |
+      Downloading https://www.ssa.gov/oact/babynames/names.zip
+      There are 135 txt files
+
+
+hints: |
+  Hint

@@ -1,0 +1,29 @@
+title: TITLE
+
+
+description: |
+  DESC
+
+points: 0.5
+expectations:
+    output: |
+      Parsing tempdata/yob1950.txt
+      Parsing tempdata/yob1960.txt
+      Parsing tempdata/yob1970.txt
+      Parsing tempdata/yob1980.txt
+      Parsing tempdata/yob1990.txt
+      Parsing tempdata/yob2000.txt
+      Parsing tempdata/yob2010.txt
+      Total number of lines in tempdata/wrangledbabynames.csv 132931
+      year,name,females,males,fm_ratio,total
+      1950,James,252,86221,-99,86473
+      1950,Robert,203,83540,-100,83743
+      1950,Linda,80431,130,100,80561
+      1950,John,180,79410,-100,79590
+      2010,Zyquarius,0,5,-100,5
+      2010,Zyran,0,5,-100,5
+      2010,Zyriana,5,0,100,5
+      2010,Zyrihanna,5,0,100,5
+
+hints: |
+  Hint

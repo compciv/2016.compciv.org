@@ -22,8 +22,9 @@
   <div class="container">
     <div class="banner-caption caption">
       <%=caption%>
-      <%# if defined?source_name && !source_name.present? && source_url.present? %>
-        <!-- via: --> <%#=link_to source_name, source_url %>
+
+      <%# if defined?source_name && source_name.present? && source_url.present? %>
+        <%=link_to source_name, source_url %>
       <%# end %>
     </div>
   </div>

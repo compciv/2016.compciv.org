@@ -1,4 +1,19 @@
 title: Prepare for Gender Detector exercise.
-due_date: 2016-02-10
+due_date: 2016-03-03
 description: |
-  Guide: [Creating URL query strings in Python](/guides/python/how-tos/creating-proper-url-query-strings/)
+  Create a folder in your homework directory named:
+
+    0020-gender-detector/
+
+  Examine the following code, attempt to run it, see its effects.
+
+  [https://github.com/compciv/2016.compciv.org/blob/master/data/homework/answers/0020-gender-detector/a.py](https://github.com/compciv/2016.compciv.org/blob/master/data/homework/answers/0020-gender-detector/a.py)
+
+
+  Read: [UNDER THE HOOD OF THE OPEN GENDER TRACKER](https://source.opennews.org/en-US/articles/under-hood-open-gender-tracker/)
+
+  Read: [A practical guide to methods and ethics of gender identification](https://civic.mit.edu/blog/natematias/best-practices-for-ethical-gender-research-at-very-large-scales)
+
+  Read: [Who Writes for the New York Times?](http://www.whowritesfor.com/)
+
+  Read: [Personal names around the world](https://www.w3.org/International/questions/qa-personal-names)

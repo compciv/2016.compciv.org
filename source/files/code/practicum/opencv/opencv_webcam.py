@@ -25,8 +25,8 @@ while True:
     gray_frame = cv2.cvtColor(videoframe, cv2.COLOR_BGR2GRAY)
     detected_objs = the_cascade.detectMultiScale(
         gray_frame,
-        scaleFactor=1.2,
-        minNeighbors=5,
+        scaleFactor=1.1,
+        minNeighbors=2,
         minSize=(30, 30),
         flags=cv2.CASCADE_SCALE_IMAGE
     )

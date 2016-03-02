@@ -1,17 +1,249 @@
 title: Reshape the 2014 babynames file so that it is optimized for use in a gender-detecting program.
-
 description: |
-  DESC
+
+  Your program must read the data in `tempdata/yob2014.txt` and "wrangle" it into a far more usable dataset and save it as `tempdata/wrangled2014.csv`
+
+  The resulting file must contain these headers:
+
+  - year
+  - name
+  - gender
+  - ratio
+  - females
+  - males
+  - total
+
+  And the data rows must be sorted as:
+
+  - in descending order of the `total` baby count
+  - as a tiebreaker, in ascending alphabetical order of the `name`
+
+
+
+  More specifically, we want to turn this:
+
+  ~~~
+  Emma,F,20799
+  Olivia,F,19674
+  Sophia,F,18490
+  Isabella,F,16950
+  Ava,F,15586
+  ~~~
+
+  Into:
+
+  ~~~
+  year,name,gender,ratio,females,males,total
+  2014,Emma,F,100,20799,12,20811
+  2014,Olivia,F,100,19674,22,19696
+  2014,Noah,M,99,106,19144,19250
+  2014,Sophia,F,100,18490,17,18507
+  ~~~
+
+  What's the difference?
+
+  For starters, our result data file will now have headers -- something the SSA has negelected to do and which prevents the data from being ready-to-use in a spreadsheet.
+
+  Second, we've added columns that will be useful to our ultimate purposes. For example, we want to classify a person's gender based on the traditional gender perception of their name. For the name "Leslie" in the 2014 data, this means looking at these two rows in yob2014.txt:
+
+            Leslie,F,994
+            Leslie,M,61
+
+  And then comparing the number of male babies versus female babies to determine the "likely" __gender__ of the name "Leslie". The math doesn't have to be that complicated: `994` is more than `61` -- so we classify "Leslie" as __female__ because far more females were named "Leslie" than males, [Leslie Nielsen](https://en.wikipedia.org/wiki/Leslie_Nielsen) notwithstanding.
+
+  We're also interested in how big the gap between the male and female counts. Here's a simple metric: find the ratio as determined by the __majority gender__ versus the total number of babies:
+
+
+             100 * (994 / (994 + 61)) = 94.2
+
+  We can think of this as expressing that for any given person named "Leslie", they are 94.2% likely to be female based on Social Security Administration trends.
+
+
+  By reshaping the raw data this way, we make it much easier for anyone to import our work into a spreadsheet. It's nice having granular data in the way that SSA provides us, but not when doing analyses.
+
+
 
 points: 0.5
 expectations:
+    effects:
+      created_paths:
+        - tempdata/wrangled2014.csv
+
     output: |
-      year,name,females,males,fm_ratio,total
-      2014,Emma,20799,12,100,20811
-      2014,Olivia,19674,22,100,19696
-      2014,Noah,106,19144,-99,19250
-      2014,Sophia,18490,17,100,18507
+      year,name,gender,ratio,females,males,total
+      2014,Emma,F,100,20799,12,20811
+      2014,Olivia,F,100,19674,22,19696
+      2014,Noah,M,99,106,19144,19250
+      2014,Sophia,F,100,18490,17,18507
 
 
 hints: |
-  Hint
+  Data-wrangling, which is often what people think of when they think of data-cleaning, is one of the most difficult programmatic tasks, in the sense that naming things and cache invalidation is difficult in computer science. There's not just one way to do it, and there's not one clear, absolutely superior goal.
+
+  To make things easy, I've set a relatively simple and straightforward goal. It certainly has its flaws, which may become evident when trying to use it in real-world analysis. But creating it is relatively straightforward, at least in my muddled mind.
+
+  That said, to reduce confusion, I'll provide my answer, which is a bit verbose, but hopefully makes it clear that this is just the same kind of data manipulation and handling we've done before in Python.
+
+  #### The start
+
+  Nothing fancy -- for this exercise, we'll be working only with yob2014.txt, with the knowledge that if we can deal with one file, we can deal with every file as we please:
+
+  ~~~py
+  from os.path import join, basename
+  import csv
+  DATA_DIR = 'tempdata'
+  YEAR = 2014
+  thefilename = join(DATA_DIR, 'yob' + str(YEAR) + '.txt')
+  ~~~
+
+
+  #### Setting up the wrangled file
+
+  Let's create a constant for the new file we'll be making. In fact, let's create another constant that stores the __list__ of column names this new file will have:
+
+  ~~~py
+  WRANGLED_HEADERS = ['year', 'name', 'gender' , 'ratio' , 'females', 'males', 'total']
+  WRANGLED_DATA_FILENAME = join(DATA_DIR, 'wrangled2014.csv')
+  ~~~
+
+
+  #### Gathering up the name data
+
+  This step is exactly the same as it is for every previous exercise: for every name, collect the number of babies by gender.
+
+
+  ~~~py
+  namesdict = {}
+  with open(thefilename, 'r') as thefile:
+      for line in thefile:
+          name, gender, count = line.split(',')
+          if not namesdict.get(name): # need to initialize a new dict for the name
+              namesdict[name] = {'M': 0, 'F': 0}
+          namesdict[name][gender] += int(count)
+  ~~~
+
+  #### Let's make a list
+
+  The object `namesdict` has been perfectly servicable as a dictionary of dicts; in fact, we could probably continue using it without too much trouble. If you've been following along in Interactive Python, you can inspect it and see something like this:
+
+  ~~~py
+  {
+   'Taytem': {'F': 9, 'M': 0},
+   'Favour': {'F': 19, 'M': 0},
+   'Yitzchok': {'F': 0, 'M': 119},
+   'Daymon': {'F': 0, 'M': 25}
+  }
+  ~~~
+
+  However, what we eventually need is a collection of dictionaries with different attribute names and more attributes.
+
+  So I've opted to just create a new list and then append it full of dictionary objects that have all the headers and values we need.
+
+  It starts like this:
+
+
+  ~~~py
+  my_awesome_list = []
+  ~~~
+
+
+  Each dictionary we want to add to `my_awesome_list` will contain values derived from each key-value pair in `namesdict`.
+
+  So, basically a for-loop:
+
+  ~~~py
+  for name, counts in namesdict.items():
+      xdict = {}
+      xdict['year'] = YEAR # i.e. 2014
+      xdict['name'] = name
+      xdict['females'] = counts['F']
+      xdict['males'] = counts['M']
+      xdict['total'] = xdict['males'] + xdict['females']
+      # the "likely" gender is determined by comparing females vs males numbers
+      if xdict['females'] >= xdict['males']:
+          xdict['gender'] = 'F'
+          xdict['ratio'] = round(100 * xdict['females'] / xdict['total'])
+      else:
+          xdict['gender'] = 'M'
+          xdict['ratio'] = round(100 * xdict['males'] / xdict['total'])
+
+      # finally, add our new dict, xdict, to my_awesome_list
+      my_awesome_list.append(xdict)
+  ~~~
+
+  There are some questions worth asking. For example, we used to track the count of female and male babies with the `F` and `M` keys, like this:
+
+  ~~~py
+  {'Daniel': {'F': 100, 'M': 9000}}
+  ~~~
+
+  Why the change to `females` and `males`?
+
+  ~~~py
+  {'name': 'Daniel', 'females': 100, 'males': 9000}}
+  ~~~
+
+
+  It's a matter of opinion. But remember that we're creating a new data file. And when a user comes upon it, what's going to make more sense when looking at the headers:
+
+        name,F,M
+        Daniel,100,9000
+
+  Or:
+
+        name,females,males
+        Daniel,100,9000
+
+  It requires a little more work in organizing the data, but part of data-wrangling is producing a more useful public face that may not have been necessary when initially working with the data.
+
+
+
+  #### Creating a new file and using csv.DictWriter()
+
+  This is basically just a pattern you memorize: when serializing a list of dictionaries as a flat CSV file, you use `csv.DictWriter`, that's all. That said, it took me quite a few tries to memorize it. Hopefully it's clear why we created easy to remember constants for `WRANGLED_DATA_FILENAME` and `WRANGLED_HEADERS`:
+
+  ~~~py
+  # let's create the new file to write to
+  wfile = open(WRANGLED_DATA_FILENAME, 'w')
+  # turn it into a DictWriter object, and tell it what the fieldnames are
+  wcsv = csv.DictWriter(wfile, fieldnames=WRANGLED_HEADERS)
+  # write the headers row
+  wcsv.writeheader()
+  ~~~
+
+
+  #### Sorting the data before writing it
+
+
+  Oh but we can't write the actual data rows just yet...As more pain-in-the-butt requirement, we're required to sort the rows in order of the `total` column (in descending order), then by the `name` column. Do it how you like, this is how I did it:
+
+  ~~~py
+  def xfoo(xdict):
+      # and return a tuple of negative total, and normal name
+      return (-xdict['total'], xdict['name'])
+
+  my_final_list = sorted(my_awesome_list, key=xfoo)
+  for row in my_final_list:
+      wcsv.writerow(row)
+  # the end...close the file
+  wfile.close()
+  ~~~
+
+
+
+  #### Write the first five lines of text
+
+  Just to make sure that we've produced the file we want, this exercise asks us to re-open the text file -- but not to parse it into data -- but just to print the first five lines as plain text. This works:
+
+  ~~~py
+  finalfile = open(WRANGLED_DATA_FILENAME, 'r')
+  thestupidlines = finalfile.readlines()[0:5]
+  for line in thestupidlines:
+      # remember each text line has a newline character
+      # that we don't want to print out for aesthetic reasons
+      print(line.strip())
+  ~~~
+
+
+
+  And that should get you to the desired output.

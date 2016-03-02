@@ -1,77 +1,46 @@
-title: For every year since 1950, print the ratio
+title: |
+      For each year since 1950, count and print the number of unique names by sexes
+points: 0.5
 
 
 description: |
-  DESC
+  Print both the count of unique names per gender, but also the female to male ratio.
 
-points: 0.5
+  As in c.py, only read files that correspond to the year 1950 and afterwards.
+
+  The output should be seen for _every year_, not just one big lump sum as in c.py.
+
+  If this sounds almost exactly like c.py, that's intentional. Basically, just shift where the print statements take place -- if you want them to print for every year, well, they have to be inside that for-loop.
+
+  In fact, every print statement should be in a for-loop.
+
 expectations:
-    output: |
-      1950 F:   6112 M:   4195 F/M Ratio: 1.46
-      1951 F:   6213 M:   4247 F/M Ratio: 1.46
-      1952 F:   6392 M:   4263 F/M Ratio: 1.50
-      1953 F:   6494 M:   4338 F/M Ratio: 1.50
-      1954 F:   6609 M:   4352 F/M Ratio: 1.52
-      1955 F:   6722 M:   4390 F/M Ratio: 1.53
-      1956 F:   6891 M:   4452 F/M Ratio: 1.55
-      1957 F:   7011 M:   4551 F/M Ratio: 1.54
-      1958 F:   7023 M:   4497 F/M Ratio: 1.56
-      1959 F:   7193 M:   4574 F/M Ratio: 1.57
-      1960 F:   7334 M:   4591 F/M Ratio: 1.60
-      1961 F:   7528 M:   4649 F/M Ratio: 1.62
-      1962 F:   7582 M:   4622 F/M Ratio: 1.64
-      1963 F:   7660 M:   4619 F/M Ratio: 1.66
-      1964 F:   7802 M:   4592 F/M Ratio: 1.70
-      1965 F:   7534 M:   4418 F/M Ratio: 1.71
-      1966 F:   7614 M:   4534 F/M Ratio: 1.68
-      1967 F:   7849 M:   4550 F/M Ratio: 1.73
-      1968 F:   8193 M:   4735 F/M Ratio: 1.73
-      1969 F:   8706 M:   5043 F/M Ratio: 1.73
-      1970 F:   9345 M:   5432 F/M Ratio: 1.72
-      1971 F:   9632 M:   5656 F/M Ratio: 1.70
-      1972 F:   9659 M:   5753 F/M Ratio: 1.68
-      1973 F:   9799 M:   5875 F/M Ratio: 1.67
-      1974 F:  10239 M:   6005 F/M Ratio: 1.71
-      1975 F:  10603 M:   6328 F/M Ratio: 1.68
-      1976 F:  10901 M:   6493 F/M Ratio: 1.68
-      1977 F:  11321 M:   6850 F/M Ratio: 1.65
-      1978 F:  11464 M:   6758 F/M Ratio: 1.70
-      1979 F:  11961 M:   7069 F/M Ratio: 1.69
-      1980 F:  12157 M:   7282 F/M Ratio: 1.67
-      1981 F:  12184 M:   7282 F/M Ratio: 1.67
-      1982 F:  12321 M:   7358 F/M Ratio: 1.67
-      1983 F:  12063 M:   7333 F/M Ratio: 1.65
-      1984 F:  12167 M:   7332 F/M Ratio: 1.66
-      1985 F:  12496 M:   7579 F/M Ratio: 1.65
-      1986 F:  12817 M:   7823 F/M Ratio: 1.64
-      1987 F:  13250 M:   8145 F/M Ratio: 1.63
-      1988 F:  13874 M:   8484 F/M Ratio: 1.64
-      1989 F:  14542 M:   9225 F/M Ratio: 1.58
-      1990 F:  15231 M:   9482 F/M Ratio: 1.61
-      1991 F:  15459 M:   9645 F/M Ratio: 1.60
-      1992 F:  15605 M:   9811 F/M Ratio: 1.59
-      1993 F:  15795 M:  10162 F/M Ratio: 1.55
-      1994 F:  15753 M:  10244 F/M Ratio: 1.54
-      1995 F:  15754 M:  10326 F/M Ratio: 1.53
-      1996 F:  15889 M:  10530 F/M Ratio: 1.51
-      1997 F:  16155 M:  10810 F/M Ratio: 1.49
-      1998 F:  16593 M:  11298 F/M Ratio: 1.47
-      1999 F:  16938 M:  11606 F/M Ratio: 1.46
-      2000 F:  17652 M:  12111 F/M Ratio: 1.46
-      2001 F:  17966 M:  12295 F/M Ratio: 1.46
-      2002 F:  18081 M:  12479 F/M Ratio: 1.45
-      2003 F:  18423 M:  12750 F/M Ratio: 1.44
-      2004 F:  18819 M:  13216 F/M Ratio: 1.42
-      2005 F:  19175 M:  13358 F/M Ratio: 1.44
-      2006 F:  20043 M:  14026 F/M Ratio: 1.43
-      2007 F:  20548 M:  14383 F/M Ratio: 1.43
-      2008 F:  20439 M:  14606 F/M Ratio: 1.40
-      2009 F:  20165 M:  14519 F/M Ratio: 1.39
-      2010 F:  19800 M:  14241 F/M Ratio: 1.39
-      2011 F:  19540 M:  14329 F/M Ratio: 1.36
-      2012 F:  19468 M:  14216 F/M Ratio: 1.37
-      2013 F:  19191 M:  14012 F/M Ratio: 1.37
-      2014 F:  19067 M:  13977 F/M Ratio: 1.36
+    output:
+        excerpted: true
+        head:
+          text: |
+                1950
+                F:   6112 M:   4195
+                F/M name ratio: 146
+                1951
+                F:   6213 M:   4247
+                F/M name ratio: 146
+        tail:
+          text: |
+                2013
+                F:  19191 M:  14012
+                F/M name ratio: 137
+                2014
+                F:  19067 M:  13977
+                F/M name ratio: 136
+
+
 
 hints: |
-  Hint
+  The `tally` object, i.e. the dictionary of sets, can be used just as it was in c.py:
+
+  ~~~py
+  tally = {'M': set(), 'F': set()}
+  ~~~
+
+  But just like the print statements, the object must be initialized with each iteration of the for-loop, i.e. with every new year file.

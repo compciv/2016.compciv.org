@@ -34,7 +34,14 @@ module UniformContentResource
 
     def points
       if exercise_set?
-        exercises.inject(0){|s, e| s += e.points }
+        exercises.inject(0) do |s, exercise|
+          begin
+            s += exercise.points
+          rescue StandardError => err
+            puts(exercise)
+            raise err
+          end
+        end
       else
         @data.points || 'NA'
       end

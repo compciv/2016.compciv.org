@@ -1,9 +1,95 @@
 title: |
-  Count the total number of babies (and SSN enrollees) since 1950 by gender.
+  Count the total number of babies since 1950 by gender.
+
+description: |
+
+  - Use the glob.glob() function to get a list of filenames in a given directory
+  - Filter that globbed list to include only files from the years 1950 onward
+  - Total up the babies by `'F'` and `'M'`
+  - Print a message that lists the total babies for F and M
+  - Then print the F/M ratio of the total baby count
 
 
 
 points: 0.5
 expectations:
     output: |
-       F: 115355620 M: 123329590 F/M Ratio: 0.94
+       F: 115355620 M: 123329590
+       F/M baby ratio: 94
+
+
+
+hints: |
+
+  You can glob for filenames like this:
+
+  ~~~py
+  from os.path import join, basename
+  from glob import glob
+  DATA_DIR = 'tempdata'
+  alltxtfiles_path = join(DATA_DIR, '*.txt')
+  alltxtfiles_names = glob(alltxtfiles_path)
+  ~~~
+
+  Filtering to include only the data files that are after 1950 is a little tricky.
+
+  But we can use the filenames themselves to our advantage. Remember, they're just strings.
+
+  And they look like this:
+
+  - tempdata/yob1949.txt
+  - tempdata/yob1950.txt
+  - tempdata/yob1951.txt
+
+  If you know how to use regular expressions, go to town. Otherwise, consider this step by step deconstruction of the filename:
+
+
+  ~~~py
+  from os.path import basename
+
+  a_filename = 'tempdata/yob1951.txt'
+  bname = basename(a_filename)
+  # bname is now: yob1951.txt
+  # the first digit is at the index position of 3
+  # and we want the next 4 characters, so....
+  year = bname[3:7]
+  # bingo: year is the string "1951"
+  ~~~
+
+
+  Basically, you want to filter those files you previously globbed (i.e. `alltxtfiles_names`) by testing if the *year* component of the file name is greater-than-or-equal-to 1950. If you don't convert it to an integer, the comparison is with the _string_ "1950":
+
+  ~~~py
+  myfilenames = []
+  for fname in alltxtfiles_names:
+    bname = basename(fname) # e.g. "yob1980.txt"
+    year = bname[3:7]       # e.g.    "1980"
+    if year >= "1950":
+        myfilenames.append(fname)
+  ~~~
+
+  Now, do the counting of baby names using the filtered list in `myfilenames`
+
+  Here's one approach:
+
+  ~~~py
+  totalsdict = {'M': 0, 'F': 0}
+
+  for fname in myfilenames:
+      babyfile = open(fname, "r")
+      for line in babyfile:
+          name, gender, babies = line.split(',')
+          # need to convert babies to a number before adding
+          totalsdict[gender] += int(babies)
+
+  # Now, totalsdict contains two keys, 'M' and 'F', which both point
+  # to very large integers
+
+  print("F:", str(totalsdict['F']).rjust(6),
+        "M:", str(totalsdict['M']).rjust(6))
+
+
+  f_to_m_ratio = round(100 * totalsdict['F'] / totalsdict['M'])
+  print("F/M baby ratio:", f_to_m_ratio)
+  ~~~
+

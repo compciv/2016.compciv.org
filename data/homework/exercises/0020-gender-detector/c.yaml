@@ -1,14 +1,52 @@
-title: Count the number of unique names by gender since 1950
-
+title: Count and total the number of unique names by gender since 1950
 
 description: |
-  DESC
+  Print both the count of unique names per gender, but also the female to male ratio.
+
+  As in b.py, only read files that correspond to the year 1950 and afterwards.
+
+  The final count of names per gender should reflect the number of _unique_ names. The fact that "Michael" shows up in every data file still means it should be counted exactly once. Consider using Python's __set__ colleciton to make this smooth.
 
 points: 0.5
 expectations:
     output: |
-      F:   824806 M:   538706 F/M Ratio: 1.53
+      F:  60480 M:  36345
+      F/M name ratio: 166
 
 
 hints: |
-  Hint
+  The same approach as b.py, except instead of tallying total baby counts, you are simply counting all unique names over the years.
+
+  How to keep a collection of unique items? Try using the __set__ collection. The __set__ object has an __add()__ method to add one object a time. If the object already exists, it won't expand the set's collection.
+
+  To get the number of items in a set, just use the `len()` function:
+
+  ~~~py
+  tally = {'M': set(), 'F': set()}
+  tally['F'].add("Lisa")
+  tally['F'].add("Lisa")
+  tally['F'].add("Lisa")
+  print(len(tally['F']))
+  # 1
+  ~~~
+
+
+  Here's 60% of the solution (well, my solution):
+
+
+  ~~~py
+  from os.path import join, basename
+  from glob import glob
+  DATA_DIR = 'tempdata'
+
+  # unlike b.py, this simply keeps a count of "names", not total babies
+  tally = {'M': set(), 'F': set()}
+
+  for fname in glob(join(DATA_DIR, '*.txt')):
+      # doing the filtering if filenames in one loop
+      year = basename(fname)[3:7]
+      if year >= "1950":
+          for line in open(fname, 'r'):
+              name, gender, babies = line.split(',')
+              tally[gender].add(name)
+  ~~~

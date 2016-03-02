@@ -1,49 +1,46 @@
 title: |
-  For every year since 1950, print the number of babies per name for male and females
-
+   Count the number of unique names and sum the baby counts and print them for every five years since 1950.
 
 description: |
-  DESC
+   Just like exercise e.py, except in a for-loop. It's probably not exactly as easy as just copying and pasting the answer from e.py into this one, but it's almost that...
+
+   Also, note that instead of looking at every year, we're actually looking at every __5__ years. This is how you can use `range()` to accommodate that:
+
+   ~~~
+   START_YEAR = 1950
+   END_YEAR = 2015
+
+   for year in range(START_YEAR, END_YEAR, 5):
+       # etc. etc.
+   ~~~
 
 points: 0.5
 expectations:
-    output: |
-      1950 Total: 378 babies per name
-               M: 427 babies per name
-               F: 280 babies per name
-      1951 Total: 336 babies per name
-               M: 383 babies per name
-               F: 247 babies per name
-      1952 Total: 315 babies per name
-               M: 362 babies per name
-               F: 230 babies per name
-      1953 Total: 297 babies per name
-               M: 342 babies per name
-               F: 216 babies per name
-      1954 Total: 290 babies per name
-               M: 336 babies per name
-               F: 210 babies per name
-      1955 Total: 279 babies per name
-               M: 325 babies per name
-               F: 201 babies per name
-      1956 Total: 273 babies per name
-               M: 320 babies per name
-               F: 197 babies per name
-      2010 Total: 49 babies per name
-               M: 60 babies per name
-               F: 35 babies per name
-      2011 Total: 48 babies per name
-               M: 58 babies per name
-               F: 34 babies per name
-      2012 Total: 47 babies per name
-               M: 57 babies per name
-               F: 34 babies per name
-      2013 Total: 46 babies per name
-               M: 56 babies per name
-               F: 33 babies per name
-      2014 Total: 46 babies per name
-               M: 56 babies per name
-               F: 33 babies per name
+    output:
+        excerpted: true
+        head:
+            text: |
+               1950
+               Total: 378 babies per name
+                   M: 427 babies per name
+                   F: 280 babies per name
+               1955
+               Total: 401 babies per name
+                   M: 469 babies per name
+                   F: 291 babies per name
 
-hints: |
-  Hint
+
+        tail:
+            text: |
+               2005
+               Total: 127 babies per name
+                   M: 149 babies per name
+                   F: 96 babies per name
+               2010
+               Total: 117 babies per name
+                   M: 134 babies per name
+                   F: 90 babies per name
+
+
+takeaways:
+   - It seems that the variety of names has vastly expanded since 1950, for both boys and girls.

@@ -1,9 +1,8 @@
 title: Download all of the baby names data from the Social Security Administration
 
-
+points: 0.5
 
 description: |
-
   Download the zip file here:
 
   https://www.ssa.gov/oact/babynames/names.zip
@@ -16,11 +15,17 @@ description: |
   The hints section contains virtually all of the code, you have to write the final line though (the one that counts the number of text files).
 
 
-points: 0.5
+
 expectations:
     output: |
       Downloading https://www.ssa.gov/oact/babynames/names.zip
       There are 135 txt files
+    effects:
+      remotes:
+        - "https://www.ssa.gov/oact/babynames/names.zip"
+      created_paths:
+        - tempdata/names.zip
+        - tempdata/yob2014.txt
 
 
 hints: |

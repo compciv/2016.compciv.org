@@ -15,10 +15,83 @@ kind: Project
 
 In your `projects` folder, create a `README.md` file:
 
-Identify a dataset of at least several thousand records.
+Identify a dataset of at least several thousand records. The dataset should have a field that corresponds to a person's name.
 
 - Link to the landing page
 - Link to the dataset directly if possible.
+- Describe each field
+- Look around (i.e. Google) for any previous research that has attempted to classify the data.
+
+Some examples:
+
+- [FEC individual donors](http://www.fec.gov/finance/disclosure/ftpdet.shtml#a2015_2016)
+- [NYT bylines via article search API](http://developer.nytimes.com/docs/read/article_search_api_v2)
+  + Related reading: [Sex, Money & Politics](https://www.opensecrets.org/news/reports/gender.php)
+- [NYT Best-selling authors via books API](http://developer.nytimes.com/docs/books_api/)
+- [California payroll](http://transparentcalifornia.com/) (many other states hvae payrolls too)
 
 
 
+## Deliverable
+
+The code used to:
+
+- Download the source data
+- Classify/analyze the source data
+
+And a short write-up about what you found, what surprised you, and how it compared to past research.
+
+You can use the code from relevant homework.
+
+
+
+## Sample script for classifying Congressmembers
+
+This is just a quick example -- the source dataset already has a gender field, but this double checks our data against it:
+
+~~~py
+from os.path import exists, join
+from zoofoo import detect_gender
+
+import csv
+import requests
+DATA_DIR = 'tempdata'
+CONGRESS_DATA_URL = 'http://unitedstates.sunlightfoundation.com/legislators/legislators.csv'
+CONGRESS_DATA_FILENAME = join(DATA_DIR, 'legislators.csv')
+##### only download it if we need it
+if not exists(CONGRESS_DATA_FILENAME):
+    print("Downloading", CONGRESS_DATA_URL)
+    resp = requests.get(CONGRESS_DATA_URL)
+    with open(CONGRESS_DATA_FILENAME, 'w') as f:
+        f.write(resp.text)
+
+
+def pick_usable_name(person):
+    # if a person's first name is just an initial, like
+    # Rep   H.  Morgan  Griffith
+    # return the middle name if it exists
+    possible_keys = ['firstname', 'middlename', 'nickname']
+    for key in possible_keys:
+        for x in person[key].split(" "):
+            if '.' not in x and len(x) > 1:
+                return x
+    return person['firstname']
+
+
+
+
+##### Assuming tempdata/districts.csv exists:
+congressdata = list(csv.DictReader(open(CONGRESS_DATA_FILENAME)))
+wrongs = 0
+
+for person in congressdata:
+    official_gender = person['gender']
+    usablename = pick_usable_name(person)
+    result = detect_gender(usablename)
+    if result['gender'] != official_gender:
+        wrongs += 1
+        print(person['firstname'], result['gender'], result['ratio'], result['total'])
+
+
+print("There were", wrongs, "incorrect gender guesses out of", len(congressdata))
+~~~

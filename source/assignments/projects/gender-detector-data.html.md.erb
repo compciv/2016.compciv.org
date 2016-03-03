@@ -25,8 +25,9 @@ Identify a dataset of at least several thousand records. The dataset should have
 Some examples:
 
 - [FEC individual donors](http://www.fec.gov/finance/disclosure/ftpdet.shtml#a2015_2016)
-- [NYT bylines via article search API](http://developer.nytimes.com/docs/read/article_search_api_v2)
+  + [Data Dictionary - Contributions by Individuals](http://www.fec.gov/finance/disclosure/metadata/DataDictionaryContributionsbyIndividuals.shtml)
   + Related reading: [Sex, Money & Politics](https://www.opensecrets.org/news/reports/gender.php)
+- [NYT bylines via article search API](http://developer.nytimes.com/docs/read/article_search_api_v2)
 - [NYT Best-selling authors via books API](http://developer.nytimes.com/docs/books_api/)
 - [California payroll](http://transparentcalifornia.com/) (many other states hvae payrolls too)
 
@@ -94,4 +95,68 @@ for person in congressdata:
 
 
 print("There were", wrongs, "incorrect gender guesses out of", len(congressdata))
+~~~
+
+
+
+
+## Webscraping example
+
+If you know how to parse HTML, you can generate a list from a webpage if you wish. Here's the result of scraping the names from the NYT's [The Faces of American Power](http://www.nytimes.com/interactive/2016/02/26/us/race-of-american-power.html):
+
+        F 71
+        M 428
+        NA 10
+
+
+
+
+Here's the code, which uses the detect_gender function:
+
+~~~py
+import requests
+import json
+from lxml import html
+from zoofoo import detect_gender
+from os.path import join
+NYT_POWER_FNAME = join('tempdata', 'nyt-gender-power.json')
+url = "http://www.nytimes.com/interactive/2016/02/26/us/race-of-american-power.html"
+resp = requests.get(url)
+doc = html.fromstring(resp.text)
+
+# each ".g-person" element looks like this:
+# <div class="g-person g-person-race-white g-tooltip tooltipstered" data-name="Steven A. Kandarian" data-employer="MetLife" style="width: 105px; height: 105px;">
+#             <div class="g-stretchy">
+#               <img class="g-spacer" alt="" src="http://graphics8.nytimes.com/packages/flash/multimedia/ICONS/transparent.png">
+#               <img src="http://graphics8.nytimes.com/newsgraphics/2016/01/26/race-power/assets/images/fortune-100-bg-120.jpg" alt="" class="g-sprite g-sprite-fortune-100-41">
+#             </div>
+#             <div class="g-debug">
+#               Steven A. Kandarian
+#             </div>
+#            </div>
+
+people = doc.cssselect('.g-person')
+mylist = []
+for p in people:
+    fullname = p.attrib['data-name']
+    namepieces =  fullname.split(' ')
+    if '.' in namepieces[0]:  # i.e if first name is "J."
+        usable_name = namepieces[1]
+    else:
+        usable_name = namepieces[0]
+
+    xresult = detect_gender(usable_name)
+    # add the "fullname" that we derived the usable_name
+    # so that we can compare later if needed
+    xresult['full_name'] = fullname
+    mylist.append(xresult)
+
+# print male/female/NA
+for g in ['F', 'M', 'NA']:
+    print(g, sum([1 for x in mylist if x['gender'] == g]))
+
+
+# write to file for later examination
+with open(NYT_POWER_FNAME, 'w') as f:
+    f.write(json.dumps(mylist, indent=2))
 ~~~

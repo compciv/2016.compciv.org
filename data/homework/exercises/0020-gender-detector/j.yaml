@@ -1,0 +1,109 @@
+title: |
+  Aggregate a number of data files from 1950 to 2014, then reshape it for use in a gender-detecting program.
+
+description: |
+  Very much the same as g.py except done over multiple files:
+
+  - Include each file from 1950 to 2014, in 10 year intervals, i.e. 1950, 1960, 1970, etc
+  - Include the 2014 file
+  - Before reading each file, print to screen: `"Parsing NAME_OF_FILE"` just so you know you're reading the right files
+  - As in g.py, create a new CSV file, but name it `/tempdata/wrangledbabynames.csv`
+  - As in g.py, print the first 5 lines of the new CSV file.
+
+points: 0.5
+expectations:
+    effects:
+      created_paths:
+        - tempdata/wrangledbabynames.csv
+    output: |
+      Parsing tempdata/yob1950.txt
+      Parsing tempdata/yob1960.txt
+      Parsing tempdata/yob1970.txt
+      Parsing tempdata/yob1980.txt
+      Parsing tempdata/yob1990.txt
+      Parsing tempdata/yob2000.txt
+      Parsing tempdata/yob2010.txt
+      Parsing tempdata/yob2014.txt
+      name,gender,ratio,females,males,total
+      Michael,M,100,1963,433277,435240
+      James,M,100,1391,342651,344042
+      David,M,100,1139,330092,331231
+      John,M,100,1095,320621,321716
+
+hints: |
+
+  This is barely an exercise. It's meant to serve as another example in programming of how once you get something working _once_ -- there's no reason why you can apply the same operation across many values or files. So why restrict ourselves to wrangling just the 2014 file when we can literally do it for every other baby name data file?
+
+  The beginning of this script looks very much the same as it did in g.py, though note we're saving to a different file name: `/tempdata/wrangledbabynames.csv`:
+
+  ~~~py
+  from os.path import join, basename
+  import csv
+  DATA_DIR = 'tempdata'
+  # as before, we create new headers for our wrangled file
+  # though we leave out year because we probably don't care at for our ultimate needs
+  WRANGLED_HEADERS = ['name', 'gender' , 'ratio' , 'females', 'males', 'total']
+  WRANGLED_DATA_FILENAME = join(DATA_DIR, 'wrangledbabynames.csv')
+  ~~~
+
+
+  Since we're reading from multiple years`, we need to create a list of numbers, starting from 1950 and ending at 2014:
+
+  This is how to produce the list of numbers using a range:
+
+  ~~~py
+  for year in range(1950, 2014, 10):
+      print(year)
+
+  ~~~
+
+
+      1950
+      1960
+      1970
+      1980
+      1990
+      2000
+      2010
+
+
+  Note that it stops before `2014`, so we just have to add that manually to the list:
+
+  ~~~py
+  START_YEAR = 1950
+  END_YEAR = 2014
+  # lets just get a list of all decades, between 1950 and 2014:
+  years = list(range(START_YEAR, END_YEAR, 10))
+  # and let's tack on the END_YEAR manually:
+  years.append(END_YEAR)
+  ~~~
+
+  Also note that the interval and number of years is arbitrary. You could just as easily aggregate every file since 1880 if you wished.
+
+
+
+  After that, things are largely the same. We loop through every year, but the namesdict collection stays "above" it all because it is counting up names for _every file_:
+
+  ~~~py
+  namesdict = {}
+  for year in years:
+      # get the file for this particular year
+      filename = join(DATA_DIR, 'yob' + str(year) + '.txt')
+      print("Parsing", filename)
+      # fill in the rest yourself
+  ~~~
+
+
+  Similarly, we wait till that year-loop is finished before creating `my_awesome_list`, which contains the same stuff as `namesdict`.
+
+  ~~~py
+  my_awesome_list = []
+  # just the same as it was for g.py, except no "year"
+  for name, babiescount in namesdict.items():
+      xdict = {'name': name, 'females': babiescount['F'], 'males': babiescount['M']}
+  ~~~
+
+  In fact, everything here on out should be pretty much the same as g.py.
+
+  Remember, you're just doing what you did to the 2014 file, except to a bunch of files. That includes aggregating it into a single list at the end.
+

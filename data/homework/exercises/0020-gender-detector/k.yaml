@@ -1,0 +1,53 @@
+title: |
+  Make a function that uses the CSV data to analyze a name, then analyze a list of names
+points: 0.5
+
+expectations:
+  output: |
+    Michael M 100
+    Kelly F 86
+    Kanye M 100
+    THOR M 100
+    casey M 59
+    Arya F 88
+    ZZZblahblah NA None
+    Total:
+    F: 2 M: 4 NA: 1
+    females: 62045 males: 454031
+
+
+description: |
+  Write a function that given a name, e.g. `"Mary"`, returns a dictionary that represents the record for the name `"Mary"`, based on the data in `tempdata/wrangledbabynames.csv`.
+
+  Then use that function to print out the likely _gender_ and _ratio_ for each of the following names:
+
+  - Michael
+  - Kelly
+  - Kanye
+  - THOR
+  - casey
+  - Arya
+  - ZZZblahblah
+
+  The search for the name should be __case-insensitive__, i.e. return the records for `"Thor"` and `"Casey"`, respectively, when the values `"THOR"` and `"casey"` are passed in.
+
+  For names that have no valid record, return the following dictionary:
+
+  ~~~
+  { 'name': "whateverthenamewas",
+    'gender': 'NA',
+    'ratio': None,
+    'males': None,
+    'females': None,
+    'total': 0
+  }
+  ~~~
+
+  At the end of the script, print the total tally of names by gender:
+
+          Total:
+          F: 2  M: 4  NA: 1
+
+  And the number of babies cumulative:
+
+          females: 62045 males: 454031

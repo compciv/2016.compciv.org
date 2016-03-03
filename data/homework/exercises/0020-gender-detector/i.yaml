@@ -1,0 +1,58 @@
+title: |
+    Print a breakdown of popular names in 2014 by gender ambiguity.
+
+
+
+description: |
+
+    This exercise depends on you having created `tempdata/wrangled2014.csv` previously.
+
+    For each of the following gender ratio breakpoints:
+
+    - 60%
+    - 70%
+    - 80%
+    - 90%
+    - 99%
+
+    Print the number and percentage of popular baby names (names given to at least 100 _total_ babies in 2014) that have a gender ratio less than or equal to the given break point.
+
+    For example, for the breakpoint of 70%, find and count all baby names in which the __ratio__ is 70% or less toward one gender or another.
+
+hints: |
+  All of the code from h.py that is used to deserialize the data into a list of dictionaries can be reused here.
+
+  You have one additional data processing step: filtering that list to include only names that have 100 or more total babies. You should be able to figure this out:
+
+
+          bigdatarows = []
+          for row in datarows:
+              if SOMETHINGSOMETHING
+                    bigdatarows.append(row)
+
+  The number of "popular" names in 2014 is simply `len(bigdatarows)`
+
+  As for what you need to print out, the process is about the same as it was in the previous exercise. But you start off with a for-loop:
+
+          print("Popular names with a gender ratio bias of less than or equal to:")
+          for genderratio in (60, 70, 80, 90, 99):
+
+
+
+
+points: 0.5
+expectations:
+    output: |
+      Popular names in 2014 with gender ratio less than or equal to:
+        60%: 64/3495
+        70%: 139/3495
+        80%: 214/3495
+        90%: 381/3495
+        99%: 953/3495
+
+takeaways:
+  - |
+    There don't seem to be many names that fall in what we might have assumed to be "ambiguous". In fact, only 953 names out of 3,495 -- less than a third -- of the popular babynames are at the 99% or below threshold...which means that _more than two-thirds_ of the popular names are essentially _100% for one gender or the other_.
+
+
+

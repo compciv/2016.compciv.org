@@ -1,0 +1,32 @@
+title: |
+  Print the 5 most popular names in 2014 that are relatively gender-ambiguous.
+
+
+
+description: |
+
+  Print a list of the 5 most popular baby names in 2014 that skewed no more than 60% towards either male or female, i.e. a `ratio` or less than or equal to `60`.
+
+
+
+  This exercise depends on you having created `tempdata/wrangled2014.csv` in the previous exercise.
+
+  Well, you don't *have* to have made that wrangled file -- obviously you can copy-and-paste all the code you used to generate that file into *this* script. The Python interpreter doesn't really care...but *you* -- and anyone else who has to deal with your code -- will care.
+
+  Having one script create and package a file for other scripts to use is a very common pattern.
+
+
+
+points: 0.5
+expectations:
+    output: |
+      Most popular names with less than 50% gender skew:
+      Riley                F  32   7190
+      Peyton               F  42   6254
+      Hayden               M -27   4507
+      Quinn                F  49   3407
+      Charlie              M  -8   3102
+
+
+hints: |
+  Hint

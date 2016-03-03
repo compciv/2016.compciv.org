@@ -1,0 +1,55 @@
+title: "Convert wrangledbabynames.csv to wrangledbabynames.json"
+points: 0.5
+description: |
+  What's the difference between storing data as CSV versus JSON?
+
+  Find out for yourself. Open, read, and deserialize `tempdata/wrangledbabynames.csv` as in previous exercises, including converting the appropriate fields (`'total'`, `'ratio'`, etc.) to numbers.
+
+  Then use `json.dumps()` to serialize it as text and save to:
+
+          tempdata/wrangledbabynames.json
+
+  Then print the number of characters in the __csv__ file.
+  Followed by the number of characters in the new __json__ file.
+  Finally, print the ratio of the json's character count to the csv's character count.
+
+expectations:
+    effects:
+      created_paths:
+        - tempdata/wrangledbabynames.json
+    output: |
+      CSV has 1214044 characters
+      JSON has 6801478 characters
+      JSON requires 4.6 times more text characters than CSV
+
+takeaways:
+  - |
+    If you inspect the resulting JSON file, you'll see that each record looks like this:
+
+          {
+            "males": 433277,
+            "ratio": 100,
+            "females": 1963,
+            "name": "Michael",
+            "total": 435240,
+            "gender": "M"
+          },
+          {
+            "males": 342651,
+            "ratio": 100,
+            "females": 1391,
+            "name": "James",
+            "total": 344042,
+            "gender": "M"
+          }
+
+    Notice how the number values are unquoted. That's part of JSON's spec: the ability to define values other than text strings, which is what CSV is limited to:
+
+
+          name,gender,ratio,females,males,total
+          Michael,M,100,1963,433277,435240
+          James,M,100,1391,342651,344042
+
+    On the other hand, the CSV version of the data is much more compact. The JSON format requires that the attributes (i.e. the column headers) have to be repeated for _every_ record.
+
+    That is why the JSON file ends up being more than 4 times as big as the CSV file.

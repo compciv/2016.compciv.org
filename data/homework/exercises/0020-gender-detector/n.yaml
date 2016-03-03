@@ -1,0 +1,25 @@
+title: |
+  Make a function that uses the JSON data to analyze a name, then analyze a list of names
+description: |
+  Same as k.py, except you'll be reading from: tempdata/wrangledbabynames.json
+
+  Create a new Python script file named `zoofoo.py`
+
+  In it, create a function named `detect_gender()` which should operate pretty much identical to `detect_gender_from_csv` in k.py...except that it reads from the JSON file. It should have _less_ code because you no longer have to manually convert strings of numbers to actual numbers, i.e. you don't have to do this:
+
+
+
+
+points: 0.5
+expectations:
+  output: |
+    Michael M 100
+    Kelly F 86
+    Kanye M 100
+    THOR M 100
+    casey M 59
+    Arya F 88
+    ZZZblahblah NA None
+    Total:
+    F: 2 M: 4 NA: 1
+    females: 62045 males: 454031

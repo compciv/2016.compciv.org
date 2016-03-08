@@ -1,162 +1,390 @@
 ---
 title: Gender Detector on Real Life Data
 description: |
-  Using an algorithm to classify a first name as "male" or "female", estimate the gender breakdown for a public data set.
+  Using an algorithm to classify a first name as "male" or "female", estimate the gender breakdown for a public data set in three different ways. Write a short reflection about it.
 due_date: 2016-03-17
 points: 100
 kind: Project
+references:
+  - slug: '/assignments/exercise-sets/0020-gender-detector-set'
+    internal: true
+  - slug: w3c-personal-names
+    title: Personal names around the world
+    url: https://www.w3.org/International/questions/qa-personal-names
+    publisher: World Wide Web Consortium (W3C)
+    description: |
+      How do people's names differ around the world, and what are the implications of those differences on the design of forms, databases, ontologies, etc. for the Web?
 ---
 
-
-# Milestones
-
-
-## For Tuesday
-
-In your `projects` folder, create a `README.md` file:
-
-Identify a dataset of at least several thousand records. The dataset should have a field that corresponds to a person's name.
-
-- Link to the landing page
-- Link to the dataset directly if possible.
-- Describe each field
-- Look around (i.e. Google) for any previous research that has attempted to classify the data.
-
-Some examples:
-
-- [FEC individual donors](http://www.fec.gov/finance/disclosure/ftpdet.shtml#a2015_2016)
-  + [Data Dictionary - Contributions by Individuals](http://www.fec.gov/finance/disclosure/metadata/DataDictionaryContributionsbyIndividuals.shtml)
-  + Related reading: [Sex, Money & Politics](https://www.opensecrets.org/news/reports/gender.php)
-- [NYT bylines via article search API](http://developer.nytimes.com/docs/read/article_search_api_v2)
-- [NYT Best-selling authors via books API](http://developer.nytimes.com/docs/books_api/)
-- [California payroll](http://transparentcalifornia.com/) (many other states hvae payrolls too)
+This is a project that dovetails directly from the [gender-detector-building homework](/assignments/exercise-sets/0020-gender-detector-set/): now that you've built an "algorithm" that can automatically classify a given name as more likely to be "male" or "female", let's run that algorithm on a whole bunch of data rows.
 
 
+# Example projects
 
-## Deliverable
+The structure and object of this project is best described in example projects, which you can find here and which I will reference throughout when describing the overall project:
 
-The code used to:
+- [The Pulitzer Prize Board](https://github.com/compciv/gendered-pulitzer-board) - What is the gender makeup of the dozen-plus journalists and scholars who decide on journalism's most prestigious prize? How many women have served on the board, total? How has the gender breakdown changed over the decade? How has the gender breakdown changed over each year?
 
-- Download the source data
-- Classify/analyze the source data
-
-And a short write-up about what you found, what surprised you, and how it compared to past research.
-
-You can use the code from relevant homework.
+- [The Guardian bylines](https://github.com/compciv/gendered-guardian-bylines) - Using the Guardian's API, I've downloaded the metadata for several thousand of its articles, including its __byline__. Let's see the gender breakdown by __section__ and for Page 1 stories.
 
 
+- [California college payrolls](https://github.com/compciv/gendered-california-colleges-payroll) - Does the "gender gap" exist for those employed by California's state higher education? What is the gender makeup of employees who make less than $100,000 versus those who make more than $250,000? Is there a difference in makeup between the UC and community college system?
 
-## Sample script for classifying Congressmembers
 
-This is just a quick example -- the source dataset already has a gender field, but this double checks our data against it:
+- [FEC individual donors](https://github.com/compciv/gendered-fec-teachers-and-attorneys) - When contributing to a federal campaign, donors are required to provide their full name and occupation. Filtering that list to donors who describe themselves as either teachers or attorneys, what is the male-vs-female ratio? Being aware that the type of people who donate to campaigns are a _specific subset_ of the general population, what is the gender breakdown between teachers vs attorneys?
+
+
+Note: The [Pulitzer Prize board](https://github.com/compciv/gendered-pulitzer-board) project is by far the easiest to clone from Github, i.e.
+
+        git clone https://github.com/compciv/gendered-pulitzer-board
+
+And the easiest to try out without too many external dependencies or massive amounts of free disk space. Its "fetch_data" phase will probably be completely irrelevant to you, unless you're trying to scrape a weird Angular-heavy-Drupal-powered website. But for the most part, it conforms to what I'd like to see in a finished product from you.
+
+The other projects follow the same pattern and motions though I've spent less time documenting them. They may also crash your computer if you run the data-fetching scripts but don't have enough disk space. Still, you can still clone their repos and look at the code.
+
+
+# Checklist of deliverables
+
+These are must-haves -- missing any of these parts is grounds for a 5% reduction:
+
+    compciv-2016
+      └──projects
+         └── gender-detector-data
+            ├── README.md
+            ├── analyze.py
+            ├── classify.py
+            ├── fetch_data.py
+            ├── fetch_gender_data.py
+            ├── gender.py
+            ├── wrangle_data.py
+            ├── wrangle_gender_data.py
+            └── tempdata
+
+
+
+
+## The programming deliverables
+
+- A "fetch_data.py" script (it doesn't have to be named exactly that)
+    + when run, this downloads the source data files needed to begin the project.
+- A "wrangle_data.py" script (it doesn't have to be named exactly that)
+    + when run, this creates a "wrangled" version of the fetched source dataset. How "wrangled" it is depends on the project and purpose.
+- A "fetch_gender_data.py" script (it should be named exactly that)
+    + fetches the data needed to build a gender detector (i.e. you _already_ did this in the gender-detector homework)
+- A "wrangle_gender_data.py" script (it should be named exactly that)
+    + wrangles the fetched gender data into a more useable form (i.e. you _already_ did this in the previous homework)
+- A "gender.py" script (it should be named exactly that)
+    + reads the wrangled gender data and provides a `detect_gender()`  function, as you've already done in a previous homework
+- A "classify.py" script (it should be named exactly that)
+    + reads the wrangled source data
+    + defines a function named `extract_usable_name()` which, given a namestring from your wrangled data, returns a _first name_ that `detect_gender()` can make sense of
+    + produces a "classified" version of the wrangled data, with 3 additional columns for `gender`, `usable_name`, and `ratio`
+- A "analyze.py" script (it should be named exactly that)
+    + reads the "classified" data file and provides 3 different gender analyses of it. It can output to screen as plaintext, if you like.
+
+(Keep reading for more details)
+
+
+## The documentation part
+
+In your project repo, please create a `README.md` file.
+
+It should be a Markdown-formatted text file that is relatively easy and pleasant to read. And it should contain these sections:
+
+# Introduction
+
+- Tell us briefly about the dataset you are using and the insights and hypotheses you want to test and analyze.
+- (After you're done with the programming part): Tell us briefly the things you found in your analysis.
+- __List as many articles and information sources__ you can find, relevant to your topic. For example, if you're interested in the gender gap and you are using a public payroll database, you should be reading articles like these -- "[Government workforce is closing the gender pay gap, but reforms still needed, report says](https://www.washingtonpost.com/politics/government-workforce-is-closing-the-gender-pay-gap-but-reforms-still-needed-report-says/2014/04/13/59281484-c1b2-11e3-b574-f8748871856a_story.html)" -- and describing (to me) how this affects your expectations and predictions.
+
+# Methodology and caveats
+
+- Tell us about the dataset, link to where it came from.
+- Describe roughly how many data records you're project will be analyzing.
+- Describe exactly how you were to effectively (if not perfectly) classify the gender of each record, especially how you extracted the string used to represent a person's _first name_
+- Describe technical problems or things inherent to the dataset that you had problems dealing with. It's not that you have to solve all the problems, you just have to show an awareness of them.
+
+# How to use it
+
+Write a step-by-step list of instructions on what I (or anybody) need to setup your project on our own machines and do the same data analysis as you. Ideally, this list of instructions should basically be a list of every Python script in your project folder...because the user shouldn't have to do anything special (such as: "Please go to this webpage and click on this button to get the data I used") to get started.
+
+With that said, every script in your project folder should be listed in the order that they should be run, along with a description of what it does, e.g.
+
+> __fetch_data.py__ - Running this script will download two large zip files from the FEC website and store them in tempdata/
+> __unpack_data.py__ - Running this script will unzip the zipped files
+
+# Analysis
+
+Describe your 3 analyses and their results in brief. If you want, you can also include their raw output.
+
+
+
+
+
+## Programming deliverables -- in detail
+
+
+### A "fetching" script
+
+Assuming your data didn't come out of thin air, your project should include a script that simply downloads the dataset that you're intending to analyze, whether it be a CSV or JSON file, or some other format.
+
+You can keep this script simple: it points to a remote location and downloads the file, preferably into a `tempdata` folder (which it makes) which won't be committed to the repo.
+
+Call this script whatever you want, but it should probably have "fetch" somewhere in its name, e.g. `fetch_data.py`. And I should be able to run it on my computer and end up with the same raw data that you started out with.
+
+
+### A "wrangling" script
+
+It's possible, but probably not likely, that the downloaded data file contains things exactly as you want them to be. Perhaps the file is _massive_, and you only want a subset of the data.
+
+Or maybe the data came as JSON and you want to simplify it to a nice, flat CSV, as I do in [my Guardian Bylines project](https://github.com/compciv/gendered-guardian-bylines). This "wrangling" script (you could call it `wrangle_data.py`) is where you could do it.
+
+What if you absolutely have nothing to actually wrangle? I seriously _doubt that_. But let's say that's the case. OK, then your wrangling script simply creates a new file/folder:
+
+        tempdata/wrangled_data.csv
+
+or: 
+
+        tempdata/wrangled/dataset1.csv
+        tempdata/wrangled/dataset2.csv
+        tempdata/wrangled/dataset3.csv
+        ...
+        (or what have you)
+
+That's right, just make an identical data file, except under a `wrangled` moniker or subfolder. I've decided that it's better to make you wasteful than it is to leave this script optional. Maybe you'll think of something you can wrangle in the meantime.
+
+
+
+
+
+
+##### Example: Wrangling (trimming) the FEC data
+
+In the [FEC individual donors project](https://github.com/compciv/gendered-fec-teachers-and-attorneys), the raw data files of donations are very large. I don't want to attempt to perform gender-detection on every record, so I have a "wrangle" script that simply reads through the raw data files and selects only rows in which the "OCCUPATION" column includes "TEACHER" or "ATTORNEY" or "LAWYER":
+
+[wrangle_fec.py](https://github.com/compciv/gendered-fec-teachers-and-attorneys/blob/master/wrangle_fec.py)
+
+It then creates a new file of just these select records.
+
+In fact, I even [have a separate script](https://github.com/compciv/gendered-fec-teachers-and-attorneys/blob/master/unpack_fec.py) that is in charge of unzipping the downloaded zip files. That's probably more orderly than you need -- I like it because the files are so large that even unzipping them is a non-trivial amount of time for things to go wrong.
+
+But make what makes sense to you.
+
+
+### A gender-data fetching script
+
+OK, this is pretty much done for you. You can [copy a.py from the gender-detector homework](http://www.compciv.org/assignments/exercise-sets/0020-gender-detector-set/#toc--0020-gender-detector-a-py-download-all-of-the-baby-names-data-from-the-social-security-administration-) into this project -- maybe even rename it `fetch_gender_data.py`
+
+It should _just work_...right? I mean, it downloads a zip file and unzips it into `tempdata`. What more does it need to do?
+
+### A gender-data wrangling script
+
+Again, this is something you can copy over...though make sure you copy _enough_.
+
+Remember that in one assignment, we "wrangled" the data into a more usable CSV ([j.py](http://www.compciv.org/assignments/exercise-sets/0020-gender-detector-set/#exercise-j)).
+
+In another exercise, [m.py](http://www.compciv.org/assignments/exercise-sets/0020-gender-detector-set/#toc--0020-gender-detector-m-py-convert-wrangledbabynames-csv-to-wrangledbabynames-json-), we turned that wrangled CSV into a JSON file...just because I felt like making you do it.
+
+Do you just copy __j.py__. Or __m.py__ as well? Frankly, I want you to at least be able to combine the two scripts. Or even just have the recognizance that it doesn't matter whether the "wrangled" baby name data is stored as JSON or CSV...you just have to make sure that whatever you do, it integrates with the _rest of the project_ (which I mention just below).
+
+
+### gender.py
+
+For simplicity's sake, make a script named `gender.py`. In this script will contain your `detect_gender()` function...in other words, it will pretty much be the same as [zoofoo.py in the gender-detector homework](https://github.com/compciv/2016.compciv.org/blob/master/data/homework/answers/0020-gender-detector/zoofoo.py).
+
+This script takes care of loading the wrangled babynames data (whatever format it is in) and provides a reference to the `detect_gender()` function. If you've done everything up to this point, you should be able to start up iPython and do this:
 
 ~~~py
-from os.path import exists, join
-from zoofoo import detect_gender
-
-import csv
-import requests
-DATA_DIR = 'tempdata'
-CONGRESS_DATA_URL = 'http://unitedstates.sunlightfoundation.com/legislators/legislators.csv'
-CONGRESS_DATA_FILENAME = join(DATA_DIR, 'legislators.csv')
-##### only download it if we need it
-if not exists(CONGRESS_DATA_FILENAME):
-    print("Downloading", CONGRESS_DATA_URL)
-    resp = requests.get(CONGRESS_DATA_URL)
-    with open(CONGRESS_DATA_FILENAME, 'w') as f:
-        f.write(resp.text)
-
-
-def pick_usable_name(person):
-    # if a person's first name is just an initial, like
-    # Rep   H.  Morgan  Griffith
-    # return the middle name if it exists
-    possible_keys = ['firstname', 'middlename', 'nickname']
-    for key in possible_keys:
-        for x in person[key].split(" "):
-            if '.' not in x and len(x) > 1:
-                return x
-    return person['firstname']
-
-
-
-
-##### Assuming tempdata/districts.csv exists:
-congressdata = list(csv.DictReader(open(CONGRESS_DATA_FILENAME)))
-wrongs = 0
-
-for person in congressdata:
-    official_gender = person['gender']
-    usablename = pick_usable_name(person)
-    result = detect_gender(usablename)
-    if result['gender'] != official_gender:
-        wrongs += 1
-        print(person['firstname'], result['gender'], result['ratio'], result['total'])
-
-
-print("There were", wrongs, "incorrect gender guesses out of", len(congressdata))
+>>> from gender import detect_gender
+>>> detect_gender("Beyonce")
 ~~~
 
+The purpose of having a separate script, `gender.py`, is just to emphasize how everything about gender-detection, or at least what we did in the homework, was completed _independent_ of the current project.
+
+There's an important philosophical implication here, which applies to many rea-life endeavors (programming and non-programming): the mechanisms we use to judge or filter something are often created independently, sometimes in a vacuum. Or, to use a classic aphorism: the left hand doesn't know what the right hand is doing.
+
+And to bring it back specifically to this project: in the gender-detector homework, we quite clearly were using the U.S. Social Security Administration data to inform our "gender detection". If your project is using data full of _non-American_ names...you can assume that you'll have some sporadic results...
+
+Don't see that as a failure, necessarily, but as a reality to be aware of.
 
 
+### classify.py
 
-## Webscraping example
+OK, back to scripts that you have to write yourself: __classify.py__ might be the most _difficult_ part of the project, depending on what your data looks like.
 
-If you know how to parse HTML, you can generate a list from a webpage if you wish. Here's the result of scraping the names from the NYT's [The Faces of American Power](http://www.nytimes.com/interactive/2016/02/26/us/race-of-american-power.html):
+What does __classify.py__ do? It __classifies__ each row in your wrangled dataset as _male_, _female_, or non-determined (or Other, or whatever other non-binary classifications you want to provide, if you feel like it)
 
-        F 71
-        M 428
-        NA 10
-
+It produces a new data file that is, hence, _classified_...which is a really confusing word to use, I now realize, but basically, you've added _gender_ classification to the wrangled dataset and saved it to a new file.
 
 
+At a minimum, this is what __classify.py__ will do:
 
-Here's the code, which uses the detect_gender function:
+- It opens and reads a data file (i.e. your wrangled data file)
+- For a specific field/column in that data file, it attempts to derive and extract a __first name__ string. I'll refer to it as the `usable_name`
+- It then passes `usable_name` into `detect_gender()`, which returns a result that indicates if the name is male/female gendered, or neither.
+- The `gender`, `ratio`, and `usable_name` attributes are added to the data row, which are written to a __new file__, e.g. `classified_data.csv`, if you will.
+
+One way to look __classify.py__ is that it takes the source data file and adds 3 new attributes/columns to it: `gender`, `ratio`, and `usable_name`. And that's exactly right. Unless you've become ambitious and decided to re-write `detect_gender()` to be much faster than it was for the homework...our gender detection is pretty slow, as far as computational processes go. On my own laptop, it maxed out at 200 gender-detections per second...which is agonizingly slow when trying to run it over 100,000 records...meh, at least it's better than doing 100,000 records by hand.
+
+So if anything, having __classify.py__ be its own script let's you run it and then go take a walk or a nap.
+
+### Create a `extract_usable_name()` function
+
+However, there is one important function that __classify.py__ should be responsible for: extracting the _best_ possible string from a given name field, such that the `detect_gender()` function can return a valid result.
+
+__So here's a requirement:__ inside __classify.py__, define a `extract_usable_name()` function. This function has one job: It takes in as an argument a single string, like `"Nguyen, Daniel"`, and it returns something like `"Daniel"`.
+
+Maybe your data has a __first_name__ field, where only first names are entered. Ok, so this is what your `extract_usable_name()` function can look like:
 
 ~~~py
-import requests
-import json
-from lxml import html
-from zoofoo import detect_gender
-from os.path import join
-NYT_POWER_FNAME = join('tempdata', 'nyt-gender-power.json')
-url = "http://www.nytimes.com/interactive/2016/02/26/us/race-of-american-power.html"
-resp = requests.get(url)
-doc = html.fromstring(resp.text)
-
-# each ".g-person" element looks like this:
-# <div class="g-person g-person-race-white g-tooltip tooltipstered" data-name="Steven A. Kandarian" data-employer="MetLife" style="width: 105px; height: 105px;">
-#             <div class="g-stretchy">
-#               <img class="g-spacer" alt="" src="http://graphics8.nytimes.com/packages/flash/multimedia/ICONS/transparent.png">
-#               <img src="http://graphics8.nytimes.com/newsgraphics/2016/01/26/race-power/assets/images/fortune-100-bg-120.jpg" alt="" class="g-sprite g-sprite-fortune-100-41">
-#             </div>
-#             <div class="g-debug">
-#               Steven A. Kandarian
-#             </div>
-#            </div>
-
-people = doc.cssselect('.g-person')
-mylist = []
-for p in people:
-    fullname = p.attrib['data-name']
-    namepieces =  fullname.split(' ')
-    if '.' in namepieces[0]:  # i.e if first name is "J."
-        usable_name = namepieces[1]
-    else:
-        usable_name = namepieces[0]
-
-    xresult = detect_gender(usable_name)
-    # add the "fullname" that we derived the usable_name
-    # so that we can compare later if needed
-    xresult['full_name'] = fullname
-    mylist.append(xresult)
-
-# print male/female/NA
-for g in ['F', 'M', 'NA']:
-    print(g, sum([1 for x in mylist if x['gender'] == g]))
-
-
-# write to file for later examination
-with open(NYT_POWER_FNAME, 'w') as f:
-    f.write(json.dumps(mylist, indent=2))
+def extract_usable_name(namestr):
+    return namestr
 ~~~
+
+If it really is that easy, then good for you. However, it probably isn't that easy. Remember, human names, even [just white-bread American names, are complex](https://www.w3.org/International/questions/qa-personal-names).
+
+In my [Pulitzer Prize board project](https://github.com/compciv/gendered-pulitzer-board), the Pulitzer people were kind enough to provide a "first_name" field. However, for many of the board members, the `first_name` field did not simply contain the "first name":
+
+~~~
+Joseph Jr. (III)
+James
+Vermont C.
+Benjamin
+Andrew W.
+~~~
+
+The names above all belong to men. But you should know enough about the `detect_gender()` function by now to know that it will work for `"Joseph"`, but will __not__ work for `"Joseph Jr."`, nevermind `"Joseph Jr. (III)"`. In fact, it fails on anything that is more than one word.
+
+Maybe we could make `detect_gender()` more sophisticated? That's one approach. Another is to just simply pretend `detect_gender()` is a black box that can't be changed. So we change what we send it.
+
+And that's what the `extract_usable_name()` function is for. Here's one way to implement it, for the above Pulitzer Prize board members:
+
+~~~py
+def extract_usable_name(namestr):
+    nameparts = namestr.split(' ')
+    return nameparts[0]
+~~~
+
+It simply splits whatever `namestr` is by a whitespace character, which creates a list of strings. And then it returns the first element in that list (i.e. the left most word):
+
+~~~py
+>>> extract_usable_name('Joseph Jr. (III)')
+'Joseph'
+>>> extract_usable_name('James')
+'James'
+>>> extract_usable_name('Vermont C.')
+'Vermont'
+~~~
+
+Seems almost too simple, right? Well, that's OK -- part of why it works is because the data source, Pulitzer.org, did the job of neatly separating the names of each board member into first_name and last_name fields...so that's why our job is a little easier. That said, our function fails in these situations:
+
+~~~py
+>>> extract_usable_name('G. Scott')
+'G.'
+>>> extract_usable_name('C.K.')
+'C.K.'
+~~~
+
+So it's up to you to tweak `extract_usable_name()` for maximum efficiency. To handle `"G. Scott"`, for example, we can make it so that the function only returns name parts that _do not have a period_ in them:
+
+~~~py
+def extract_usable_name(namestr):
+    nameparts = namestr.split(' ')
+    for n in nameparts:
+        if '.' not in n:
+            return n
+    # if we haven't returned by now, just return a blank
+    return ""
+~~~
+
+And here's what that gets us:
+
+~~~py
+>>> extract_usable_name('G. Scott')
+'Scott'
+>>> extract_usable_name('C.K.')
+''
+~~~
+
+OK, `"C.K."` is still a problem. However, "C.K." (as in [Charles Kenny McClatchy, of Sacramento Bee fame](https://en.wikipedia.org/wiki/Charles_Kenny_McClatchy)), is _not our_ problem. That is, there's nothing in the source data that can help us magically derive `"C.K."` in an automated system. If this were a real research project, this means we have to _alter_ it manually with our external knowledge -- which is _fine_ (usually...). It's just one of many kinds of problems in which computers can't _do_ for us -- hence, that [old axiom about naming things being one of the hardest problems of computer science](https://www.quora.com/Why-is-naming-things-hard-in-computer-science-and-how-can-it-can-be-made-easier).
+
+For the purposes of this assignment, if you run into such a problem...just let it slide. You [can see that I did so in the data that I've uploaded to the project repo](https://github.com/compciv/gendered-pulitzer-board/blob/master/tempdata/classified_data.csv).
+
+#### An even harder naming problem
+
+OK, one more example of how naming things -- or deriving the name of things -- can be a huge pain in the butt.
+
+In my [Guardian bylines project](https://github.com/compciv/gendered-guardian-bylines), I take advantage of the Guardian's API, which has a `byline` field. Problem is, this is the _many_ ways that a `byline` string can turn out as:
+
+- "Peter Bradshaw"
+- "Patrick Wintour, political editor"
+- "Interview by Laura Barnett"
+- "Al Gore, former US vice-president, and David Blood"
+- "Andrew Mueller, Julia Raeside, Martin Skegg and Ali Catterall"
+- "Juliette Garside in Barcelona and Samuel Gibbs"
+
+
+The first two variations are annoying enough, though easily solved with the "split-the-name-string-by-space-and-take-the-first-part" algorithm.
+
+The third variation, `"Interview by Laura Barnett"`, means I have to throw in an `if/else` statement, i.e. "_if_ the word `' by `' is in the string, do something different".
+
+And the next 3 variations throw my entire analysis into chaos: how should I deal with stories that have multiple authors? This is not a task that can be solved by a clever algorithm -- it requires me to make a decision that substantially changes my methodology.
+
+However, in this case, I've told myself: _whomever has the first name in the byline, they are the most important because that's the way the world is_...which, as you can imagine, vastly simplifies the `extract_usable_name()` function, [which you can see in my project repo](https://github.com/compciv/gendered-guardian-bylines/blob/master/classify.py).
+
+
+OK, just in case you forgot what `classify.py` needs to produce; it needs to produce some kind of "classified" data file, e.g. 
+
+    tempdata/classified_data.csv
+
+Because this finished file (or files) is what __analyze.py__ 
+
+
+### analyze.py
+
+Finally, this is the script that does the counting and dividing and whatever math you need to come up with interesting statistics and findings.
+
+It shouldn't need to worry about `gender.py`...in fact, it doesn't really need to know about any of the other files in your project, _except_ for the location of the "classified" data files produced by __classify.py__.
+
+It then reads the classified dataset, counts things up, and spits out, at a minimum, the number of males versus females. And, if you find it relevant: the number of non-classified records.
+
+
+The requirement for __analyze.py__ is that it spits out analysis for __3 different facets__.
+
+What is a __facet__?
+
+One such facet is: the male vs female ratio for the entire dataset at hand. I mean, that's probably the most obvious one.
+
+So, what's another facet? It depends on your dataset.
+
+Think back to the [gender-detector homework](http://www.compciv.org/assignments/exercise-sets/0020-gender-detector-set/), specifically exercises:
+
+- [c.py](http://www.compciv.org/assignments/exercise-sets/0020-gender-detector-set/#toc--0020-gender-detector-c-py-count-and-total-the-number-of-unique-names-by-gender-since-1950-) - Count and total the number of unique names by gender since 1950)
+- [f.py](http://www.compciv.org/assignments/exercise-sets/0020-gender-detector-set/#toc--0020-gender-detector-f-py-print-the-number-of-babies-per-name-for-every-five-years-since-1950-) -- Print the number of babies per name, for every five years since 1950.
+
+Both exercises analyze the variety of names _by gender_. But __c.py__ calculates it as a lump sum: the number of unique names by sex for _all of the years since 1950_. Whereas __f.py__ calculates a slightly different quantity, but more importantly, calculates it for a sequence of years, so the user can see how the variety of names has changed from 1950 to 2014. Same kind of theme, but completely different insights.
+
+So basically, think of three different ways to do a __F__ vs. __M__ count.
+
+Here's some examples:
+
+- In the [FEC donors project](https://github.com/compciv/gendered-fec-teachers-and-attorneys), I compare the gender breakdown of donors who describe their occupation as "teacher" vs "attorney/lawyer"
+- In the [California college payroll project](https://github.com/compciv/gendered-california-colleges-payroll), I look at the gender ratio per income bracket, i.e. its much different between $50,000 to $75,000, versus $250,000 and up. I also compare the gender breakdown for university versus community colleges, because I wonder if things are more or less equitable between systems.
+- In the [Pulitzer Prize Board](https://github.com/compciv/gendered-pulitzer-board) project, I calculate the gender ratio for every person who has been a board member. And then I calculate it per decade. Then, per year. That's three facets.
+
+Depending on how experienced you are with Python, the code will probably be as annoyingly cumbersome as [it was for the gender-detector homework](http://www.compciv.org/assignments/exercise-sets/0020-gender-detector-set/), i.e.
+
+- read a dataset that has a `gender` field
+- filter that dataset (i.e. include only rows with 100 or more babies total)
+- group that dataset by gender
+- calculate the ratio/breakdown
+- do it over again (or put it in a loop)
+
+That's OK...as long as you realize that _that is all it is_. If you can't think of 3 ways to analyze your dataset by gender, then ask me, and I'll help. The most important thing is that, by this point, you realize that whatever suggestion I give you -- or, if you come up with a new idea -- shouldn't require _rebuilding_ the solution. 
+
+Instead of writing a whole new program to download an extra dataset, you should be able to alter your existing program -- maybe even just extend a loop -- and be done with it. When you can successfully break down a problem in a computational way, adding new features and scopes should not at all be like having to write a whole new paper, as you would for an end-of-term essay.
+
+
+
+
+

@@ -1,8 +1,11 @@
 title: |
-   Count the number of unique names and sum the baby counts and print them for every five years since 1950.
+   Print the number of babies per name, for every five years since 1950.
 
 description: |
    Just like exercise e.py, except in a for-loop. It's probably not exactly as easy as just copying and pasting the answer from e.py into this one, but it's almost that...
+
+   The answer is a little different too: divide the total number of babies by the number of names, to get a baby per name ratio.
+
 
    Also, note that instead of looking at every year, we're actually looking at every __5__ years. This is how you can use `range()` to accommodate that:
 
@@ -44,3 +47,21 @@ expectations:
 
 takeaways:
    - It seems that the variety of names has vastly expanded since 1950, for both boys and girls.
+
+
+hints: |
+
+  Here's one way to print the number of babies per name ratio at the end, the total followed by the breakdown for both genders (this comes at the end, so come up with your own variables):
+
+  ~~~py
+  print("Total:", round(total_babycount / total_namecount), 'babies per name')
+  # for boys and girls separately
+  for gd in ['M', 'F']:
+      babyct = 0
+      namect = 0
+      for v in names_dict.values():
+          if v[gd] > 0:
+              babyct += v[gd]
+              namect += 1
+      print("    %s:" % gd, round(babyct / namect), 'babies per name')
+  ~~~

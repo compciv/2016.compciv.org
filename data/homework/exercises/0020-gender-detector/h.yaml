@@ -8,7 +8,6 @@ description: |
   Print a list of the 5 most popular baby names in 2014 that skewed no more than 60% towards either male or female, i.e. a `ratio` or less than or equal to `60`.
 
 
-
   This exercise depends on you having created `tempdata/wrangled2014.csv` in the previous exercise.
 
   Well, you don't *have* to have made that wrangled file -- obviously you can copy-and-paste all the code you used to generate that file into *this* script. The Python interpreter doesn't really care...but *you* -- and anyone else who has to deal with your code -- will care.
@@ -16,17 +15,16 @@ description: |
   Having one script create and package a file for other scripts to use is a very common pattern.
 
 
+  __Most popular baby names__ means to sort the list by __total__, the filter for names in which the gender ratio is less than or equal to __60%__.
+
+  (See the answer on [Github](http://www.compciv.org/assignments/exercise-sets/0020-gender-detector-set/#toc--0020-gender-detector-g-py-reshape-the-2014-babynames-file-so-that-it-is-optimized-for-use-in-a-gender-detecting-program-))
 
 points: 0.5
 expectations:
     output: |
-      Most popular names with less than 50% gender skew:
-      Riley                F  32   7190
-      Peyton               F  42   6254
-      Hayden               M -27   4507
-      Quinn                F  49   3407
-      Charlie              M  -8   3102
-
-
-hints: |
-  Hint
+      Most popular names with <= 60% gender skew:
+      Charlie    M 54 3102
+      Dakota     F 56 2012
+      Skyler     F 54 1981
+      Phoenix    M 59 1530
+      Justice    F 59 1274
